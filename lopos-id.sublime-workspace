@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"da",
+				"dataStorage"
+			],
+			[
 				"set",
 				"setStorage"
 			],
@@ -48,12 +52,51 @@
 	"buffers":
 	[
 		{
+			"contents": "// import {setXhrRequest} from './tools/xhr.js';\n// import {dataStorage} from './tools/storage.js';\nimport {test} from './test.js';\ntest();\n",
 			"file": "src/js/main.js",
+			"file_size": 89,
+			"file_write_time": 131596530903281637,
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 140,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/js/test.js",
+			"settings":
+			{
+				"buffer_size": 1212,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/js/tools/README.md",
+			"settings":
+			{
+				"buffer_size": 1163,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/js/tools/settings.js",
+			"settings":
+			{
+				"buffer_size": 145,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "{…}\ndata: {…}\ndirectory: \"aa5418d7\"\nemail: \"kondor_06@mail.ru\"\nlastLogin: \"2018-01-05 22:03:12\"\nnickname: \"kds\"\noperator_id: 1\ntoken: \"76720b2a0e7efc313648\"\n__proto__: Object { … }\nstatus: 200\n__proto__: Object { … }",
+			"settings":
+			{
+				"buffer_size": 216,
+				"line_ending": "Windows",
+				"name": "{…}"
 			}
 		}
 	],
@@ -104,13 +147,22 @@
 	[
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js"
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools"
 	],
 	"file_history":
 	[
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/xhr.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/storage.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/login.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/gulpfile.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/index.html",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/xch.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/xhr.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/script.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/build/js/xhr.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/lopos-id.sublime-project",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/css/README.md",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/gulpfile.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/sass/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/.babelrc",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js-external/README.md",
@@ -173,7 +225,7 @@
 	],
 	"find":
 	{
-		"height": 30.0
+		"height": 31.0
 	},
 	"find_in_files":
 	{
@@ -187,13 +239,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"localStorage",
+			"\"",
+			";",
+			"setItem"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
 		[
+			"sessionStorage",
+			"'",
+			",",
+			"getItem"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -204,7 +264,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -213,15 +273,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 140,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								52,
+								52
 							]
 						],
 						"settings":
@@ -240,7 +300,146 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/js/test.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1212,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1174,
+								1174
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 480.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/js/tools/README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1163,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								446,
+								446
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/js/tools/settings.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 145,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68,
+								68
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 216,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								216
+							]
+						],
+						"settings":
+						{
+							"auto_name": "{…}",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -248,11 +447,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 30.0
+		"height": 31.0
 	},
 	"input":
 	{
-		"height": 42.0
+		"height": 43.0
 	},
 	"layout":
 	{
@@ -263,11 +462,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -301,7 +507,7 @@
 	"project": "lopos-id.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 78.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -343,7 +549,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 259.0,
+	"side_bar_width": 96.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
