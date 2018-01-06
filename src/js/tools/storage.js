@@ -1,65 +1,40 @@
-let setStorage = function (data) {
-  sessionStorage.clear();
-  sessionStorage.setItem('directory', data.directory);
-  sessionStorage.setItem('email', data.email);
-  sessionStorage.setItem('lastLogin', data.lastLogin);
-  sessionStorage.setItem('nickname', data.nickname);
-  sessionStorage.setItem('operator_id', data.operator_id);
-  sessionStorage.setItem('token', data.token);
-};
+export default {
 
-let getStorage = function () {
-  return {
-    directory: sessionStorage.getItem('directory'),
-    email: sessionStorage.getItem('email'),
-    lastLogin: sessionStorage.getItem('lastLogin'),
-    nickname: sessionStorage.getItem('nickname'),
-    operator_id: sessionStorage.getItem('operator_id'),
-    token: sessionStorage.getItem('token')
-  };
+  // заполняем хранилище
+  set data(loadedData) {
+    console.log(loadedData);
+    sessionStorage.setItem('nickname', loadedData.nickname);
+    sessionStorage.setItem('lastLogin', loadedData.lastLogin);
+    sessionStorage.setItem('email', loadedData.email);
+    sessionStorage.setItem('directory', loadedData.directory);
+    sessionStorage.setItem('operatorId', loadedData.operator_id);
+    sessionStorage.setItem('token', loadedData.token);
+  },
 
-};
+  // возвращаем данные
+  get data() {
+    return {
+      nickname: sessionStorage.getItem('nickname'),
+      lastLogin: sessionStorage.getItem('lastLogin'),
+      directory: sessionStorage.getItem('directory'),
+      email: sessionStorage.getItem('email'),
+      operatorId: sessionStorage.getItem('operatorId'),
+      token: sessionStorage.getItem('userToken'),
+    };
+  },
 
-let isSet = function () {
-  if (sessionStorage.getItem('directory') && sessionStorage.getItem('email') &&
-      sessionStorage.getItem('lastLogin') && sessionStorage.getItem('nickname') &&
-      sessionStorage.getItem('operator_id') && sessionStorage.getItem('token')) {
-    return true;
-  }
-  return false;
-};
+  get isSetFlag() {
+    return Object.values(this.data).some((item) => item !== null);
+  },
 
-let isKey = function (data) {
-  if (data['directory'] && data['email'] && data['lastLogin'] &&
-      data['nickname'] && data['operator_id'] && data['token']) {
-    return true;
-  }
-  return false;
-};
-
-let dataStorage = function (data) {
-  if (!data) {
-
-    if (!isSet()) {
-      return false;
-    }
-
-    return getStorage();
+  // чистим хранилище
+  clean() {
+    sessionStorage.removeItem('nickname');
+    sessionStorage.removeItem('lastLogin');
+    sessionStorage.removeItem('directory');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('operatorId');
+    sessionStorage.removeItem('token');
   }
 
-  if (data === 'clear') {
-    sessionStorage.clear();
-    return true;
-  }
-
-  console.log(isKey(data));
-  if (isKey(data)) {
-    setStorage(data);
-    return true;
-  }
-
-  sessionStorage.clear();
-  return false;
 };
-
-export {dataStorage};
