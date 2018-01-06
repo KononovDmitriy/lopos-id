@@ -1,6 +1,6 @@
 export default {
 
-  setRequest(requestParameters) {
+  set request(requestParameters) {
 
     const ErrorAttr = {
       FILE: 'xhr.js',
@@ -26,7 +26,7 @@ export default {
         let response = '';
 
         try {
-          console.log(xhr.response);
+
           response = JSON.parse(xhr.response);
         } catch (error) {
           requestParameters.callbackError(getError(ErrorAttr.MESSADGE.JSON_ERR,
