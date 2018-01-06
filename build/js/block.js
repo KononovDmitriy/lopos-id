@@ -61,63 +61,66 @@
 	});
 	exports.test = test;
 	
-	var _storage = __webpack_require__(2);
+	var _xhr = __webpack_require__(2);
 	
 	function test() {
-	  var data = {
-	    directory: 'aa5418d7',
-	    email: 'kondor_06@mail.ru',
-	    lastLogin: '2018-01-05 22:03:12',
-	    nickname: 'kds',
-	    operator_id: 1,
-	    token: '76720b2a0e7efc313648'
+	  var xhrSuccessCallback = function xhrSuccessCallback(response) {
+	    console.dir(response);
 	  };
 	
-	  var data2 = {
-	    directory: 'aa5418d7',
-	    email: 'kondor_06@mail.ru',
-	    nickname: 'kds',
-	    operator_id: 1,
-	    token: '76720b2a0e7efc313648'
+	  var xhrErrorCallback = function xhrErrorCallback(error) {
+	    console.dir(error);
 	  };
 	
-	  (0, _storage.dataStorage)(data);
+	  var par = {
+	    url: '/user_boss/login',
+	    metod: 'POST',
+	    data: 'email=donmixa@gmail.com&deviceToken=-&password=Pass_e116',
+	    callbackSuccess: xhrSuccessCallback,
+	    callbackError: xhrErrorCallback
+	  };
 	
-	  console.dir((0, _storage.dataStorage)());
-	
-	  (0, _storage.dataStorage)('clear');
-	
-	  (0, _storage.dataStorage)(data2);
+	  (0, _xhr.setXhrRequest)(par);
 	}
-	// -----------------------------
-	// // !!!!XHR TEST!!!!
-	// // -------------
-	// import {setXhrRequest} from './tools/xhr.js';
-	// export function test() {
-	//   let xhrSuccessCallback = function (response) {
-	//     console.dir(response);
-	//   };
-	
-	//   let xhrErrorCallback = function (error) {
-	//     console.dir(error);
-	//   };
-	
-	
-	//   let par = {
-	//     url: '/user_boss/login',
-	//     metod: 'POST',
-	//     data: 'email=kondor_06@mail.ru&deviceToken=-&password=Qwerty123#',
-	//     callbackSuccess: xhrSuccessCallback,
-	//     callbackError: xhrErrorCallback
-	//   };
-	
-	//   setXhrRequest(par);
-	// }
-	// // -------------------------
+	// -------------------------
 	
 	
 	// !!!!STORAGE TRST!!!!
 	// -----------------------
+	// import {dataStorage} from './tools/storage.js';
+	
+	// export function test() {
+	//   let data = {
+	//     directory: 'aa5418d7',
+	//     email: 'kondor_06@mail.ru',
+	//     lastLogin: '2018-01-05 22:03:12',
+	//     nickname: 'kds',
+	//     operator_id: 1,
+	//     token: '76720b2a0e7efc313648'
+	//   };
+	
+	//   let data2 = {
+	//     directory: 'aa5418d7',
+	//     email: 'kondor_06@mail.ru',
+	//     nickname: 'kds',
+	//     operator_id: 1,
+	//     token: '76720b2a0e7efc313648'
+	//   };
+	
+	
+	//   dataStorage(data);
+	
+	//   console.dir(dataStorage());
+	
+	//   dataStorage('clear');
+	
+	//   dataStorage(data2);
+	
+	
+	// }
+	// // -----------------------------
+	// !!!!XHR TEST!!!!
+	// -------------
 
 /***/ }),
 /* 2 */
@@ -128,67 +131,63 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var setStorage = function setStorage(data) {
-	  sessionStorage.clear();
-	  sessionStorage.setItem('directory', data.directory);
-	  sessionStorage.setItem('email', data.email);
-	  sessionStorage.setItem('lastLogin', data.lastLogin);
-	  sessionStorage.setItem('nickname', data.nickname);
-	  sessionStorage.setItem('operator_id', data.operator_id);
-	  sessionStorage.setItem('token', data.token);
-	};
+	exports.setXhrRequest = setXhrRequest;
+	function setXhrRequest(requestParameters) {
 	
-	var getStorage = function getStorage() {
-	  return {
-	    directory: sessionStorage.getItem('directory'),
-	    email: sessionStorage.getItem('email'),
-	    lastLogin: sessionStorage.getItem('lastLogin'),
-	    nickname: sessionStorage.getItem('nickname'),
-	    operator_id: sessionStorage.getItem('operator_id'),
-	    token: sessionStorage.getItem('token')
-	  };
-	};
-	
-	var isSet = function isSet() {
-	  if (sessionStorage.getItem('directory') && sessionStorage.getItem('email') && sessionStorage.getItem('lastLogin') && sessionStorage.getItem('nickname') && sessionStorage.getItem('operator_id') && sessionStorage.getItem('token')) {
-	    return true;
-	  }
-	  return false;
-	};
-	
-	var isKey = function isKey(data) {
-	  if (data['directory'] && data['email'] && data['lastLogin'] && data['nickname'] && data['operator_id'] && data['token']) {
-	    return true;
-	  }
-	  return false;
-	};
-	
-	var dataStorage = function dataStorage(data) {
-	  if (!data) {
-	
-	    if (!isSet()) {
-	      return false;
+	  var ErrorAttr = {
+	    FILE: 'xhr.js',
+	    MESSADGE: {
+	      JSON_ERR: 'XHR: JSON error converting response.',
+	      LOAD_ERR: 'Load Error.',
+	      CONNECT_ERR: 'Connection error.',
+	      TIMEOUT_ERR: 'Сonnection timeout exceeded'
 	    }
+	  };
 	
-	    return getStorage();
+	  var getError = function getError(messadge, row, error) {
+	    var newError = new SyntaxError(messadge, ErrorAttr.FILE, row);
+	    newError.cause = error;
+	    return newError;
+	  };
+	
+	  var xhr = new XMLHttpRequest();
+	
+	  xhr.addEventListener('load', function () {
+	
+	    if (xhr.status === 200) {
+	      var response = '';
+	
+	      try {
+	        console.log(xhr.response);
+	        response = JSON.parse(xhr.response);
+	      } catch (error) {
+	        requestParameters.callbackError(getError(ErrorAttr.MESSADGE.JSON_ERR, 26, error));
+	      }
+	
+	      requestParameters.callbackSuccess(response);
+	    } else {
+	      requestParameters.callbackError(getError(ErrorAttr.MESSADGE.LOAD_ERR + ' ' + xhr.statusText, 35, ''));
+	    }
+	  });
+	
+	  xhr.addEventListener('error', function () {
+	    requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' ' + xhr.statusText, 42, ''));
+	  });
+	
+	  xhr.addEventListener('timeout', function () {
+	    requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' (' + xhr.timeout + 'ms.)', 50, ''));
+	  });
+	
+	  xhr.timeout = window.appSettings.xhrSettings.timeout;
+	  xhr.open(requestParameters.metod, window.appSettings.xhrSettings.urlApi + requestParameters.url, true);
+	  xhr.setRequestHeader('Content-Type', window.appSettings.xhrSettings.contentType);
+	
+	  if (requestParameters.metod === 'GET') {
+	    requestParameters.data = '';
 	  }
 	
-	  if (data === 'clear') {
-	    sessionStorage.clear();
-	    return true;
-	  }
-	
-	  console.log(isKey(data));
-	  if (isKey(data)) {
-	    setStorage(data);
-	    return true;
-	  }
-	
-	  sessionStorage.clear();
-	  return false;
-	};
-	
-	exports.dataStorage = dataStorage;
+	  xhr.send(requestParameters.data);
+	}
 
 /***/ })
 /******/ ]);
