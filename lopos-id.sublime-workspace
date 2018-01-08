@@ -4,7 +4,19 @@
 		"selected_items":
 		[
 			[
+				"a",
+				"addEventListener"
+			],
+			[
+				"event",
+				"event"
+			],
+			[
 				"da",
+				"data"
+			],
+			[
+				"data",
 				"dataStorage"
 			],
 			[
@@ -52,51 +64,129 @@
 	"buffers":
 	[
 		{
-			"contents": "// import {setXhrRequest} from './tools/xhr.js';\n// import {dataStorage} from './tools/storage.js';\nimport {test} from './test.js';\ntest();\n",
+			"file": "src/js/login/main_login_window.js",
+			"settings":
+			{
+				"buffer_size": 880,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "src/js/main.js",
-			"file_size": 89,
-			"file_write_time": 131596530903281637,
 			"settings":
 			{
-				"buffer_size": 140,
+				"buffer_size": 202,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/js/test.js",
+			"file": "src/js/login/form_forgot.js",
 			"settings":
 			{
-				"buffer_size": 1212,
+				"buffer_size": 835,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/js/tools/README.md",
+			"file": "src/js/login/forgot.js",
 			"settings":
 			{
-				"buffer_size": 1163,
+				"buffer_size": 1147,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/js/tools/settings.js",
+			"file": "src/js/login/form_login.js",
 			"settings":
 			{
-				"buffer_size": 145,
+				"buffer_size": 1092,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "{…}\ndata: {…}\ndirectory: \"aa5418d7\"\nemail: \"kondor_06@mail.ru\"\nlastLogin: \"2018-01-05 22:03:12\"\nnickname: \"kds\"\noperator_id: 1\ntoken: \"76720b2a0e7efc313648\"\n__proto__: Object { … }\nstatus: 200\n__proto__: Object { … }",
+			"file": "src/js/login/login.js",
 			"settings":
 			{
-				"buffer_size": 216,
-				"line_ending": "Windows",
-				"name": "{…}"
+				"buffer_size": 2759,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/js/login/form_confirm_email.js",
+			"settings":
+			{
+				"buffer_size": 1054,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/index.html",
+			"settings":
+			{
+				"buffer_size": 7725,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/settings/settings.js",
+			"settings":
+			{
+				"buffer_size": 702,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/login.js",
+			"settings":
+			{
+				"buffer_size": 7033,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "donmixa@gmail.com\n60-0a-53-57-1\n\nPass_e116\n\n6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW",
+			"file": "login.txt",
+			"file_size": 43,
+			"file_write_time": 131598779735566417,
+			"settings":
+			{
+				"buffer_size": 84,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "donmixa@gmail.com"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<html>\n  <head>\n    <title>reCAPTCHA demo: Explicit render after an onload callback</title>\n    <script type=\"text/javascript\">\n      \n        var onSubmit = function(token) {\n          console.log('success!');\n        };\n\n        var onloadCallback = function() {\n          grecaptcha.render('submit', {\n            'sitekey' : 'your_site_key',\n            'callback' : onSubmit\n          });\n        };\n    </script>\n  </head>\n  <body>\n    <form action=\"?\" method=\"POST\">\n      <input id='submit' type=\"submit\" value=\"Submit\">\n    </form>\n    <script src=\"https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit\"\n        async defer>\n    </script>\n  </body>\n</html>",
+			"settings":
+			{
+				"buffer_size": 689,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -148,15 +238,34 @@
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools"
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/settings"
 	],
 	"file_history":
 	[
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_register.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/register.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/confirm_email.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/main.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/captcha.js",
+		"/D/USERS/kds/Desktop/captcha.html",
+		"/D/USERS/kds/Desktop/invcaptcha.html",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/login.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/forgot.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/reCaptcha.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/login.html",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/settings/settings.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_login.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/build/index.html",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/xhr.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/storage.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/test.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/index.html",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/settings.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/login.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/gulpfile.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/index.html",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/xch.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/xhr.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/script.js",
@@ -168,7 +277,6 @@
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js-external/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/markup/README.md",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/buttons/README.md",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/build/README.md",
 		"/E/lopos-full/gulpfile.js",
@@ -225,7 +333,7 @@
 	],
 	"find":
 	{
-		"height": 31.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
@@ -239,17 +347,72 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"window.appSettings.loginValid.password",
+			"window.appSettings.loginValid.email",
+			"window.appSettings.loginValid.id",
+			"form",
+			"registerButtonCancel",
+			"emailConfirmButtonCancel",
+			"setConfirmEmailError",
+			"^[а-яёА-ЯЁA-Za-z\\s]+$",
+			"[а-яёА-ЯЁA-Za-z\\s]+",
+			"[а-яёА-ЯЁA-Za-z\\s]",
+			"dsdsdsds",
+			"[а-яёА-ЯЁA-Za-z\\s]+",
+			"[а-яёА-ЯЁA-Za-z\\s]",
+			"d",
+			"[а-яёА-ЯЁA-Za-z\\s]",
+			"[а-яёА-ЯЁA-Za-z\\s]+",
+			"[а-яёА-ЯЁA-Za-z\\s]",
+			"registerButtonCancel",
+			"regApiSet",
+			"regValSet",
+			"regSet",
+			"window.appSettings.registerValid",
+			"showLoginInputPasswordError",
+			"showLoginInputLoginError",
+			"};\n",
+			"showLoginInputLoginError",
+			"show",
+			"passw",
+			"login",
+			"password",
+			"login",
+			"submitForm",
+			"getRequestDataEmail",
+			"console",
+			"console.log",
+			"show",
+			"handlerInputChange",
+			"handlerLoginFormSubmit",
+			"showError",
+			"[0-9a-z]{9,}",
+			"xhrSettings",
 			"localStorage",
 			"\"",
 			";",
 			"setItem"
 		],
-		"highlight": true,
-		"in_selection": true,
+		"highlight": false,
+		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
+			"validPassword",
+			"validEmail",
+			"validId",
+			"regApi",
+			"regVal",
+			"regValSet",
+			"regSet",
+			"setLoginInputPasswordError",
+			"setLoginInputLoginError",
+			"userLogin",
+			"userPassword",
+			"userLogin",
+			"alert",
+			"Settings.xhrSettings",
 			"sessionStorage",
 			"'",
 			",",
@@ -264,24 +427,128 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/js/main.js",
+					"file": "src/js/login/main_login_window.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 140,
+						"buffer_size": 880,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								52,
-								52
+								538,
+								538
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/js/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 202,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								178,
+								178
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/js/login/form_forgot.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 835,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								48,
+								0
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/js/login/forgot.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1147,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								610,
+								618
 							]
 						],
 						"settings":
@@ -304,54 +571,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "src/js/test.js",
+					"buffer": 4,
+					"file": "src/js/login/form_login.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1212,
+						"buffer_size": 1092,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1174,
-								1174
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 480.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/js/tools/README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1163,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								446,
-								446
+								556,
+								579
 							]
 						],
 						"settings":
@@ -361,40 +594,6 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/js/tools/settings.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 145,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								68,
-								68
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
 							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true,
@@ -406,19 +605,236 @@
 					},
 					"stack_index": 4,
 					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/js/login/login.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2759,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1268,
+								1268
+							],
+							[
+								1269,
+								1269
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/js/login/form_confirm_email.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1054,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								95,
+								0
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
-					"buffer": 4,
+					"buffer": 7,
+					"file": "src/index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 216,
+						"buffer_size": 7725,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7704,
+								7704
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2750.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/settings/settings.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 702,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								672,
+								672
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/login.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7033,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6574,
+								6574
+							]
+						],
+						"settings":
+						{
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5082.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "login.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 84,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								44,
+								84
+							]
+						],
+						"settings":
+						{
+							"auto_name": "donmixa@gmail.com",
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
 						"regions":
 						{
 						},
@@ -426,12 +842,71 @@
 						[
 							[
 								0,
-								216
+								0
 							]
 						],
 						"settings":
 						{
-							"auto_name": "{…}",
+							"incomplete_sync": null,
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 689,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								689,
+								0
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
 							"incomplete_sync": null,
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
@@ -439,7 +914,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -447,7 +922,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 31.0
+		"height": 30.0
 	},
 	"input":
 	{
@@ -473,7 +948,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.734159342248,
 			1.0
 		],
 		"rows":
@@ -497,7 +972,7 @@
 	},
 	"output.unsaved_changes":
 	{
-		"height": 144.0
+		"height": 593.0
 	},
 	"output.xdebug":
 	{
@@ -549,7 +1024,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 96.0,
+	"side_bar_width": 265.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -1,5 +1,6 @@
+import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
-import form from './form_login.js';
+import formRegister from './form_register.js';
 
 const regVal = window.appSettings.registerValid;
 const regUrlApi = window.appSettings.registerUrlApi;
@@ -10,7 +11,7 @@ let callbackXhrSuccess = function (response) {
   switch (response.status) {
 
   case 200:
-    form.showSubmitEmail();
+    mainWindow.confirmEmail();
     break;
   case 400:
     alert(response.message);
@@ -62,22 +63,22 @@ let validateForm = function (name, email, password, confirm, userAgreement) {
   let valid = true;
 
   if (!validateName(name)) {
-    form.setRegisterInputNameError('Имя!');
+    formRegister.setError('name', 'Имя!');
     valid = false;
   }
 
   if (!validateEmail(email)) {
-    form.setRegisterInputEmailError('Почта!');
+    formRegister.setError('email', 'Почта!');
     valid = false;
   }
 
   if (!validatePassword(password)) {
-    form.setRegisterInputPasswordError('Пароль!');
+    formRegister.setError('password', 'Пароль!');
     valid = false;
   }
 
   if (!validateConfirm(password, confirm)) {
-    form.setRegisterInputConfirmPasswordError('Не совпадает!');
+    formRegister.setError('confirm', 'Не совпадает!');
     valid = false;
   }
 
@@ -107,6 +108,7 @@ let submitForm = function (name, email, password) {
 
 export default {
   submit(name, email, password, confirm, userAgreement) {
+
     if (validateForm(name, email, password, confirm, userAgreement)) {
       submitForm(name, email, password);
     }

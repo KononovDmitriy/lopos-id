@@ -7,7 +7,7 @@ const validEmail = window.appSettings.loginValid.email;
 const validPassword = window.appSettings.loginValid.password;
 
 
-let capcha = 0;
+// let capcha = 0;
 
 let callbackXhrSuccess = function (response) {
   console.dir(response);
@@ -20,7 +20,7 @@ let callbackXhrSuccess = function (response) {
       // Загрузка приложения
     }
   } else {
-    capcha++;
+    // capcha++;
     // показ ошибки
     alert(response.message);
   }
@@ -87,13 +87,13 @@ let validateForm = function (userLogin, userPassword) {
     valid.loginEmail = false;
     if (!validateData(validId, userLogin)) {
       valid.valid = false;
-      form.setLoginInputLoginError('Неверный формат логина');
+      form.setError('login', 'Неверный формат логина');
     }
   }
 
   if (!validateData(validPassword, userPassword)) {
     valid.valid = false;
-    form.setLoginInputPasswordError('Пароль должен быть длиннее 3-х символов');
+    form.setError('password', 'Пароль должен быть длиннее 3-х символов');
   }
 
   return valid;
@@ -103,9 +103,9 @@ export default {
 
   submit(login, password) {
 
-    if (capcha === 3) {
-      form.showLoginCaptcha();
-    }
+    // if (capcha === 3) {
+    //   form.showLoginCaptcha();
+    // }
 
     login = login.toLowerCase();
     login = login.replace(/-/g, '');

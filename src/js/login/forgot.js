@@ -1,5 +1,6 @@
+import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
-import form from './form_login.js';
+import formForgot from './form_forgot.js';
 
 const emailVal = window.appSettings.forgotEmailValid;
 const urlApi = window.appSettings.forgotUrlApi;
@@ -9,7 +10,7 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 400) {
     alert(response.message);
-    // Возврат в окно входа
+    mainWindow.firstScreen();
   } else {
     // показ ошибки
     alert('Ошибка восстановления пароля');
@@ -26,7 +27,7 @@ let validateForm = function (email) {
   if (emailVal.test(email)) {
     return true;
   }
-  form.setForgotError('Введите корректный email');
+  formForgot.setError('Введите корректный email');
   return false;
 };
 

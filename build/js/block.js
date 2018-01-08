@@ -46,31 +46,71 @@
 
 	'use strict';
 	
-	var _captcha = __webpack_require__(1);
+	var _main_login_window = __webpack_require__(1);
 	
-	var _captcha2 = _interopRequireDefault(_captcha);
-	
-	var _form_login = __webpack_require__(2);
-	
-	var _form_login2 = _interopRequireDefault(_form_login);
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	window.captchaOnLoad = function () {
-	  console.log('Капча загружена');
-	};
+	
+	var _form_login = __webpack_require__(2);
+	
+	var _form_login2 = _interopRequireDefault(_form_login);
+	
+	var _form_register = __webpack_require__(6);
+	
+	var _form_register2 = _interopRequireDefault(_form_register);
+	
+	var _form_confirm_email = __webpack_require__(8);
+	
+	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
+	
+	var _form_forgot = __webpack_require__(10);
+	
+	var _form_forgot2 = _interopRequireDefault(_form_forgot);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
+	
+	sectionLoginFormMain.addEventListener('change', function (event) {
+	  console.log(event.target);
+	  event.target.setCustomValidity('');
+	});
 	
 	exports.default = {
-	  captchaCallback: function captchaCallback() {}
+	  init: function init() {},
+	  firstScreen: function firstScreen() {
+	    _form_confirm_email2.default.reset();
+	    _form_register2.default.reset();
+	    _form_forgot2.default.reset();
+	    _form_login2.default.reset();
+	    _form_confirm_email2.default.hide();
+	    _form_register2.default.hide();
+	    _form_forgot2.default.hide();
+	    _form_login2.default.show();
+	  },
+	  confirmEmail: function confirmEmail() {
+	    _form_register2.default.hide();
+	    _form_confirm_email2.default.show();
+	  },
+	  register: function register() {
+	    _form_login2.default.hide();
+	    _form_register2.default.show();
+	  },
+	  forgot: function forgot() {
+	    _form_login2.default.hide();
+	    _form_forgot2.default.show();
+	  }
 	};
 
 /***/ }),
@@ -83,140 +123,51 @@
 	  value: true
 	});
 	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
 	var _login = __webpack_require__(3);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
-	var _register = __webpack_require__(6);
-	
-	var _register2 = _interopRequireDefault(_register);
-	
-	var _confirm_email = __webpack_require__(7);
-	
-	var _confirm_email2 = _interopRequireDefault(_confirm_email);
-	
-	var _forgot = __webpack_require__(8);
-	
-	var _forgot2 = _interopRequireDefault(_forgot);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
-	
-	var sectionLogin = sectionLoginFormMain.querySelector('#sectionLogin');
+	var sectionLogin = document.querySelector('#sectionLogin');
 	var loginForm = sectionLogin.querySelector('#loginForm');
 	var loginButtonRegister = loginForm.querySelector('#loginButtonRegister');
-	var loginInputLogin = loginForm.querySelector('#loginInputLogin');
-	var loginInputPassword = loginForm.querySelector('#loginInputPassword');
-	var loginCaptcha = loginForm.querySelector('#loginCaptcha');
 	var loginButtonForgot = loginForm.querySelector('#loginButtonForgot');
 	
-	var sectionRegister = sectionLoginFormMain.querySelector('#sectionRegister');
-	var registerForm = sectionRegister.querySelector('#registerForm');
-	var registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
-	var registerInputName = registerForm.querySelector('#registerInputName');
-	var registerInputEmail = registerForm.querySelector('#registerInputEmail');
-	var registerInputPassword = registerForm.querySelector('#registerInputPassword');
-	var registerInputConfirmPassword = registerForm.querySelector('#registerInputConfirmPassword');
-	var registerUserAgreement = sectionLoginFormMain.querySelector('#registerUserAgreement');
-	
-	var sectionConfirmEmail = sectionLoginFormMain.querySelector('#sectionConfirmEmail');
-	var emailConfirmForm = sectionConfirmEmail.querySelector('#emailConfirmForm');
-	var emailConfirmInputKey = emailConfirmForm.querySelector('#emailConfirmInputKey');
-	var emailConfirmButtonCancel = emailConfirmForm.querySelector('#emailConfirmButtonCancel');
-	
-	var sectionForgot = sectionLoginFormMain.querySelector('#sectionForgot');
-	var forgotForm = sectionForgot.querySelector('#forgotForm');
-	var forgotInputEmail = forgotForm.querySelector('#forgotInputEmail');
-	var forgotButtonCancel = forgotForm.querySelector('#forgotButtonCancel');
-	
-	sectionLoginFormMain.addEventListener('change', function (event) {
-	  event.target.setCustomValidity('');
-	});
+	var inputFields = {
+	  'login': loginForm.querySelector('#loginInputLogin'),
+	  'password': loginForm.querySelector('#loginInputPassword')
+	};
 	
 	loginForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
-	  _login2.default.submit(loginInputLogin.value, loginInputPassword.value);
-	});
-	
-	registerForm.addEventListener('submit', function (event) {
-	  event.preventDefault();
-	  _register2.default.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value, registerInputConfirmPassword.value, registerUserAgreement.checked);
-	});
-	
-	emailConfirmForm.addEventListener('submit', function (event) {
-	  event.preventDefault();
-	  _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
-	});
-	
-	forgotForm.addEventListener('submit', function (event) {
-	  event.preventDefault();
-	  _forgot2.default.submit(forgotInputEmail.value);
+	  _login2.default.submit(inputFields.login.value, inputFields.password.value);
 	});
 	
 	loginButtonRegister.addEventListener('click', function () {
-	  sectionLogin.classList.add('d-none');
-	  sectionRegister.classList.remove('d-none');
+	  _main_login_window2.default.register();
 	});
 	
 	loginButtonForgot.addEventListener('click', function () {
-	  sectionLogin.classList.add('d-none');
-	  sectionForgot.classList.remove('d-none');
-	});
-	
-	registerButtonCancel.addEventListener('click', function () {
-	  loginForm.reset();
-	  registerForm.reset();
-	  emailConfirmForm.reset();
-	  sectionLogin.classList.remove('d-none');
-	  sectionRegister.classList.add('d-none');
-	});
-	
-	emailConfirmButtonCancel.addEventListener('click', function () {
-	  loginForm.reset();
-	  registerForm.reset();
-	  sectionLogin.classList.remove('d-none');
-	  sectionConfirmEmail.classList.add('d-none');
-	});
-	
-	forgotButtonCancel.addEventListener('click', function () {
-	  loginForm.reset();
-	  registerForm.reset();
-	  sectionLogin.classList.remove('d-none');
-	  sectionForgot.classList.add('d-none');
+	  _main_login_window2.default.forgot();
 	});
 	
 	exports.default = {
-	  setLoginInputLoginError: function setLoginInputLoginError(msg) {
-	    loginInputLogin.setCustomValidity(msg);
+	  setError: function setError(target, msg) {
+	    inputFields[target].setCustomValidity(msg);
 	  },
-	  setLoginInputPasswordError: function setLoginInputPasswordError(msg) {
-	    loginInputPassword.setCustomValidity(msg);
+	  show: function show() {
+	    sectionLogin.classList.remove('d-none');
 	  },
-	  showLoginCaptcha: function showLoginCaptcha() {
-	    loginCaptcha.classList.remove('d-none');
+	  hide: function hide() {
+	    sectionLogin.classList.add('d-none');
 	  },
-	  setRegisterInputNameError: function setRegisterInputNameError(msg) {
-	    registerInputName.setCustomValidity(msg);
-	  },
-	  setRegisterInputEmailError: function setRegisterInputEmailError(msg) {
-	    registerInputEmail.setCustomValidity(msg);
-	  },
-	  setRegisterInputPasswordError: function setRegisterInputPasswordError(msg) {
-	    registerInputPassword.setCustomValidity(msg);
-	  },
-	  setRegisterInputConfirmPasswordError: function setRegisterInputConfirmPasswordError(msg) {
-	    registerInputConfirmPassword.setCustomValidity(msg);
-	  },
-	  setConfirmEmailError: function setConfirmEmailError(msg) {
-	    emailConfirmInputKey.setCustomValidity(msg);
-	  },
-	  setForgotError: function setForgotError(msg) {
-	    forgotInputEmail.setCustomValidity(msg);
-	  },
-	  showSubmitEmail: function showSubmitEmail() {
-	    sectionRegister.classList.add('d-none');
-	    sectionConfirmEmail.classList.remove('d-none');
+	  reset: function reset() {
+	    loginForm.reset();
 	  }
 	};
 
@@ -248,7 +199,7 @@
 	var validEmail = window.appSettings.loginValid.email;
 	var validPassword = window.appSettings.loginValid.password;
 	
-	var capcha = 0;
+	// let capcha = 0;
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	  console.dir(response);
@@ -261,7 +212,7 @@
 	      // Загрузка приложения
 	    }
 	  } else {
-	    capcha++;
+	    // capcha++;
 	    // показ ошибки
 	    alert(response.message);
 	  }
@@ -327,13 +278,13 @@
 	    valid.loginEmail = false;
 	    if (!validateData(validId, userLogin)) {
 	      valid.valid = false;
-	      _form_login2.default.setLoginInputLoginError('Неверный формат логина');
+	      _form_login2.default.setError('login', 'Неверный формат логина');
 	    }
 	  }
 	
 	  if (!validateData(validPassword, userPassword)) {
 	    valid.valid = false;
-	    _form_login2.default.setLoginInputPasswordError('Пароль должен быть длиннее 3-х символов');
+	    _form_login2.default.setError('password', 'Пароль должен быть длиннее 3-х символов');
 	  }
 	
 	  return valid;
@@ -342,9 +293,9 @@
 	exports.default = {
 	  submit: function submit(login, password) {
 	
-	    if (capcha === 3) {
-	      _form_login2.default.showLoginCaptcha();
-	    }
+	    // if (capcha === 3) {
+	    //   form.showLoginCaptcha();
+	    // }
 	
 	    login = login.toLowerCase();
 	    login = login.replace(/-/g, '');
@@ -488,13 +439,74 @@
 	  value: true
 	});
 	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
+	var _register = __webpack_require__(7);
+	
+	var _register2 = _interopRequireDefault(_register);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var sectionRegister = document.querySelector('#sectionRegister');
+	var registerForm = sectionRegister.querySelector('#registerForm');
+	var registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
+	var registerUserAgreement = document.querySelector('#registerUserAgreement');
+	
+	var inputFields = {
+	  'name': registerForm.querySelector('#registerInputName'),
+	  'email': registerForm.querySelector('#registerInputEmail'),
+	  'password': registerForm.querySelector('#registerInputPassword'),
+	  'confirm': registerForm.querySelector('#registerInputConfirmPassword')
+	};
+	
+	registerForm.addEventListener('submit', function (event) {
+	  event.preventDefault();
+	
+	  _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value, inputFields.confirm.value, registerUserAgreement.checked);
+	});
+	
+	registerButtonCancel.addEventListener('click', function () {
+	  _main_login_window2.default.firstScreen();
+	});
+	
+	exports.default = {
+	  setError: function setError(target, msg) {
+	    inputFields[target].setCustomValidity(msg);
+	  },
+	  show: function show() {
+	    sectionRegister.classList.remove('d-none');
+	  },
+	  hide: function hide() {
+	    sectionRegister.classList.add('d-none');
+	  },
+	  reset: function reset() {
+	    registerForm.reset();
+	  }
+	};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
 	var _xhr = __webpack_require__(4);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_login = __webpack_require__(2);
+	var _form_register = __webpack_require__(6);
 	
-	var _form_login2 = _interopRequireDefault(_form_login);
+	var _form_register2 = _interopRequireDefault(_form_register);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -507,7 +519,7 @@
 	  switch (response.status) {
 	
 	    case 200:
-	      _form_login2.default.showSubmitEmail();
+	      _main_login_window2.default.confirmEmail();
 	      break;
 	    case 400:
 	      alert(response.message);
@@ -555,22 +567,22 @@
 	  var valid = true;
 	
 	  if (!validateName(name)) {
-	    _form_login2.default.setRegisterInputNameError('Имя!');
+	    _form_register2.default.setError('name', 'Имя!');
 	    valid = false;
 	  }
 	
 	  if (!validateEmail(email)) {
-	    _form_login2.default.setRegisterInputEmailError('Почта!');
+	    _form_register2.default.setError('email', 'Почта!');
 	    valid = false;
 	  }
 	
 	  if (!validatePassword(password)) {
-	    _form_login2.default.setRegisterInputPasswordError('Пароль!');
+	    _form_register2.default.setError('password', 'Пароль!');
 	    valid = false;
 	  }
 	
 	  if (!validateConfirm(password, confirm)) {
-	    _form_login2.default.setRegisterInputConfirmPasswordError('Не совпадает!');
+	    _form_register2.default.setError('confirm', 'Не совпадает!');
 	    valid = false;
 	  }
 	
@@ -599,6 +611,7 @@
 	
 	exports.default = {
 	  submit: function submit(name, email, password, confirm, userAgreement) {
+	
 	    if (validateForm(name, email, password, confirm, userAgreement)) {
 	      submitForm(name, email, password);
 	    }
@@ -606,7 +619,58 @@
 	};
 
 /***/ }),
-/* 7 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
+	var _confirm_email = __webpack_require__(9);
+	
+	var _confirm_email2 = _interopRequireDefault(_confirm_email);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var sectionConfirmEmail = document.querySelector('#sectionConfirmEmail');
+	var emailConfirmForm = sectionConfirmEmail.querySelector('#emailConfirmForm');
+	var emailConfirmInputKey = emailConfirmForm.querySelector('#emailConfirmInputKey');
+	var emailConfirmButtonCancel = emailConfirmForm.querySelector('#emailConfirmButtonCancel');
+	
+	var registerInputEmail = document.querySelector('#registerInputEmail');
+	
+	emailConfirmForm.addEventListener('submit', function (event) {
+	  event.preventDefault();
+	  _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
+	});
+	
+	emailConfirmButtonCancel.addEventListener('click', function () {
+	  _main_login_window2.default.firstScreen();
+	});
+	
+	exports.default = {
+	  setError: function setError(msg) {
+	    emailConfirmInputKey.setCustomValidity(msg);
+	  },
+	  show: function show() {
+	    sectionConfirmEmail.classList.remove('d-none');
+	  },
+	  hide: function hide() {
+	    sectionConfirmEmail.classList.add('d-none');
+	  },
+	  reset: function reset() {
+	    emailConfirmForm.reset();
+	  }
+	};
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -619,9 +683,9 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_login = __webpack_require__(2);
+	var _form_confirm_email = __webpack_require__(8);
 	
-	var _form_login2 = _interopRequireDefault(_form_login);
+	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
 	var _storage = __webpack_require__(5);
 	
@@ -658,7 +722,7 @@
 	  if (kodVal.test(kod)) {
 	    return true;
 	  }
-	  _form_login2.default.setConfirmEmailError('Неверный формат кода!');
+	  _form_confirm_email2.default.setError('Неверный формат кода!');
 	  return false;
 	};
 	
@@ -688,7 +752,7 @@
 	};
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -697,13 +761,66 @@
 	  value: true
 	});
 	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
+	var _forgot = __webpack_require__(11);
+	
+	var _forgot2 = _interopRequireDefault(_forgot);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var sectionForgot = document.querySelector('#sectionForgot');
+	var forgotForm = sectionForgot.querySelector('#forgotForm');
+	var forgotInputEmail = forgotForm.querySelector('#forgotInputEmail');
+	var forgotButtonCancel = forgotForm.querySelector('#forgotButtonCancel');
+	
+	forgotForm.addEventListener('submit', function (event) {
+	  event.preventDefault();
+	  _forgot2.default.submit(forgotInputEmail.value);
+	});
+	
+	forgotButtonCancel.addEventListener('click', function () {
+	  _main_login_window2.default.firstScreen();
+	});
+	
+	exports.default = {
+	  setError: function setError(msg) {
+	    forgotInputEmail.setCustomValidity(msg);
+	  },
+	  show: function show() {
+	    sectionForgot.classList.remove('d-none');
+	  },
+	  hide: function hide() {
+	    sectionForgot.classList.add('d-none');
+	  },
+	  reset: function reset() {
+	    forgotForm.reset();
+	  }
+	};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _main_login_window = __webpack_require__(1);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
 	var _xhr = __webpack_require__(4);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_login = __webpack_require__(2);
+	var _form_forgot = __webpack_require__(10);
 	
-	var _form_login2 = _interopRequireDefault(_form_login);
+	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -715,7 +832,7 @@
 	
 	  if (response.status === 400) {
 	    alert(response.message);
-	    // Возврат в окно входа
+	    _main_login_window2.default.firstScreen();
 	  } else {
 	    // показ ошибки
 	    alert('Ошибка восстановления пароля');
@@ -732,7 +849,7 @@
 	  if (emailVal.test(email)) {
 	    return true;
 	  }
-	  _form_login2.default.setForgotError('Введите корректный email');
+	  _form_forgot2.default.setError('Введите корректный email');
 	  return false;
 	};
 	

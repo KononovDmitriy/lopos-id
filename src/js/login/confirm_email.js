@@ -1,5 +1,5 @@
 import xhr from './../tools/xhr.js';
-import form from './form_login.js';
+import formConfirmEmail from './form_confirm_email.js';
 import dataStorage from './../tools/storage.js';
 
 const kodVal = window.appSettings.confirmEmailKodValid;
@@ -31,7 +31,7 @@ let validateForm = function (kod) {
   if (kodVal.test(kod)) {
     return true;
   }
-  form.setConfirmEmailError('Неверный формат кода!');
+  formConfirmEmail.setError('Неверный формат кода!');
   return false;
 };
 
