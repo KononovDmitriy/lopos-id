@@ -3,4 +3,4 @@
 // import {test} from './test.js';
 // test();
 import mainWindow from './login/main_login_window.js';
-
+mainWindow.firstScreen();

@@ -6,7 +6,6 @@ import formForgot from './form_forgot.js';
 const sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 
 sectionLoginFormMain.addEventListener('change', function (event) {
-  console.log(event.target);
   event.target.setCustomValidity('');
 });
 

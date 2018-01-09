@@ -49,8 +49,13 @@
 	var _main_login_window = __webpack_require__(1);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_main_login_window2.default.firstScreen(); // import {setXhrRequest} from './tools/xhr.js';
+	// import {dataStorage} from './tools/storage.js';
+	// import {test} from './test.js';
+	// test();
 
 /***/ }),
 /* 1 */
@@ -83,7 +88,6 @@
 	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 	
 	sectionLoginFormMain.addEventListener('change', function (event) {
-	  console.log(event.target);
 	  event.target.setCustomValidity('');
 	});
 	
