@@ -50,18 +50,12 @@
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _captcha = __webpack_require__(12);
-	
-	var _captcha2 = _interopRequireDefault(_captcha);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// import {setXhrRequest} from './tools/xhr.js';
+	_main_login_window2.default.firstScreen(); // import {setXhrRequest} from './tools/xhr.js';
 	// import {dataStorage} from './tools/storage.js';
 	// import {test} from './test.js';
 	// test();
-	_main_login_window2.default.firstScreen();
-	_captcha2.default.init();
 
 /***/ }),
 /* 1 */
@@ -77,21 +71,29 @@
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _form_register = __webpack_require__(6);
+	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _form_confirm_email = __webpack_require__(8);
+	var _form_confirm_email = __webpack_require__(9);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
-	var _form_forgot = __webpack_require__(10);
+	var _form_forgot = __webpack_require__(11);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
+	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
+	
+	console.log('v6');
+	
+	_captcha2.default.init();
 	
 	sectionLoginFormMain.addEventListener('change', function (event) {
 	  event.target.setCustomValidity('');
@@ -141,6 +143,10 @@
 	
 	var _login2 = _interopRequireDefault(_login);
 	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var sectionLogin = document.querySelector('#sectionLogin');
@@ -153,9 +159,26 @@
 	  'password': loginForm.querySelector('#loginInputPassword')
 	};
 	
+	var BUTTON_SUBMIT_ID = 'loginButtonSubmit';
+	
+	var captchaCount = 0;
+	var captchaId = void 0;
+	
+	var captchaCallback = function captchaCallback() {
+	
+	  console.log('login catcha id = ' + captchaId);
+	  window.grecaptcha.reset(captchaId);
+	  _login2.default.submit(inputFields.login.value, inputFields.password.value);
+	};
+	
 	loginForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
+	
 	  _login2.default.submit(inputFields.login.value, inputFields.password.value);
+	
+	  if (captchaCount >= 2 && window.captchaOnLoad) {
+	    captchaId = _captcha2.default.getCaptcha(BUTTON_SUBMIT_ID, captchaCallback);
+	  }
 	});
 	
 	loginButtonRegister.addEventListener('click', function () {
@@ -180,6 +203,9 @@
 	    loginForm.reset();
 	    inputFields.login.setCustomValidity('');
 	    inputFields.password.setCustomValidity('');
+	  },
+	  addCaptchaCount: function addCaptchaCount() {
+	    captchaCount++;
 	  }
 	};
 
@@ -211,20 +237,19 @@
 	var validEmail = window.appSettings.loginValid.email;
 	var validPassword = window.appSettings.loginValid.password;
 	
-	// let capcha = 0;
-	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	  console.dir(response);
+	
+	  _form_login2.default.addCaptchaCount();
+	
 	  if (response.status === 200) {
 	    if (response.data.status === '0') {
 	      alert('Ваш пользователь заблокирован, обратитесь к администратору');
-	      // сброс на страницу загрузки
 	    } else {
 	      _storage2.default.data = response.data;
 	      // Загрузка приложения
 	    }
 	  } else {
-	    // capcha++;
 	    // показ ошибки
 	    alert(response.message);
 	  }
@@ -305,10 +330,6 @@
 	exports.default = {
 	  submit: function submit(login, password) {
 	
-	    // if (capcha === 3) {
-	    //   form.showLoginCaptcha();
-	    // }
-	
 	    login = login.toLowerCase();
 	    login = login.replace(/-/g, '');
 	
@@ -316,7 +337,9 @@
 	
 	    if (valid.valid) {
 	      submitForm(login, password, valid.loginEmail);
+	      return true;
 	    }
+	    return false;
 	  }
 	};
 
@@ -451,11 +474,112 @@
 	  value: true
 	});
 	
+	var _form_login = __webpack_require__(2);
+	
+	var _form_login2 = _interopRequireDefault(_form_login);
+	
+	var _form_register = __webpack_require__(7);
+	
+	var _form_register2 = _interopRequireDefault(_form_register);
+	
+	var _form_confirm_email = __webpack_require__(9);
+	
+	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
+	
+	var _form_forgot = __webpack_require__(11);
+	
+	var _form_forgot2 = _interopRequireDefault(_form_forgot);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// const BUTTON_SUBMIT_LOGIN_ID = 'loginButtonSubmit';
+	var BUTTON_SUBMIT_REGISTER_ID = 'registerButtonSubmit';
+	var BUTTON_SUBMIT_EMAIL_ID = 'emailConfirmButtonSubmit';
+	var BUTTON_SUBMIT_FORGOT_ID = 'forgotButtonSubmit';
+	
+	// let captchaLoginId;
+	var captchaRegisterId = void 0;
+	var captchaEmailId = void 0;
+	var captchaForgotId = void 0;
+	
+	// let captchaLoginCallback = function () {
+	
+	// };
+	
+	var captchaRegisterCallback = function captchaRegisterCallback() {
+	  console.log('register id = ' + captchaRegisterId);
+	
+	  _form_register2.default.submitForm();
+	};
+	
+	var captchaEmailCallback = function captchaEmailCallback() {
+	  console.log('email id = ' + captchaEmailId);
+	
+	  _form_confirm_email2.default.submitForm();
+	};
+	
+	var captchaForgotCallback = function captchaForgotCallback() {
+	  console.log('forgot id = ' + captchaForgotId);
+	
+	  _form_forgot2.default.submitForm();
+	};
+	
+	exports.default = {
+	  init: function init() {
+	
+	    window.captchaOnLoadCallback = function () {
+	      console.log('Капча загружена');
+	
+	      // captchaLoginId = window.grecaptcha.render(BUTTON_SUBMIT_LOGIN_ID,
+	      //   {
+	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
+	      //     'callback': captchaLoginCallback
+	      //   });
+	
+	      captchaRegisterId = window.grecaptcha.render(BUTTON_SUBMIT_REGISTER_ID, {
+	        'sitekey': window.appSettings.reCaptchaSiteKey,
+	        'callback': captchaRegisterCallback
+	      });
+	
+	      captchaEmailId = window.grecaptcha.render(BUTTON_SUBMIT_EMAIL_ID, {
+	        'sitekey': window.appSettings.reCaptchaSiteKey,
+	        'callback': captchaEmailCallback
+	      });
+	
+	      captchaForgotId = window.grecaptcha.render(BUTTON_SUBMIT_FORGOT_ID, {
+	        'sitekey': window.appSettings.reCaptchaSiteKey,
+	        'callback': captchaForgotCallback
+	      });
+	
+	      window.captchaOnLoad = true;
+	    };
+	  },
+	  getCaptcha: function getCaptcha(formId, callback) {
+	    if (window.captchaOnLoad) {
+	      return window.grecaptcha.render(formId, {
+	        'sitekey': window.appSettings.reCaptchaSiteKey,
+	        'callback': callback
+	      });
+	    }
+	    return false;
+	  }
+	};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _main_login_window = __webpack_require__(1);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _register = __webpack_require__(7);
+	var _register = __webpack_require__(8);
 	
 	var _register2 = _interopRequireDefault(_register);
 	
@@ -499,11 +623,14 @@
 	    inputFields.email.setCustomValidity('');
 	    inputFields.password.setCustomValidity('');
 	    inputFields.confirm.setCustomValidity('');
+	  },
+	  submitForm: function submitForm() {
+	    _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value, inputFields.confirm.value, registerUserAgreement.checked);
 	  }
 	};
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -520,7 +647,7 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_register = __webpack_require__(6);
+	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
@@ -635,7 +762,7 @@
 	};
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -648,7 +775,7 @@
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _confirm_email = __webpack_require__(9);
+	var _confirm_email = __webpack_require__(10);
 	
 	var _confirm_email2 = _interopRequireDefault(_confirm_email);
 	
@@ -683,11 +810,14 @@
 	  reset: function reset() {
 	    emailConfirmForm.reset();
 	    emailConfirmInputKey.setCustomValidity('');
+	  },
+	  submitForm: function submitForm() {
+	    _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
 	  }
 	};
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -700,7 +830,7 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_confirm_email = __webpack_require__(8);
+	var _form_confirm_email = __webpack_require__(9);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
@@ -769,7 +899,7 @@
 	};
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -782,7 +912,7 @@
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _forgot = __webpack_require__(11);
+	var _forgot = __webpack_require__(12);
 	
 	var _forgot2 = _interopRequireDefault(_forgot);
 	
@@ -815,11 +945,14 @@
 	  reset: function reset() {
 	    forgotForm.reset();
 	    forgotInputEmail.setCustomValidity('');
+	  },
+	  submitForm: function submitForm() {
+	    _forgot2.default.submit(forgotInputEmail.value);
 	  }
 	};
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -836,7 +969,7 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _form_forgot = __webpack_require__(10);
+	var _form_forgot = __webpack_require__(11);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
@@ -893,31 +1026,6 @@
 	    if (validateForm(email)) {
 	      submitForm(email);
 	    }
-	  }
-	};
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  init: function init() {
-	    window.captchaCallback = function () {
-	      console.log('captcha callback');
-	    }, window.captchaOnLoadCallback = function () {
-	      var loginButtonSubmit = document.querySelector('#loginButtonSubmit');
-	
-	      console.log('Капча загружена');
-	      grecaptcha.render('loginButtonSubmit', {
-	        'sitekey': '',
-	        'callback': captchaCallback
-	      });
-	    };
 	  }
 	};
 

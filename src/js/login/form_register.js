@@ -44,5 +44,10 @@ export default {
     inputFields.email.setCustomValidity('');
     inputFields.password.setCustomValidity('');
     inputFields.confirm.setCustomValidity('');
+  },
+
+  submitForm() {
+    register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value,
+      inputFields.confirm.value, registerUserAgreement.checked);
   }
 };

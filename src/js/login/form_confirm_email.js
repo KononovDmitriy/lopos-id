@@ -34,5 +34,9 @@ export default {
   reset() {
     emailConfirmForm.reset();
     emailConfirmInputKey.setCustomValidity('');
+  },
+
+  submitForm() {
+    confirmEmail.submit(emailConfirmInputKey.value, registerInputEmail.value);
   }
 };

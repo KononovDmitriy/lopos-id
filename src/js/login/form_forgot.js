@@ -32,6 +32,10 @@ export default {
   reset() {
     forgotForm.reset();
     forgotInputEmail.setCustomValidity('');
+  },
+
+  submitForm() {
+    forgot.submit(forgotInputEmail.value);
   }
 
 };

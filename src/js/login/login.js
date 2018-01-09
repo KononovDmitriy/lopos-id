@@ -6,21 +6,19 @@ const validId = window.appSettings.loginValid.id;
 const validEmail = window.appSettings.loginValid.email;
 const validPassword = window.appSettings.loginValid.password;
 
-
-// let capcha = 0;
-
 let callbackXhrSuccess = function (response) {
   console.dir(response);
+
+  form.addCaptchaCount();
+
   if (response.status === 200) {
     if (response.data.status === '0') {
       alert('Ваш пользователь заблокирован, обратитесь к администратору');
-      // сброс на страницу загрузки
     } else {
       dataStorage.data = response.data;
       // Загрузка приложения
     }
   } else {
-    // capcha++;
     // показ ошибки
     alert(response.message);
   }
@@ -103,10 +101,6 @@ export default {
 
   submit(login, password) {
 
-    // if (capcha === 3) {
-    //   form.showLoginCaptcha();
-    // }
-
     login = login.toLowerCase();
     login = login.replace(/-/g, '');
 
@@ -114,7 +108,9 @@ export default {
 
     if (valid.valid) {
       submitForm(login, password, valid.loginEmail);
+      return true;
     }
+    return false;
 
   }
 

@@ -33,5 +33,8 @@ window.appSettings = {
   confirmEmailUrlApi: 'user_boss/submit_registration',
 
   forgotUrlApi: 'user_boss/forgot',
-  forgotEmailValid: /@/
+  forgotEmailValid: /@/,
+
+  reCaptchaSiteKey: '6Lct5j8UAAAAAJkVidQhkOxmBhI9uj28IQ5-Ltp9'
+
 };

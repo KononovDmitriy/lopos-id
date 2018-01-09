@@ -3,7 +3,5 @@
 // import {test} from './test.js';
 // test();
 import mainWindow from './login/main_login_window.js';
-import captcha from './tools/captcha.js';
 
 mainWindow.firstScreen();
-captcha.init();
