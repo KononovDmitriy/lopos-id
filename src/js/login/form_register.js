@@ -40,5 +40,9 @@ export default {
 
   reset() {
     registerForm.reset();
+    inputFields.name.setCustomValidity('');
+    inputFields.email.setCustomValidity('');
+    inputFields.password.setCustomValidity('');
+    inputFields.confirm.setCustomValidity('');
   }
 };

@@ -172,6 +172,8 @@
 	  },
 	  reset: function reset() {
 	    loginForm.reset();
+	    inputFields.login.setCustomValidity('');
+	    inputFields.password.setCustomValidity('');
 	  }
 	};
 
@@ -487,6 +489,10 @@
 	  },
 	  reset: function reset() {
 	    registerForm.reset();
+	    inputFields.name.setCustomValidity('');
+	    inputFields.email.setCustomValidity('');
+	    inputFields.password.setCustomValidity('');
+	    inputFields.confirm.setCustomValidity('');
 	  }
 	};
 
@@ -670,6 +676,7 @@
 	  },
 	  reset: function reset() {
 	    emailConfirmForm.reset();
+	    emailConfirmInputKey.setCustomValidity('');
 	  }
 	};
 
@@ -801,6 +808,7 @@
 	  },
 	  reset: function reset() {
 	    forgotForm.reset();
+	    forgotInputEmail.setCustomValidity('');
 	  }
 	};
 

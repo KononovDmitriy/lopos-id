@@ -40,6 +40,8 @@ export default {
 
   reset() {
     loginForm.reset();
+    inputFields.login.setCustomValidity('');
+    inputFields.password.setCustomValidity('');
   }
 
 };

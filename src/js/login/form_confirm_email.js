@@ -33,5 +33,6 @@ export default {
 
   reset() {
     emailConfirmForm.reset();
+    emailConfirmInputKey.setCustomValidity('');
   }
 };
