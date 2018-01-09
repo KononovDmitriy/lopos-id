@@ -73,10 +73,10 @@
 			}
 		},
 		{
-			"file": "gulpfile.js",
+			"file": "src/js/tools/captcha.js",
 			"settings":
 			{
-				"buffer_size": 2382,
+				"buffer_size": 124,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -172,7 +172,9 @@
 	[
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/settings"
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools"
 	],
 	"file_history":
 	[
@@ -393,7 +395,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 132.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -401,11 +403,11 @@
 				},
 				{
 					"buffer": 1,
-					"file": "gulpfile.js",
-					"semi_transient": true,
+					"file": "src/js/tools/captcha.js",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2382,
+						"buffer_size": 124,
 						"regions":
 						{
 						},
@@ -421,12 +423,10 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 132.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -716,7 +716,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 61.0,
+	"side_bar_width": 251.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

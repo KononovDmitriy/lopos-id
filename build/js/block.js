@@ -50,12 +50,18 @@
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
+	var _captcha = __webpack_require__(12);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_main_login_window2.default.firstScreen(); // import {setXhrRequest} from './tools/xhr.js';
+	// import {setXhrRequest} from './tools/xhr.js';
 	// import {dataStorage} from './tools/storage.js';
 	// import {test} from './test.js';
 	// test();
+	_main_login_window2.default.firstScreen();
+	_captcha2.default.init();
 
 /***/ }),
 /* 1 */
@@ -887,6 +893,31 @@
 	    if (validateForm(email)) {
 	      submitForm(email);
 	    }
+	  }
+	};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  init: function init() {
+	    window.captchaCallback = function () {
+	      console.log('captcha callback');
+	    }, window.captchaOnLoadCallback = function () {
+	      var loginButtonSubmit = document.querySelector('#loginButtonSubmit');
+	
+	      console.log('Капча загружена');
+	      grecaptcha.render('loginButtonSubmit', {
+	        'sitekey': '',
+	        'callback': captchaCallback
+	      });
+	    };
 	  }
 	};
 

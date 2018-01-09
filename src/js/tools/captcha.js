@@ -1,11 +1,22 @@
-window.captchaOnLoad = function () {
-  console.log('Капча загружена');
-};
-
 
 export default {
-  captchaCallback() {
+
+  init() {
+    window.captchaCallback = function () {
+      console.log('captcha callback');
+    },
 
 
+    window.captchaOnLoadCallback = function () {
+      const loginButtonSubmit = document.querySelector('#loginButtonSubmit');
+
+      console.log('Капча загружена');
+      grecaptcha.render('loginButtonSubmit', {
+        'sitekey' : '',
+        'callback' : captchaCallback
+      });
+    };
   }
+
+
 };
