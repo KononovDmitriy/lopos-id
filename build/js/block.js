@@ -643,10 +643,6 @@
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _captcha = __webpack_require__(6);
-	
-	var _captcha2 = _interopRequireDefault(_captcha);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var regVal = window.appSettings.registerValid;

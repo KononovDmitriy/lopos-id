@@ -1,7 +1,6 @@
 import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
 import formRegister from './form_register.js';
-import captcha from './../tools/captcha.js';
 
 const regVal = window.appSettings.registerValid;
 const regUrlApi = window.appSettings.registerUrlApi;
