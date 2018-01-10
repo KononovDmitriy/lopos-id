@@ -451,7 +451,7 @@
 	      directory: sessionStorage.getItem('directory'),
 	      email: sessionStorage.getItem('email'),
 	      operatorId: sessionStorage.getItem('operatorId'),
-	      token: sessionStorage.getItem('userToken')
+	      token: sessionStorage.getItem('token')
 	    };
 	  },
 	
