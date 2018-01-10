@@ -33,17 +33,12 @@
             <label for="loginInputLogin">Введите id или email</label>
             <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите id или email">
           </div>
+          <div id="loginCaptcha" class="form-group"></div>
           <div class="form-group">
             <label for="loginInputPassword">Пароль</label>
             <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
           </div>
-          <div id="loginCaptcha" class="form-group d-none">
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">Типа капча</h5>
-              </div>
-            </div>
-          </div>
+
           <div>
             <button id='loginButtonSubmit' type="submit" class="btn btn-primary">Войти</button>
 
@@ -80,10 +75,7 @@
               <input type="password" class="form-control" id="registerInputConfirmPassword" placeholder="Confirm password">
             </div>
 
-            <div id='recaptcha' class="g-recaptcha"
-              data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW"
-              data-callback="captchaOnLoad"
-              data-size="invisible"></div>
+            <div id='registerCaptcha'></div>
 
 
             <button id='registerButtonSubmit' type="submit" class="btn btn-success g-recaptcha" data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW" data-callback='onSubmit'>Регистрация</button>
@@ -133,6 +125,9 @@
             <label for="emailConfirmInputKey">Введите ключ, полученный по электронной почте</label>
             <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key">
           </div>
+
+          <div id="emailConfirmCaptcha" class="form-group"></div>
+
           <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-success">Подтвердить</button>
           <button id='emailConfirmButtonCancel' type="button" class="btn btn-danger">Отмена</button>
         </form>
@@ -146,7 +141,10 @@
           <div class="form-group">
             <label for="emailConfirmInputKey">Введите адрес электронной почты </label>
             <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key">
+
           </div>
+
+          <div id="forgotCaptcha" class="form-group"></div>
 
           <button id='forgotButtonSubmit' type="submit" class="btn btn-success">Восстановить</button>
 

@@ -91,7 +91,7 @@
 	
 	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 	
-	console.log('v6');
+	console.log('v12');
 	
 	_captcha2.default.init();
 	
@@ -493,9 +493,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// const BUTTON_SUBMIT_LOGIN_ID = 'loginButtonSubmit';
-	var BUTTON_SUBMIT_REGISTER_ID = 'registerButtonSubmit';
-	var BUTTON_SUBMIT_EMAIL_ID = 'emailConfirmButtonSubmit';
-	var BUTTON_SUBMIT_FORGOT_ID = 'forgotButtonSubmit';
+	var LOGIN_CAPTCHA = 'loginCaptcha';
+	var REGISTER_CAPTCHA = document.querySelector('#registerCaptcha');
+	var EMAIL_CAPTCHA = 'emailConfirmCaptcha';
+	var FORGOT_CAPTCHA = 'forgotCaptcha';
 	
 	// let captchaLoginId;
 	var captchaRegisterId = void 0;
@@ -536,23 +537,30 @@
 	      //     'callback': captchaLoginCallback
 	      //   });
 	
-	      captchaRegisterId = window.grecaptcha.render(BUTTON_SUBMIT_REGISTER_ID, {
+	      captchaRegisterId = window.grecaptcha.render(REGISTER_CAPTCHA, {
+	        'size': 'invisible',
 	        'sitekey': window.appSettings.reCaptchaSiteKey,
 	        'callback': captchaRegisterCallback
+	
 	      });
 	
-	      captchaEmailId = window.grecaptcha.render(BUTTON_SUBMIT_EMAIL_ID, {
-	        'sitekey': window.appSettings.reCaptchaSiteKey,
-	        'callback': captchaEmailCallback
-	      });
+	      // captchaEmailId = window.grecaptcha.render(EMAIL_CAPTCHA,
+	      //   {
+	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
+	      //     'callback': captchaEmailCallback
+	      //   });
 	
-	      captchaForgotId = window.grecaptcha.render(BUTTON_SUBMIT_FORGOT_ID, {
-	        'sitekey': window.appSettings.reCaptchaSiteKey,
-	        'callback': captchaForgotCallback
-	      });
+	      // captchaForgotId = window.grecaptcha.render(FORGOT_CAPTCHA,
+	      //   {
+	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
+	      //     'callback': captchaForgotCallback
+	      //   });
 	
 	      window.captchaOnLoad = true;
 	    };
+	  },
+	  captchaExec: function captchaExec() {
+	    window.grecaptcha.execute(captchaRegisterId);
 	  },
 	  getCaptcha: function getCaptcha(formId, callback) {
 	    if (window.captchaOnLoad) {
@@ -650,6 +658,10 @@
 	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
+	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -756,6 +768,7 @@
 	  submit: function submit(name, email, password, confirm, userAgreement) {
 	
 	    if (validateForm(name, email, password, confirm, userAgreement)) {
+	      _captcha2.default.captchaExec();
 	      submitForm(name, email, password);
 	    }
 	  }
