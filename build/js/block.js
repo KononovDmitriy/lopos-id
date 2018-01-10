@@ -828,6 +828,10 @@
 	  reset: function reset() {
 	    emailConfirmForm.reset();
 	    emailConfirmInputKey.setCustomValidity('');
+	
+	    if (captchaId !== 'NO') {
+	      _captcha2.default.catchaReset(captchaId);
+	    }
 	  },
 	  submitForm: function submitForm() {
 	    _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
@@ -954,7 +958,7 @@
 	var captchaId = 'NO';
 	
 	var captchaCallback = function captchaCallback() {
-	  console.log('registerCallback');
+	  console.log('forgotCallback');
 	  _forgot2.default.submit(forgotInputEmail.value);
 	};
 	
@@ -990,6 +994,10 @@
 	  reset: function reset() {
 	    forgotForm.reset();
 	    forgotInputEmail.setCustomValidity('');
+	
+	    if (captchaId !== 'NO') {
+	      _captcha2.default.catchaReset(captchaId);
+	    }
 	  },
 	  submitForm: function submitForm() {
 	    _forgot2.default.submit(forgotInputEmail.value);

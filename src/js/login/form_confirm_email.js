@@ -54,6 +54,10 @@ export default {
   reset() {
     emailConfirmForm.reset();
     emailConfirmInputKey.setCustomValidity('');
+
+    if (captchaId !== 'NO') {
+      captcha.catchaReset(captchaId);
+    }
   },
 
   submitForm() {

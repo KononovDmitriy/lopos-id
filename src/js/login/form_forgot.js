@@ -12,7 +12,7 @@ const forgotCaptcha = forgotForm.querySelector('#forgotCaptcha');
 let captchaId = 'NO';
 
 let captchaCallback = function () {
-  console.log('registerCallback');
+  console.log('forgotCallback');
   forgot.submit(forgotInputEmail.value);
 
 };
@@ -55,6 +55,10 @@ export default {
   reset() {
     forgotForm.reset();
     forgotInputEmail.setCustomValidity('');
+
+    if (captchaId !== 'NO') {
+      captcha.catchaReset(captchaId);
+    }
   },
 
   submitForm() {
