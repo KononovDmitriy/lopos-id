@@ -91,7 +91,7 @@
 	
 	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 	
-	console.log('v12');
+	console.log('v27');
 	
 	_captcha2.default.init();
 	
@@ -100,7 +100,6 @@
 	});
 	
 	exports.default = {
-	  init: function init() {},
 	  firstScreen: function firstScreen() {
 	    _form_confirm_email2.default.reset();
 	    _form_register2.default.reset();
@@ -153,33 +152,45 @@
 	var loginForm = sectionLogin.querySelector('#loginForm');
 	var loginButtonRegister = loginForm.querySelector('#loginButtonRegister');
 	var loginButtonForgot = loginForm.querySelector('#loginButtonForgot');
+	var loginCaptcha = loginForm.querySelector('#loginCaptcha');
 	
 	var inputFields = {
 	  'login': loginForm.querySelector('#loginInputLogin'),
 	  'password': loginForm.querySelector('#loginInputPassword')
 	};
 	
-	var BUTTON_SUBMIT_ID = 'loginButtonSubmit';
-	
 	var captchaCount = 0;
-	var captchaId = void 0;
+	var captchaId = 'NO';
+	var userLogin = void 0;
 	
 	var captchaCallback = function captchaCallback() {
-	
-	  console.log('login catcha id = ' + captchaId);
-	  window.grecaptcha.reset(captchaId);
-	  _login2.default.submit(inputFields.login.value, inputFields.password.value);
+	  console.log('loginCallback');
+	  // captcha.catchaReset(captchaId);
+	  _login2.default.submit(userLogin, inputFields.password.value);
 	};
 	
 	loginForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
 	
-	  _login2.default.submit(inputFields.login.value, inputFields.password.value);
+	  userLogin = formatLogin(inputFields.login.value);
 	
-	  if (captchaCount >= 2 && window.captchaOnLoad) {
-	    captchaId = _captcha2.default.getCaptcha(BUTTON_SUBMIT_ID, captchaCallback);
+	  if (_login2.default.validate(userLogin, inputFields.password.value)) {
+	
+	    if (captchaId !== 'NO' && captchaCount >= 2) {
+	      console.log('captchaEXEC');
+	      _captcha2.default.captchaExec(captchaId);
+	    } else {
+	      console.log('SUBMIT');
+	      _login2.default.submit(userLogin, inputFields.password.value);
+	    }
 	  }
 	});
+	
+	var formatLogin = function formatLogin(userlogin) {
+	  userlogin = userlogin.toLowerCase();
+	  userlogin = userlogin.replace(/-/g, '');
+	  return userlogin;
+	};
 	
 	loginButtonRegister.addEventListener('click', function () {
 	  _main_login_window2.default.register();
@@ -203,9 +214,17 @@
 	    loginForm.reset();
 	    inputFields.login.setCustomValidity('');
 	    inputFields.password.setCustomValidity('');
+	
+	    if (captchaId !== 'NO') {
+	      _captcha2.default.catchaReset(captchaId);
+	    }
 	  },
 	  addCaptchaCount: function addCaptchaCount() {
 	    captchaCount++;
+	  },
+	  setCaptcha: function setCaptcha() {
+	    captchaId = _captcha2.default.getCaptcha(loginCaptcha, captchaCallback);
+	    console.log('setCaptcha id = ' + captchaId);
 	  }
 	};
 
@@ -287,14 +306,6 @@
 	  };
 	};
 	
-	var submitForm = function submitForm(userLogin, userPassword, isEmail) {
-	  if (isEmail) {
-	    _xhr2.default.request = getRequestDataEmail(userLogin, userPassword);
-	  } else {
-	    _xhr2.default.request = getRequestDataId(userLogin, userPassword);
-	  }
-	};
-	
 	var validateData = function validateData(template, data) {
 	
 	  if (template.test(data)) {
@@ -306,40 +317,37 @@
 	
 	var validateForm = function validateForm(userLogin, userPassword) {
 	
-	  var valid = {
-	    valid: true,
-	    loginEmail: true
-	  };
+	  var valid = true;
 	
 	  if (!validateData(validEmail, userLogin)) {
-	    valid.loginEmail = false;
 	    if (!validateData(validId, userLogin)) {
-	      valid.valid = false;
+	      valid = false;
 	      _form_login2.default.setError('login', 'Неверный формат логина');
 	    }
 	  }
 	
 	  if (!validateData(validPassword, userPassword)) {
-	    valid.valid = false;
+	    valid = false;
 	    _form_login2.default.setError('password', 'Пароль должен быть длиннее 3-х символов');
 	  }
 	
 	  return valid;
 	};
 	
+	var submitForm = function submitForm(userLogin, userPassword, isEmail) {
+	  if (validateData(validEmail, userLogin)) {
+	    _xhr2.default.request = getRequestDataEmail(userLogin, userPassword);
+	  } else {
+	    _xhr2.default.request = getRequestDataId(userLogin, userPassword);
+	  }
+	};
+	
 	exports.default = {
 	  submit: function submit(login, password) {
-	
-	    login = login.toLowerCase();
-	    login = login.replace(/-/g, '');
-	
-	    var valid = validateForm(login, password);
-	
-	    if (valid.valid) {
-	      submitForm(login, password, valid.loginEmail);
-	      return true;
-	    }
-	    return false;
+	    submitForm(login, password);
+	  },
+	  validate: function validate(login, password) {
+	    return validateForm(login, password);
 	  }
 	};
 
@@ -474,13 +482,13 @@
 	  value: true
 	});
 	
-	var _form_login = __webpack_require__(2);
-	
-	var _form_login2 = _interopRequireDefault(_form_login);
-	
 	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
+	
+	var _form_login = __webpack_require__(2);
+	
+	var _form_login2 = _interopRequireDefault(_form_login);
 	
 	var _form_confirm_email = __webpack_require__(9);
 	
@@ -492,84 +500,31 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// const BUTTON_SUBMIT_LOGIN_ID = 'loginButtonSubmit';
-	var LOGIN_CAPTCHA = 'loginCaptcha';
-	var REGISTER_CAPTCHA = document.querySelector('#registerCaptcha');
-	var EMAIL_CAPTCHA = 'emailConfirmCaptcha';
-	var FORGOT_CAPTCHA = 'forgotCaptcha';
-	
-	// let captchaLoginId;
-	var captchaRegisterId = void 0;
-	var captchaEmailId = void 0;
-	var captchaForgotId = void 0;
-	
-	// let captchaLoginCallback = function () {
-	
-	// };
-	
-	var captchaRegisterCallback = function captchaRegisterCallback() {
-	  console.log('register id = ' + captchaRegisterId);
-	
-	  _form_register2.default.submitForm();
-	};
-	
-	var captchaEmailCallback = function captchaEmailCallback() {
-	  console.log('email id = ' + captchaEmailId);
-	
-	  _form_confirm_email2.default.submitForm();
-	};
-	
-	var captchaForgotCallback = function captchaForgotCallback() {
-	  console.log('forgot id = ' + captchaForgotId);
-	
-	  _form_forgot2.default.submitForm();
-	};
-	
 	exports.default = {
 	  init: function init() {
-	
 	    window.captchaOnLoadCallback = function () {
 	      console.log('Капча загружена');
-	
-	      // captchaLoginId = window.grecaptcha.render(BUTTON_SUBMIT_LOGIN_ID,
-	      //   {
-	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
-	      //     'callback': captchaLoginCallback
-	      //   });
-	
-	      captchaRegisterId = window.grecaptcha.render(REGISTER_CAPTCHA, {
-	        'size': 'invisible',
-	        'sitekey': window.appSettings.reCaptchaSiteKey,
-	        'callback': captchaRegisterCallback
-	
-	      });
-	
-	      // captchaEmailId = window.grecaptcha.render(EMAIL_CAPTCHA,
-	      //   {
-	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
-	      //     'callback': captchaEmailCallback
-	      //   });
-	
-	      // captchaForgotId = window.grecaptcha.render(FORGOT_CAPTCHA,
-	      //   {
-	      //     'sitekey': window.appSettings.reCaptchaSiteKey,
-	      //     'callback': captchaForgotCallback
-	      //   });
-	
 	      window.captchaOnLoad = true;
+	
+	      _form_login2.default.setCaptcha();
+	      _form_register2.default.setCaptcha();
+	      _form_confirm_email2.default.setCaptcha();
+	      _form_forgot2.default.setCaptcha();
 	    };
 	  },
-	  captchaExec: function captchaExec() {
-	    window.grecaptcha.execute(captchaRegisterId);
+	  captchaExec: function captchaExec(captchaId) {
+	    window.grecaptcha.execute(captchaId);
+	    console.log('капча выполнена');
 	  },
-	  getCaptcha: function getCaptcha(formId, callback) {
-	    if (window.captchaOnLoad) {
-	      return window.grecaptcha.render(formId, {
-	        'sitekey': window.appSettings.reCaptchaSiteKey,
-	        'callback': callback
-	      });
-	    }
-	    return false;
+	  catchaReset: function catchaReset(captchaId) {
+	    window.grecaptcha.reset(captchaId);
+	  },
+	  getCaptcha: function getCaptcha(elementId, callback) {
+	    return window.grecaptcha.render(elementId, {
+	      'size': 'invisible',
+	      'sitekey': window.appSettings.reCaptchaSiteKey,
+	      'callback': callback
+	    });
 	  }
 	};
 
@@ -591,12 +546,17 @@
 	
 	var _register2 = _interopRequireDefault(_register);
 	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var sectionRegister = document.querySelector('#sectionRegister');
 	var registerForm = sectionRegister.querySelector('#registerForm');
 	var registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
 	var registerUserAgreement = document.querySelector('#registerUserAgreement');
+	var registerCaptcha = sectionRegister.querySelector('#registerCaptcha');
 	
 	var inputFields = {
 	  'name': registerForm.querySelector('#registerInputName'),
@@ -605,10 +565,26 @@
 	  'confirm': registerForm.querySelector('#registerInputConfirmPassword')
 	};
 	
+	var captchaId = 'NO';
+	
+	var captchaCallback = function captchaCallback() {
+	  console.log('registerCallback');
+	  _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+	};
+	
 	registerForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
 	
-	  _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value, inputFields.confirm.value, registerUserAgreement.checked);
+	  if (_register2.default.validate(inputFields.name.value, inputFields.email.value, inputFields.password.value, inputFields.confirm.value, registerUserAgreement.checked)) {
+	
+	    if (captchaId !== 'NO') {
+	      console.log('captchaEXEC');
+	      _captcha2.default.captchaExec(captchaId);
+	    } else {
+	      console.log('SUBMIT');
+	      _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+	    }
+	  }
 	});
 	
 	registerButtonCancel.addEventListener('click', function () {
@@ -631,9 +607,17 @@
 	    inputFields.email.setCustomValidity('');
 	    inputFields.password.setCustomValidity('');
 	    inputFields.confirm.setCustomValidity('');
+	
+	    if (captchaId !== 'NO') {
+	      _captcha2.default.catchaReset(captchaId);
+	    }
 	  },
 	  submitForm: function submitForm() {
 	    _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value, inputFields.confirm.value, registerUserAgreement.checked);
+	  },
+	  setCaptcha: function setCaptcha() {
+	    captchaId = _captcha2.default.getCaptcha(registerCaptcha, captchaCallback);
+	    console.log('setCaptcha id = ' + captchaId);
 	  }
 	};
 
@@ -765,12 +749,11 @@
 	};
 	
 	exports.default = {
-	  submit: function submit(name, email, password, confirm, userAgreement) {
-	
-	    if (validateForm(name, email, password, confirm, userAgreement)) {
-	      _captcha2.default.captchaExec();
-	      submitForm(name, email, password);
-	    }
+	  submit: function submit(name, email, password) {
+	    submitForm(name, email, password);
+	  },
+	  validate: function validate(name, email, password, confirm, userAgreement) {
+	    return validateForm(name, email, password, confirm, userAgreement);
 	  }
 	};
 
@@ -792,18 +775,40 @@
 	
 	var _confirm_email2 = _interopRequireDefault(_confirm_email);
 	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var sectionConfirmEmail = document.querySelector('#sectionConfirmEmail');
 	var emailConfirmForm = sectionConfirmEmail.querySelector('#emailConfirmForm');
 	var emailConfirmInputKey = emailConfirmForm.querySelector('#emailConfirmInputKey');
 	var emailConfirmButtonCancel = emailConfirmForm.querySelector('#emailConfirmButtonCancel');
+	var emailConfirmCaptcha = sectionConfirmEmail.querySelector('#emailConfirmCaptcha');
 	
 	var registerInputEmail = document.querySelector('#registerInputEmail');
 	
+	var captchaId = 'NO';
+	
+	var captchaCallback = function captchaCallback() {
+	  console.log('registerCallback');
+	  _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
+	};
+	
 	emailConfirmForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
-	  _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
+	
+	  if (_confirm_email2.default.validate(emailConfirmInputKey.value)) {
+	
+	    if (captchaId !== 'NO') {
+	      console.log('captchaEXEC');
+	      _captcha2.default.captchaExec(captchaId);
+	    } else {
+	      console.log('SUBMIT');
+	      _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
+	    }
+	  }
 	});
 	
 	emailConfirmButtonCancel.addEventListener('click', function () {
@@ -826,6 +831,10 @@
 	  },
 	  submitForm: function submitForm() {
 	    _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
+	  },
+	  setCaptcha: function setCaptcha() {
+	    captchaId = _captcha2.default.getCaptcha(emailConfirmCaptcha, captchaCallback);
+	    console.log('setCaptcha id = ' + captchaId);
 	  }
 	};
 
@@ -904,10 +913,10 @@
 	
 	exports.default = {
 	  submit: function submit(kod, email) {
-	
-	    if (validateForm(kod)) {
-	      submitForm(kod, email);
-	    }
+	    submitForm(kod, email);
+	  },
+	  validate: function validate(kod) {
+	    return validateForm(kod);
 	  }
 	};
 
@@ -929,6 +938,10 @@
 	
 	var _forgot2 = _interopRequireDefault(_forgot);
 	
+	var _captcha = __webpack_require__(6);
+	
+	var _captcha2 = _interopRequireDefault(_captcha);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var sectionForgot = document.querySelector('#sectionForgot');
@@ -936,9 +949,28 @@
 	var forgotInputEmail = forgotForm.querySelector('#forgotInputEmail');
 	var forgotButtonCancel = forgotForm.querySelector('#forgotButtonCancel');
 	
+	var forgotCaptcha = forgotForm.querySelector('#forgotCaptcha');
+	
+	var captchaId = 'NO';
+	
+	var captchaCallback = function captchaCallback() {
+	  console.log('registerCallback');
+	  _forgot2.default.submit(forgotInputEmail.value);
+	};
+	
 	forgotForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
-	  _forgot2.default.submit(forgotInputEmail.value);
+	
+	  if (_forgot2.default.validate(forgotInputEmail.value)) {
+	
+	    if (captchaId !== 'NO') {
+	      console.log('captchaEXEC');
+	      _captcha2.default.captchaExec(captchaId);
+	    } else {
+	      console.log('SUBMIT');
+	      _forgot2.default.submit(forgotInputEmail.value);
+	    }
+	  }
 	});
 	
 	forgotButtonCancel.addEventListener('click', function () {
@@ -961,6 +993,10 @@
 	  },
 	  submitForm: function submitForm() {
 	    _forgot2.default.submit(forgotInputEmail.value);
+	  },
+	  setCaptcha: function setCaptcha() {
+	    captchaId = _captcha2.default.getCaptcha(forgotCaptcha, captchaCallback);
+	    console.log('setCaptcha id = ' + captchaId);
 	  }
 	};
 
@@ -1035,10 +1071,10 @@
 	
 	exports.default = {
 	  submit: function submit(email) {
-	
-	    if (validateForm(email)) {
-	      submitForm(email);
-	    }
+	    submitForm(email);
+	  },
+	  validate: function validate(email) {
+	    return validateForm(email);
 	  }
 	};
 

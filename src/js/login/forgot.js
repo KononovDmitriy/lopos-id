@@ -50,10 +50,10 @@ let submitForm = function (email) {
 
 export default {
   submit(email) {
+    submitForm(email);
+  },
 
-    if (validateForm(email)) {
-      submitForm(email);
-    }
-
+  validate(email) {
+    return validateForm(email);
   }
 };

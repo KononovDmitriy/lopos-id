@@ -56,15 +56,6 @@ let getRequestDataId = function (userLogin, userPassword) {
   };
 };
 
-let submitForm = function (userLogin, userPassword, isEmail) {
-  if (isEmail) {
-    xhr.request = getRequestDataEmail(userLogin, userPassword);
-  } else {
-    xhr.request = getRequestDataId(userLogin, userPassword);
-  }
-
-};
-
 let validateData = function (template, data) {
 
   if (template.test(data)) {
@@ -76,42 +67,40 @@ let validateData = function (template, data) {
 
 let validateForm = function (userLogin, userPassword) {
 
-  let valid = {
-    valid: true,
-    loginEmail: true
-  };
+  let valid = true;
 
   if (!validateData(validEmail, userLogin)) {
-    valid.loginEmail = false;
     if (!validateData(validId, userLogin)) {
-      valid.valid = false;
+      valid = false;
       form.setError('login', 'Неверный формат логина');
     }
   }
 
   if (!validateData(validPassword, userPassword)) {
-    valid.valid = false;
+    valid = false;
     form.setError('password', 'Пароль должен быть длиннее 3-х символов');
   }
 
   return valid;
 };
 
+let submitForm = function (userLogin, userPassword, isEmail) {
+  if (validateData(validEmail, userLogin)) {
+    xhr.request = getRequestDataEmail(userLogin, userPassword);
+  } else {
+    xhr.request = getRequestDataId(userLogin, userPassword);
+  }
+
+};
+
 export default {
 
   submit(login, password) {
+    submitForm(login, password);
+  },
 
-    login = login.toLowerCase();
-    login = login.replace(/-/g, '');
-
-    let valid = validateForm(login, password);
-
-    if (valid.valid) {
-      submitForm(login, password, valid.loginEmail);
-      return true;
-    }
-    return false;
-
+  validate(login, password) {
+    return validateForm(login, password);
   }
 
 };

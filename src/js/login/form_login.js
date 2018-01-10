@@ -6,34 +6,46 @@ const sectionLogin = document.querySelector('#sectionLogin');
 const loginForm = sectionLogin.querySelector('#loginForm');
 const loginButtonRegister = loginForm.querySelector('#loginButtonRegister');
 const loginButtonForgot = loginForm.querySelector('#loginButtonForgot');
+const loginCaptcha = loginForm.querySelector('#loginCaptcha');
 
 const inputFields = {
   'login': loginForm.querySelector('#loginInputLogin'),
   'password': loginForm.querySelector('#loginInputPassword')
 };
 
-const BUTTON_SUBMIT_ID = 'loginButtonSubmit';
-
 let captchaCount = 0;
-let captchaId;
+let captchaId = 'NO';
+let userLogin;
 
 let captchaCallback = function () {
+  console.log('loginCallback');
+  // captcha.catchaReset(captchaId);
+  login.submit(userLogin, inputFields.password.value);
 
-  console.log('login catcha id = ' + captchaId);
-  window.grecaptcha.reset(captchaId);
-  login.submit(inputFields.login.value, inputFields.password.value);
 };
 
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  login.submit(inputFields.login.value, inputFields.password.value);
+  userLogin = formatLogin(inputFields.login.value);
 
-  if (captchaCount >= 2 && window.captchaOnLoad) {
-    captchaId = captcha.getCaptcha(BUTTON_SUBMIT_ID, captchaCallback);
+  if (login.validate(userLogin, inputFields.password.value)) {
+
+    if (captchaId !== 'NO' && captchaCount >= 2) {
+      console.log('captchaEXEC');
+      captcha.captchaExec(captchaId);
+    } else {
+      console.log('SUBMIT');
+      login.submit(userLogin, inputFields.password.value);
+    }
   }
-
 });
+
+let formatLogin = function (userlogin) {
+  userlogin = userlogin.toLowerCase();
+  userlogin = userlogin.replace(/-/g, '');
+  return userlogin;
+};
 
 loginButtonRegister.addEventListener('click', function () {
   mainWindow.register();
@@ -61,9 +73,18 @@ export default {
     loginForm.reset();
     inputFields.login.setCustomValidity('');
     inputFields.password.setCustomValidity('');
+
+    if (captchaId !== 'NO') {
+      captcha.catchaReset(captchaId);
+    }
   },
 
   addCaptchaCount() {
     captchaCount++;
-  }
+  },
+
+  setCaptcha() {
+    captchaId = captcha.getCaptcha(loginCaptcha, captchaCallback);
+    console.log('setCaptcha id = ' + captchaId);
+  },
 };

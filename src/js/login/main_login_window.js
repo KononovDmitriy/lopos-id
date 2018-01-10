@@ -6,7 +6,7 @@ import captcha from './../tools/captcha.js';
 
 const sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 
-console.log('v6');
+console.log('v27');
 
 captcha.init();
 
@@ -15,9 +15,6 @@ sectionLoginFormMain.addEventListener('change', function (event) {
 });
 
 export default {
-  init() {
-
-  },
 
   firstScreen() {
     formConfirmEmail.reset();

@@ -55,10 +55,10 @@ let submitForm = function (kod, email) {
 
 export default {
   submit(kod, email) {
+    submitForm(kod, email);
+  },
 
-    if (validateForm(kod)) {
-      submitForm(kod, email);
-    }
-
+  validate(kod) {
+    return validateForm(kod);
   }
 };

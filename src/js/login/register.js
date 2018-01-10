@@ -1,6 +1,7 @@
 import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
 import formRegister from './form_register.js';
+import captcha from './../tools/captcha.js';
 
 const regVal = window.appSettings.registerValid;
 const regUrlApi = window.appSettings.registerUrlApi;
@@ -107,10 +108,13 @@ let submitForm = function (name, email, password) {
 
 
 export default {
-  submit(name, email, password, confirm, userAgreement) {
 
-    if (validateForm(name, email, password, confirm, userAgreement)) {
-      submitForm(name, email, password);
-    }
+  submit(name, email, password) {
+    submitForm(name, email, password);
+  },
+
+  validate(name, email, password, confirm, userAgreement) {
+    return validateForm(name, email, password, confirm, userAgreement);
   }
+
 };

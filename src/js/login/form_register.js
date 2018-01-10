@@ -1,10 +1,12 @@
 import mainWindow from './main_login_window.js';
 import register from './register.js';
+import captcha from './../tools/captcha.js';
 
 const sectionRegister = document.querySelector('#sectionRegister');
 const registerForm = sectionRegister.querySelector('#registerForm');
 const registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
 const registerUserAgreement = document.querySelector('#registerUserAgreement');
+const registerCaptcha = sectionRegister.querySelector('#registerCaptcha');
 
 const inputFields = {
   'name': registerForm.querySelector('#registerInputName'),
@@ -13,11 +15,30 @@ const inputFields = {
   'confirm': registerForm.querySelector('#registerInputConfirmPassword')
 };
 
+let captchaId = 'NO';
+
+let captchaCallback = function () {
+  console.log('registerCallback');
+  register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+
+};
+
 registerForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value,
-    inputFields.confirm.value, registerUserAgreement.checked);
+  if (register.validate(inputFields.name.value, inputFields.email.value, inputFields.password.value,
+    inputFields.confirm.value, registerUserAgreement.checked)) {
+
+    if (captchaId !== 'NO') {
+      console.log('captchaEXEC');
+      captcha.captchaExec(captchaId);
+    } else {
+      console.log('SUBMIT');
+      register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+    }
+
+  }
+
 });
 
 registerButtonCancel.addEventListener('click', function () {
@@ -44,10 +65,19 @@ export default {
     inputFields.email.setCustomValidity('');
     inputFields.password.setCustomValidity('');
     inputFields.confirm.setCustomValidity('');
+
+    if (captchaId !== 'NO') {
+      captcha.catchaReset(captchaId);
+    }
   },
 
   submitForm() {
     register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value,
       inputFields.confirm.value, registerUserAgreement.checked);
-  }
+  },
+
+  setCaptcha() {
+    captchaId = captcha.getCaptcha(registerCaptcha, captchaCallback);
+    console.log('setCaptcha id = ' + captchaId);
+  },
 };
