@@ -44,7 +44,7 @@ registerForm.addEventListener('submit', function (event) {
 });
 
 registerButtonCancel.addEventListener('click', function () {
-  mainWindow.init();
+  mainWindow.firstScreen();
 });
 
 export default {

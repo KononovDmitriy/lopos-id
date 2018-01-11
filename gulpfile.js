@@ -11,7 +11,7 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const mqpacker = require('css-mqpacker');
 
-// 2. Задача для сборки build/style.css из sass-файлов, которые подключены в т.н. "диспетчере подключений" style.scss директивой @import,
+// 1. Задача для сборки build/style.css из sass-файлов, которые подключены в т.н. "диспетчере подключений" style.scss директивой @import,
 
 gulp.task('style', function () {
   gulp.src('src/sass/style.scss')
@@ -36,15 +36,14 @@ gulp.task('style', function () {
     .pipe(server.stream());
 });
 
-// 3. Копирование html-файлов из ./scr в ./build
+// 2. Копирование html-файлов из ./scr в ./build
 
 gulp.task('html', ['init'], function () {
   gulp.src('src/**/*.html')
-    // .pipe(gulp.dest('build/'))
     .pipe(server.stream());
 });
 
-// 4. Запуск WEB-сервера
+// 3. Запуск WEB-сервера
 
 gulp.task('server', [/* 'html', */'style', 'script'], function () {
   server.init({
@@ -57,7 +56,7 @@ gulp.task('server', [/* 'html', */'style', 'script'], function () {
   gulp.watch('src/js/**/*.js', ['script']);
 });
 
-// 5. Копирование, сборка и транспайлинг ES6-кода
+// 4. Копирование, сборка и транспайлинг ES6-кода
 
 
 gulp.task('script', function () {
@@ -74,7 +73,7 @@ gulp.task('script', function () {
         ]
       },
       output: {
-        filename: 'block.js'
+        filename: 'script.js'
       }
     })
   )
@@ -84,7 +83,7 @@ gulp.task('script', function () {
 
 gulp.task('clear', () => del('./build'));
 
-// 6. Упорядочивание задач для перезапуска сервера "на лету"
+// 5. Упорядочивание задач для перезапуска сервера "на лету"
 
 // Копирование КОНТЕНТА(html + избражения) и ВНЕШНИХ БИБЛИОТЕК из ./scr в ./build на старте
 
@@ -93,4 +92,6 @@ gulp.task('init', function () {
     .pipe(gulp.dest('build/'));
   gulp.src('src/js-external/**/*.js')
     .pipe(gulp.dest('build/js/'));
+  gulp.src('src/fonts/**/*.woff')
+    .pipe(gulp.dest('build/fonts/'));
 });

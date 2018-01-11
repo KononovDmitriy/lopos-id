@@ -13,7 +13,7 @@ let callbackXhrSuccess = function (response) {
       // сброс на страницу загрузки
     } else {
       dataStorage.data = response.data;
-      document.dispatchEvent(new Event('loginSuccess'));
+    // Загрузка приложения
     }
   } else {
     // показ ошибки

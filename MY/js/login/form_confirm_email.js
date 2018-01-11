@@ -30,14 +30,13 @@ emailConfirmForm.addEventListener('submit', function (event) {
       captcha.captchaExec(captchaId);
     } else {
       confirmEmail.submit(emailConfirmInputKey.value, registerInputEmail.value);
-      mainWindow.init();
     }
 
   }
 });
 
 emailConfirmButtonCancel.addEventListener('click', function () {
-  mainWindow.init();
+  mainWindow.firstScreen();
 });
 
 export default {

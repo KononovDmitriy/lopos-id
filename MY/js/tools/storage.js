@@ -2,6 +2,7 @@ export default {
 
   // заполняем хранилище
   set data(loadedData) {
+    console.log(loadedData);
     sessionStorage.setItem('nickname', loadedData.nickname);
     sessionStorage.setItem('lastLogin', loadedData.lastLogin);
     sessionStorage.setItem('email', loadedData.email);

@@ -1,187 +1,341 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <title>lopos tutorial</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="ru">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<head>
+  <title>Lopos</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  </head>
-  <body>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="style/style.css">
 
+</head>
 
-  <header>
-    <div class="container-fluid">
-      <div class="jumbotron text-center">
-        <h1 class="display-3">Lopos Tutorial</h1>
-        <p class="lead">Демонстрация.</p>
-        <hr class="my-4">
+<body>
+
+  <div id="login" class="container-fluid mx-auto d-none" style="min-height: 920px;">
+    <header>
+      <div class="container-fluid text-center" style="max-width: 27rem">
+        <img src="./img/sk1024_v6_unvisible.png" class="img-fluid rounded" style="max-width: 100%" alt="...">
       </div>
-    </div>
-  </header>
+    </header>
 
-  <section id = 'sectionLoginFormMain'>
+    <section id='sectionLoginFormMain'>
 
-    <section id="sectionLogin" class="">
-      <div class="container-fluid">
-        <h3 class="text-center text-primary">Вход</h3>
-        <form id=loginForm class="w-25 mx-auto">
-          <div class="form-group">
-            <label for="loginInputLogin">Введите id или email</label>
-            <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите id или email">
-          </div>
+      <section id="sectionLogin" class="">
+        <div class="container-fluid">
+          <h3 class="text-center text-primary">Вход</h3>
+          <form id=loginForm class="mx-auto" style="max-width: 400px;">
+            <div class="form-group">
+              <label for="loginInputLogin">Введите id или email</label>
+              <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите id или email">
+            </div>
 
-          <div id='loginCaptcha'></div>
+            <div id='loginCaptcha'></div>
 
-          <div class="form-group">
-            <label for="loginInputPassword">Пароль</label>
-            <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
-          </div>
-
-
-
-          <div>
-            <button id='loginButtonSubmit' type="submit" class="btn btn-primary">Войти</button>
+            <div class="form-group">
+              <label for="loginInputPassword">Пароль</label>
+              <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
+            </div>
 
             <div>
-              <button id='loginButtonForgot' type="button" class="btn btn-link">Забыли пароль?</button>
+              <button id='loginButtonSubmit' type="submit" class="btn btn-primary w-100">Войти</button>
+
+              <div>
+                <button id='loginButtonForgot' type="button" class="btn btn-link">Забыли пароль?</button>
+              </div>
+
             </div>
-
-          </div>
-          <button id='loginButtonRegister' type="button" class="btn btn-link mt-5">Регистрация нового пользователя</button>
-        </form>
-      </div>
-    </section>
-
-    <section id="sectionRegister" class="d-none">
-      <div class="container-fluid">
-
-        <article>
-          <h3 class="text-center text-primary">Регистрация нового пользователя</h3>
-          <form id="registerForm" class="w-25 mx-auto">
-            <div class="form-group">
-              <label for="registerInputName">Введите имя ваше имя</label>
-              <input class="form-control" type="text" id="registerInputName" placeholder="Enter name">
-            </div>
-            <div class="form-group">
-              <label for="registerInputEmail">Введите адрес вашей электронной почты</label>
-               <input type="email" class="form-control" id="registerInputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-              <label for="registerInputPassword">Введите пароль</label>
-              <input type="password" class="form-control" id="registerInputPassword" placeholder="Password">
-            </div>
-            <div class="form-group">
-              <label for="registerInputConfirmPassword">Повторите пароль</label>
-              <input type="password" class="form-control" id="registerInputConfirmPassword" placeholder="Confirm password">
-            </div>
-
-            <div id='registerCaptcha'></div>
-
-
-            <button id='registerButtonSubmit' type="submit" class="btn btn-success g-recaptcha" data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW" data-callback='onSubmit'>Регистрация</button>
-            <button id="registerButtonCancel" type="button" class="btn btn-danger">Отмена</button>
+            <button id='loginButtonRegister' type="button" class="btn btn-link">Регистрация нового пользователя</button>
           </form>
-        </article>
+        </div>
+      </section>
 
-        <article>
-          <!-- Button trigger modal -->
-          <div class="input-group w-25 mx-auto mt-5">
-            <span class="pt-2">
+      <section id="sectionRegister" class="d-none">
+        <div class="container-fluid">
+
+          <article>
+            <h3 class="text-center text-primary">Регистрация нового пользователя</h3>
+            <form id="registerForm" class="mx-auto" style="max-width: 27rem">
+              <div class="form-group">
+                <label for="registerInputName">Введите имя ваше имя</label>
+                <input class="form-control" type="text" id="registerInputName" placeholder="Enter name">
+              </div>
+              <div class="form-group">
+                <label for="registerInputEmail">Введите адрес вашей электронной почты</label>
+                <input type="email" class="form-control" id="registerInputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="registerInputPassword">Введите пароль</label>
+                <input type="password" class="form-control" id="registerInputPassword" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label for="registerInputConfirmPassword">Повторите пароль</label>
+                <input type="password" class="form-control" id="registerInputConfirmPassword" placeholder="Confirm password">
+              </div>
+
+              <div id='registerCaptcha'></div>
+
+
+              <button id='registerButtonSubmit' type="submit" class="btn btn-success g-recaptcha" data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW" data-callback='onSubmit'>Регистрация</button>
+              <button id="registerButtonCancel" type="button" class="btn btn-danger">Отмена</button>
+            </form>
+          </article>
+
+          <article>
+            <!-- Button trigger modal -->
+            <div class="input-group mx-auto mt-5" style="max-width: 27rem">
+              <span class="pt-2">
               <input type="checkbox" id='registerUserAgreement' aria-label="Установите для согласия с пользовательским соглашением">
             </span>
-            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">
+              <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">
               Принимаю соглашение пользователя
             </button>
-          </div>
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Соглашение пользователя</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Соглашение пользователя</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                </div>
-                <div class="modal-body">
-                  БЛА-БЛА-БЛА и все такое
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                  </div>
+                  <div class="modal-body">
+                    БЛА-БЛА-БЛА и все такое
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                  </div>
                 </div>
               </div>
             </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section id="sectionConfirmEmail" class="d-none">
+        <div class="container-fluid" style="max-width: 27rem">
+          <h3 class="text-center text-primary">Подтверждение адреса электронной почты</h3>
+          <form id='emailConfirmForm' class="mx-auto" style="max-width: 27rem">
+            <div class="form-group">
+              <label for="emailConfirmInputKey">Введите ключ, полученный по электронной почте</label>
+              <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key">
+            </div>
+
+            <div id="emailConfirmCaptcha" class="form-group"></div>
+
+            <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-success">Подтвердить</button>
+            <button id='emailConfirmButtonCancel' type="button" class="btn btn-danger">Отмена</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="sectionForgot" class="d-none mx-auto" style="max-width: 27rem">
+        <div class="container-fluid">
+          <h3 class="text-center text-primary">Восстановление пароля</h3>
+          <form id='forgotForm' class="mx-auto" style="max-width: 27rem">
+            <div class="form-group">
+              <label for="emailConfirmInputKey">Введите адрес электронной почты </label>
+              <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key">
+            </div>
+
+            <div id="forgotCaptcha" class="form-group"></div>
+
+            <div class="d-flex justify-content-between">
+              <button id='forgotButtonSubmit' type="submit" class="btn btn-success">Восстановить</button>
+              <button id='forgotButtonCancel' type="button" class="btn btn-danger">Отмена</button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+    </section>
+  </div>
+
+  <div id="app" class="container mt-3 mb-5 d-none"  style="min-height: 920px;">
+
+    <div>
+
+      <!--МЕНЮ (КНОПКИ)-->
+      <nav class="d-flex flex-wrap">
+
+        <ul class="nav nav-tabs" id="list-tab" role="tablist">
+
+          <!--Операции-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="list-operations-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="operations">Операции</a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="list-receipt-list" data-toggle="list" href="#list-receipt" role="tab" aria-controls="receipt">Поступление</a>
+              <a class="dropdown-item" id="list-sell-list" data-toggle="list" href="#list-sell" role="tab" aria-controls="sell">Продажа</a>
+              <a class="dropdown-item" id="list-balance-list" data-toggle="list" href="#list-balance" role="tab" aria-controls="balance">Балансовые операции</a>
+              <a class="dropdown-item" id="list-manufacture-list" data-toggle="list" href="#list-manufacture" role="tab" aria-controls="manufacture">Производство</a>
+            </div>
+
+          </li>
+
+          <!--Каталог-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="list-catalog-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="catalog">Каталог</a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="list-showcase-list" data-toggle="list" href="#list-showcase" role="tab" aria-controls="showcase">Витрина товаров</a>
+              <a class="dropdown-item" id="list-groups-list" data-toggle="list" href="#list-groups" role="tab" aria-controls="groups">Группы товаров</a>
+              <a class="dropdown-item" id="list-cards-list" data-toggle="list" href="#list-cards" role="tab" aria-controls="cards">Производственные карточки</a>
+            </div>
+
+          </li>
+
+          <!--Учет-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="list-accounting-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="accounting">Учет</a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="list-docs-list" data-toggle="list" href="#list-docs" role="tab" aria-controls="docs">Все документы</a>
+              <a class="dropdown-item" id="list-reports-list" data-toggle="list" href="#list-reports" role="tab" aria-controls="reports">Отчеты и аналитика</a>
+            </div>
+
+          </li>
+
+          <!--Справочники-->
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="list-reference-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="reference">Справочники</a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="list-supplier-list" data-toggle="list" href="#list-supplier" role="tab" aria-controls="supplier">Поставщики</a>
+              <a class="dropdown-item" id="list-buyer-list" data-toggle="list" href="#list-buyer" role="tab" aria-controls="buyer">Покупатели</a>
+              <a class="dropdown-item" id="list-points-list" data-toggle="list" href="#list-points" role="tab" aria-controls="points">Точки продаж</a>
+              <a class="dropdown-item" id="list-keywords-list" data-toggle="list" href="#list-keywords" role="tab" aria-controls="keywords">Ключевые слова</a>
+              <a class="dropdown-item" id="list-enterprises-list" data-toggle="list" href="#list-enterprises" role="tab" aria-controls="enterprises">Предприятия</a>
+            </div>
+
+          </li>
+
+          <!--Журнал операций-->
+          <li class="nav-item">
+            <a class="nav-link" id="list-log-list" data-toggle="list" href="#list-log" role="tab" aria-controls="log">Журнал операций</a>
+          </li>
+
+          <!--Онлайн-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="list-online-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="online">Онлайн</a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Профиль</a>
+              <a class="dropdown-item" id="list-users-list" data-toggle="list" href="#list-users" role="tab" aria-controls="users">Пользователи</a>
+              <a class="dropdown-item" id="list-setup-list" data-toggle="list" href="#list-setup" role="tab" aria-controls="setup">Настройка</a>
+            </div>
+          </li>
+        </ul>
+        <button type="button" id="profile-exit" class="btn btn-danger  ml-auto p-2">Выйти</button>
+      </nav>
+
+      <!--МЕНЮ (КОНТЕЙНЕРЫ)-->
+      <div class="tab-content mt-3" id="nav-tabContent">
+
+
+        <!--ОПЕРАЦИИ-->
+        <div class="tab-pane fade" id="list-operations" role="tabpanel" aria-labelledby="list-operations-list">
+          <p>ОПЕРАЦИИ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-receipt" role="tabpanel" aria-labelledby="list-receipt-list">
+          <p>ПОСТУПЛЕНИЕ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-sell" role="tabpanel" aria-labelledby="list-sell-list">
+          <p>ПРОДАЖА (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-balance" role="tabpanel" aria-labelledby="list-balance-list">
+          <p>БАЛАНСОВЫЕ ОПЕРАЦИИ (UNDER CONSTRUCTION)</p>
+        </div>
+
+        <div class="tab-pane fade" id="list-manufacture" role="tabpanel" aria-labelledby="list-manufacture-list">
+          <p>ПРОИЗВОДСТВО (UNDER CONSTRUCTION)</p>
+        </div>
+
+        <!--КАТАЛОГ-->
+        <div class="tab-pane fade" id="list-showcase" role="tabpanel" aria-labelledby="list-showcase-list">
+          <p>ВИТРИНА ТОВАРОВ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-groups" role="tabpanel" aria-labelledby="list-groups-list">
+          <p>ГРУППЫ ТОВАРОВ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-cards" role="tabpanel" aria-labelledby="list-cards-list">
+          <p>ПРОИЗВОДСТВЕННЫЕ КАРТОЧКИ (UNDER CONSTRUCTION)</p>
+        </div>
+
+        <!--УЧЕТ-->
+        <div class="tab-pane fade" id="list-docs" role="tabpanel" aria-labelledby="list-docs-list">
+          <p>ВСЕ ДОКУМЕНТЫ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-reports" role="tabpanel" aria-labelledby="list-reports-list">
+          <p>ОТЧЕТЫ И АНАЛИТИКА (UNDER CONSTRUCTION)</p>
+        </div>
+
+        <!--СПРАВОЧНИКИ-->
+        <div class="tab-pane fade" id="list-supplier" role="tabpanel" aria-labelledby="list-supplier-list">
+          <p>ПОСТАВЩИКИ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-buyer" role="tabpanel" aria-labelledby="list-buyer-list">
+          <p>ПОКУПАТЕЛИ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-points" role="tabpanel" aria-labelledby="list-points-list">
+          <p>ТОЧКИ ПРОДАЖ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-keywords" role="tabpanel" aria-labelledby="list-keywords-list">
+          <p>КЛЮЧЕВЫЕ СЛОВА (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-enterprises" role="tabpanel" aria-labelledby="list-enterprises-list">
+          <p>ПРЕДПРИЯТИЯ (UNDER CONSTRUCTION)</p>
+        </div>
+
+        <!--ЖУРНАЛ-->
+        <div class="tab-pane fade" id="list-log" role="tabpanel" aria-labelledby="list-log-list">
+          <div id="log-body" class="bg-white" role="alert"></div>
+
+          <div id="loader" class="progress text-white d-none" style="height: 25px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Ждем отрисовки порции карточек...</div>
           </div>
-        </article>
+
+          <div id="loader-wait" class="progress text-white d-none" style="height: 25px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Ждем загрузки карточек...</div>
+          </div>
+
+          <div id="loader-finish" class="container-fluid bg-warning text-dark text-center d-none mb-5" style="height: 25;">На сервере нет ничего нового</div>
+          <div id="loader-fail" class="container-fluid bg-danger text-white text-center d-none mb-5" style="height: 25;">Сервер не возвратил данные</div>
+        </div>
+
+        <!--ОНЛАЙН-->
+        <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list"></div>
+        <div class="tab-pane fade" id="list-users" role="tabpanel" aria-labelledby="list-users-list">
+          <p>ПОЛЬЗОВАТЕЛИ (UNDER CONSTRUCTION)</p>
+        </div>
+        <div class="tab-pane fade" id="list-setup" role="tabpanel" aria-labelledby="list-setup-list">
+          <p>НАСТРОЙКА (UNDER CONSTRUCTION)</p>
+        </div>
 
       </div>
-    </section>
-
-    <section id="sectionConfirmEmail" class="d-none">
-      <div class="container-fluid">
-        <h3 class="text-center text-primary">Подтверждение адреса электронной почты</h3>
-        <form id='emailConfirmForm' class="w-25 mx-auto">
-          <div class="form-group">
-            <label for="emailConfirmInputKey">Введите ключ, полученный по электронной почте</label>
-            <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key">
-          </div>
-
-          <div id="emailConfirmCaptcha" class="form-group"></div>
-
-          <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-success">Подтвердить</button>
-          <button id='emailConfirmButtonCancel' type="button" class="btn btn-danger">Отмена</button>
-        </form>
-      </div>
-    </section>
-
-    <section id="sectionForgot" class="d-none">
-      <div class="container-fluid">
-        <h3 class="text-center text-primary">Восстановление пароля</h3>
-        <form id='forgotForm' class="w-25 mx-auto">
-          <div class="form-group">
-            <label for="emailConfirmInputKey">Введите адрес электронной почты </label>
-            <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key">
-
-          </div>
-
-          <div id="forgotCaptcha" class="form-group"></div>
-
-          <button id='forgotButtonSubmit' type="submit" class="btn btn-success">Восстановить</button>
-
-          <button id='forgotButtonCancel' type="button" class="btn btn-danger">Отмена</button>
-
-        </form>
-      </div>
-    </section>
-
-  </section>
+    </div>
+  </div>
 
 
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <!--<script src="script.min.js"></script>-->
+  <script src="js/settings.js"></script>
+  <script src="js/script.js"></script>
 
+  <!-- reCaptcha -->
+  <script src="https://www.google.com/recaptcha/api.js?onload=captchaOnLoadCallback&render=explicit" async defer></script>
+</body>
 
-
-
-
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <!-- Optional JavaScript -->
-    <script type="text/javascript" src='./settings/settings.js'></script>
-    <script type="text/javascript" src='./js/block.js'></script>
-
-    <!-- reCaptcha -->
-    <script src="https://www.google.com/recaptcha/api.js?onload=captchaOnLoadCallback&render=explicit"
-        async defer></script>
-
-
-
-
-
-  </body>
 </html>

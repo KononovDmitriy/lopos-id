@@ -6,21 +6,6 @@ import captcha from './../tools/captcha.js';
 
 const sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 
-let formInit = function () {
-  formConfirmEmail.reset();
-  formRegister.reset();
-  formForgot.reset();
-  formLogin.reset();
-  formConfirmEmail.hide();
-  formRegister.hide();
-  formForgot.hide();
-  formLogin.show();
-};
-
-document.addEventListener('logoutSuccess', function () {
-  formInit();
-});
-
 console.log('v44');
 
 captcha.init();
@@ -31,7 +16,16 @@ sectionLoginFormMain.addEventListener('change', function (event) {
 
 export default {
 
-  init: formInit,
+  firstScreen() {
+    formConfirmEmail.reset();
+    formRegister.reset();
+    formForgot.reset();
+    formLogin.reset();
+    formConfirmEmail.hide();
+    formRegister.hide();
+    formForgot.hide();
+    formLogin.show();
+  },
 
   confirmEmail() {
     formRegister.hide();

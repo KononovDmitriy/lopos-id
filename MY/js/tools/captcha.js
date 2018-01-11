@@ -3,6 +3,10 @@ import formLogin from './../login/form_login.js';
 import formConfirmEmail from './../login/form_confirm_email.js';
 import formForgot from './../login/form_forgot.js';
 
+let captchaErrorCallback = function (response) {
+  console.log(`ERROR Catpcha: ${response}`);
+};
+
 export default {
 
   init() {
@@ -26,11 +30,16 @@ export default {
     window.grecaptcha.reset(captchaId);
   },
 
+  getResponse(captchaId) {
+    return window.grecaptcha.getResponse(captchaId);
+  },
+
   getCaptcha(elementId, callback) {
     return window.grecaptcha.render(elementId, {
       'size': 'invisible',
       'sitekey': window.appSettings.reCaptchaSiteKey,
-      'callback': callback
+      'callback': callback,
+      'error-callback': captchaErrorCallback
     });
   }
 };

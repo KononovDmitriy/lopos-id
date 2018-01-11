@@ -37,7 +37,7 @@ forgotForm.addEventListener('submit', function (event) {
 });
 
 forgotButtonCancel.addEventListener('click', function () {
-  mainWindow.init();
+  mainWindow.firstScreen();
 });
 
 export default {
