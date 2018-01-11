@@ -19,9 +19,9 @@ let captchaId = 'NO';
 
 let captchaCallback = function () {
   console.log('registerCallback');
-  captcha.catchaReset(captchaId);
   let res = captcha.getResponse(captchaId);
   console.log(res);
+  captcha.catchaReset(captchaId);
   register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
 
 };

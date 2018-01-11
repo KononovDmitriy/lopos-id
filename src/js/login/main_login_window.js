@@ -6,7 +6,7 @@ import captcha from './../tools/captcha.js';
 
 const sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 
-console.log('v40');
+console.log('v41');
 
 captcha.init();
 
