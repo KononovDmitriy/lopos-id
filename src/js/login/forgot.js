@@ -1,4 +1,4 @@
-import mainWindow from './main_login_window.js';
+// import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
 import formForgot from './form_forgot.js';
 
@@ -10,7 +10,6 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 400) {
     alert(response.message);
-    mainWindow.firstScreen();
   } else {
     // показ ошибки
     alert('Ошибка восстановления пароля');

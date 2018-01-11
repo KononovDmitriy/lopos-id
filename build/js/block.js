@@ -91,7 +91,7 @@
 	
 	var sectionLoginFormMain = document.querySelector('#sectionLoginFormMain');
 	
-	console.log('v27');
+	console.log('v40');
 	
 	_captcha2.default.init();
 	
@@ -500,6 +500,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var captchaErrorCallback = function captchaErrorCallback(response) {
+	  console.log('ERROR Catpcha: ' + response);
+	};
+	
 	exports.default = {
 	  init: function init() {
 	    window.captchaOnLoadCallback = function () {
@@ -519,11 +523,15 @@
 	  catchaReset: function catchaReset(captchaId) {
 	    window.grecaptcha.reset(captchaId);
 	  },
+	  getResponse: function getResponse(captchaId) {
+	    return window.grecaptcha.getResponse(captchaId);
+	  },
 	  getCaptcha: function getCaptcha(elementId, callback) {
 	    return window.grecaptcha.render(elementId, {
 	      'size': 'invisible',
 	      'sitekey': window.appSettings.reCaptchaSiteKey,
-	      'callback': callback
+	      'callback': callback,
+	      'error-callback': captchaErrorCallback
 	    });
 	  }
 	};
@@ -569,6 +577,9 @@
 	
 	var captchaCallback = function captchaCallback() {
 	  console.log('registerCallback');
+	  _captcha2.default.catchaReset(captchaId);
+	  var res = _captcha2.default.getResponse(captchaId);
+	  console.log(res);
 	  _register2.default.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
 	};
 	
@@ -955,6 +966,10 @@
 	
 	var captchaCallback = function captchaCallback() {
 	  console.log('forgotCallback');
+	  var res = _captcha2.default.getResponse(captchaId);
+	  console.log(res);
+	  _captcha2.default.catchaReset(captchaId);
+	
 	  _forgot2.default.submit(forgotInputEmail.value);
 	};
 	
@@ -1014,10 +1029,6 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(1);
-	
-	var _main_login_window2 = _interopRequireDefault(_main_login_window);
-	
 	var _xhr = __webpack_require__(4);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
@@ -1028,6 +1039,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// import mainWindow from './main_login_window.js';
 	var emailVal = window.appSettings.forgotEmailValid;
 	var urlApi = window.appSettings.forgotUrlApi;
 	
@@ -1036,7 +1048,6 @@
 	
 	  if (response.status === 400) {
 	    alert(response.message);
-	    _main_login_window2.default.firstScreen();
 	  } else {
 	    // показ ошибки
 	    alert('Ошибка восстановления пароля');

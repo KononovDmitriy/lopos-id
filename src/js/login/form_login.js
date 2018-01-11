@@ -21,7 +21,6 @@ let captchaCallback = function () {
   console.log('loginCallback');
   // captcha.catchaReset(captchaId);
   login.submit(userLogin, inputFields.password.value);
-
 };
 
 loginForm.addEventListener('submit', function (event) {

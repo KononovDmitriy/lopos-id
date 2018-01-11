@@ -13,6 +13,11 @@ let captchaId = 'NO';
 
 let captchaCallback = function () {
   console.log('forgotCallback');
+  let res = captcha.getResponse(captchaId);
+  console.log(res);
+  captcha.catchaReset(captchaId);
+
+
   forgot.submit(forgotInputEmail.value);
 
 };
