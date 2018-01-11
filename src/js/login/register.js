@@ -6,7 +6,6 @@ const regVal = window.appSettings.registerValid;
 const regUrlApi = window.appSettings.registerUrlApi;
 
 let callbackXhrSuccess = function (response) {
-  console.dir(response);
 
   switch (response.status) {
 

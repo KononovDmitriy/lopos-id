@@ -14,7 +14,7 @@ let callbackXhrSuccess = function (response) {
       alert('Ваш пользователь заблокирован, обратитесь к администратору');
     } else {
       dataStorage.data = response.data;
-      // Загрузка приложения
+      document.dispatchEvent(new Event('loginSuccess'));
     }
   } else {
     // показ ошибки
