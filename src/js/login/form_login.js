@@ -15,7 +15,6 @@ let captchaId = 'NO';
 let userLogin;
 
 let captchaCallback = function () {
-  console.log('log_c_cal');
 
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
@@ -32,10 +31,8 @@ loginForm.addEventListener('submit', function (event) {
   if (login.validate(userLogin, loginInputPassword.value)) {
 
     if (!window.captchaErr && captchaCount >= 2) {
-      console.log('log_c_s');
       captcha.captchaExec(captchaId);
     } else {
-      console.log('log_s');
       login.submit(userLogin, loginInputPassword.value);
     }
   }

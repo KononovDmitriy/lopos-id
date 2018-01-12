@@ -81,7 +81,7 @@ window.callbackXhrError = function (response) {
   setGlobalAlert('Ошибка связи', 'error');
 };
 
-console.log('v44');
+console.log('v45');
 
 captcha.init();
 

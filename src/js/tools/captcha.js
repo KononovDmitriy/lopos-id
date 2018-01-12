@@ -13,7 +13,6 @@ export default {
 
   init() {
     window.captchaOnLoadCallback = function () {
-      console.log('Капча загружена');
       window.captchaOnLoad = true;
       window.captchaErr = false;
 
@@ -26,7 +25,6 @@ export default {
 
   captchaExec(captchaId) {
     window.grecaptcha.execute(captchaId);
-    console.log('капча выполнена');
   },
 
   catchaReset(captchaId) {
