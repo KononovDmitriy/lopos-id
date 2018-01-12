@@ -605,7 +605,7 @@
 	  setGlobalAlert('Ошибка связи', 'error');
 	};
 	
-	console.log('v44');
+	console.log('v45');
 	
 	_captcha2.default.init();
 	
@@ -673,7 +673,6 @@
 	var userLogin = void 0;
 	
 	var captchaCallback = function captchaCallback() {
-	  console.log('log_c_cal');
 	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
@@ -690,10 +689,8 @@
 	  if (_login2.default.validate(userLogin, loginInputPassword.value)) {
 	
 	    if (!window.captchaErr && captchaCount >= 2) {
-	      console.log('log_c_s');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
-	      console.log('log_s');
 	      _login2.default.submit(userLogin, loginInputPassword.value);
 	    }
 	  }
@@ -897,7 +894,6 @@
 	exports.default = {
 	  init: function init() {
 	    window.captchaOnLoadCallback = function () {
-	      console.log('Капча загружена');
 	      window.captchaOnLoad = true;
 	      window.captchaErr = false;
 	
@@ -909,7 +905,6 @@
 	  },
 	  captchaExec: function captchaExec(captchaId) {
 	    window.grecaptcha.execute(captchaId);
-	    console.log('капча выполнена');
 	  },
 	  catchaReset: function catchaReset(captchaId) {
 	    window.grecaptcha.reset(captchaId);
@@ -1334,8 +1329,6 @@
 	
 	var captchaCallback = function captchaCallback() {
 	
-	  console.log('f c callback');
-	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
 	  }
@@ -1349,11 +1342,8 @@
 	  if (_forgot2.default.validate(forgotInputEmail.value)) {
 	
 	    if (!window.captchaErr) {
-	      console.log('captcha_submit');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
-	
-	      console.log('submit');
 	      _forgot2.default.submit(forgotInputEmail.value);
 	    }
 	  }

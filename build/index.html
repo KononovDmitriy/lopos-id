@@ -30,13 +30,12 @@
         <div class="container-fluid">
           <h3 class="text-center text-primary">Вход</h3>
           <form id=loginForm class="mx-auto" style="max-width: 400px;">
+             <div id='loginCaptcha'></div>
             <div class="form-group">
               <label for="loginInputLogin">Введите ID или email</label>
               <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите ID или email" data-erreset="loginLogin">
               <span id="loginInputLoginError" class="badge badge-danger w-100"></span>
             </div>
-
-            <div id='loginCaptcha'></div>
 
             <div class="form-group">
               <label for="loginInputPassword">Пароль</label>
@@ -63,6 +62,7 @@
           <article>
             <h3 class="text-center text-primary">Регистрация нового пользователя</h3>
             <form id="registerForm" class="mx-auto" style="max-width: 27rem">
+              <div id='registerCaptcha'></div>
               <div class="form-group">
                 <label for="registerInputName">Введите имя ваше имя</label>
                 <input id="registerInputName" class="form-control" type="text" placeholder="Enter name" data-erreset="registerLogin">
@@ -83,8 +83,6 @@
                 <input id="registerInputConfirmPassword" type="password" class="form-control" placeholder="Confirm password" data-erreset="registerConfirm">
                 <span id="registerInputConfirmPasswordError" class="badge badge-danger w-100"></span>
               </div>
-
-              <div id='registerCaptcha'></div>
 
               <div class="form-group">
 
@@ -141,13 +139,12 @@
         <div class="container-fluid" style="max-width: 27rem">
           <h3 class="text-center text-primary">Подтверждение адреса электронной почты</h3>
           <form id='emailConfirmForm' class="mx-auto" style="max-width: 27rem">
+            <div id="emailConfirmCaptcha" class="form-group"></div>
             <div class="form-group">
               <label for="emailConfirmInputKey">Введите ключ, полученный по электронной почте</label>
               <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key" data-erreset="emailConfirmInputKey">
               <span id="emailConfirmInputKeyError" class="badge badge-danger w-100"></span>
             </div>
-
-            <div id="emailConfirmCaptcha" class="form-group"></div>
 
              <div class="form-group">
               <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-danger w-100">Подтвердить</button>
@@ -161,13 +158,12 @@
         <div class="container-fluid">
           <h3 class="text-center text-primary">Восстановление пароля</h3>
           <form id='forgotForm' class="mx-auto" style="max-width: 27rem">
+            <div id="forgotCaptcha" class="form-group"></div>
             <div class="form-group">
               <label for="emailConfirmInputKey">Введите адрес электронной почты </label>
               <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key" data-erreset="forgotInputEmail">
               <span id="forgotInputEmailError" class="badge badge-danger w-100"></span>
             </div>
-
-            <div id="forgotCaptcha" class="form-group"></div>
 
             <div class="form-group">
               <button id='forgotButtonSubmit' type="submit" class="btn btn-danger w-100">Восстановить</button>
