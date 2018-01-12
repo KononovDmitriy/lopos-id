@@ -11,6 +11,7 @@ const registerInputConfirmPassword = registerForm.querySelector('#registerInputC
 const registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
 const registerUserAgreement = document.querySelector('#registerUserAgreement');
 const registerCaptcha = sectionRegister.querySelector('#registerCaptcha');
+const registerButtonUserAgreement = sectionRegister.querySelector('#registerButtonUserAgreement');
 
 let captchaId = 'NO';
 
@@ -42,6 +43,10 @@ registerForm.addEventListener('submit', function (event) {
 
 registerButtonCancel.addEventListener('click', function () {
   mainWindow.init();
+});
+
+registerButtonUserAgreement.addEventListener('click', function () {
+  window.location = 'http://bidone.ru/lopos_terms_and_agreements';
 });
 
 export default {

@@ -28,7 +28,21 @@ const inputFieldsErrors = {
   'registerConfirm': sectionLoginFormMain.querySelector('#registerInputConfirmPasswordError'),
   'registerUserAgreement': sectionLoginFormMain.querySelector('#registerUserAgreementError'),
   'emailConfirmInputKey': sectionLoginFormMain.querySelector('#emailConfirmInputKeyError'),
-  'forgotInputEmail': sectionLoginFormMain.querySelector('#forgotInputEmailError'),
+  'forgotInputEmail': sectionLoginFormMain.querySelector('#forgotInputEmailError')
+};
+
+const progressBar = {
+  'loginProgress': sectionLoginFormMain.querySelector('#registerInputName'),
+  'registerProgress': sectionLoginFormMain.querySelector('#registerProgress'),
+  'confirmProgress': sectionLoginFormMain.querySelector('#confirmProgress'),
+  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
+};
+
+const buttons = {
+  'loginButtonSubmit': sectionLoginFormMain.querySelector('#loginButtonSubmit'),
+  'registerButtonSubmit': sectionLoginFormMain.querySelector('#registerButtonSubmit'),
+  'emailConfirmButtonSubmit': sectionLoginFormMain.querySelector('#emailConfirmButtonSubmit'),
+  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
 };
 
 let setGlobalAlert = function (msg, type) {
@@ -81,7 +95,7 @@ window.callbackXhrError = function (response) {
   setGlobalAlert('Ошибка связи', 'error');
 };
 
-console.log('v45');
+console.log('v47');
 
 captcha.init();
 
@@ -110,6 +124,10 @@ export default {
     inputFields[target].classList.add('border-danger');
   },
 
-  setAlert: setGlobalAlert
+  setAlert: setGlobalAlert,
 
+  showProgress(button, progress) {
+    progressBar[progress].classList.remove('invisible');
+    buttons[button].disable = true;
+  }
 };

@@ -105,36 +105,6 @@
 	
 	// ========== ЗАВЕРШЕНИЕ РАБОТЫ ==========
 	exit.addEventListener('click', stop);
-	
-	/*
-	Возможные сценарии запуска приложения:
-
-	1. Обновление страницы в ходе работы после успешной авторизации
-	2. Открытие страницы в новой вкладке + авторизация
-	3. Открытие страницы в новой вкладке + регистрация
-	4. Выход и новая регистрация без перезагрузки страницы в той же вкладке
-
-	NB1: на старте оба контейнера (app и login) скрыты
-	NB2: событие loginSuccess создается в модулях confirm_email.js и login.js
-
-	Алгоритм:
-	(1)
-	 - проверяем sessionStorage и авторизацию, если данные пользователя есть, то выполняем функцию start:
-	    - показываем контейнер app и прячем login
-	    - запускаем profileButton, чтобы заново записать в Онлайн/Профиль данные пользователя
-	    - запускаем logButton, который при клике на кнопку журнала начнет грузить данные
-	 (2,3)
-	 - показываем контейнер login
-	 - mainWindow.firstScreen() =?= может переименуем его во что-то типа authority =?=
-	 - слушаем возникновение события loginSuccess на документе и выполняем функцию start (см. п.1)
-	 событие loginSuccess вызывается модулями авторизации/регистрации и сообщает нам, что данная процедура пройдена
-	 (4)
-	 - слушаем click по кнопке exit и обрабатываем выход, запустив функцию stop:
-	    - прячем контейнер app и показываем login
-	    - останавливаем модуль с журналом: чистим счетчики, кэш неотрисованных нод, прячем все сообщения о процессе загрузки и чистим контейнер, чистим обработчики клика и скролла
-	    - чистим sessionStorage
-	    - создаем событие logoutSuccess на document, по которому можно сделать все необходимое с формой авторизации
-	*/
 
 /***/ }),
 /* 1 */
@@ -562,6 +532,20 @@
 	  'forgotInputEmail': sectionLoginFormMain.querySelector('#forgotInputEmailError')
 	};
 	
+	var progressBar = {
+	  'loginProgress': sectionLoginFormMain.querySelector('#registerInputName'),
+	  'registerProgress': sectionLoginFormMain.querySelector('#registerProgress'),
+	  'confirmProgress': sectionLoginFormMain.querySelector('#confirmProgress'),
+	  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
+	};
+	
+	var buttons = {
+	  'loginButtonSubmit': sectionLoginFormMain.querySelector('#loginButtonSubmit'),
+	  'registerButtonSubmit': sectionLoginFormMain.querySelector('#registerButtonSubmit'),
+	  'emailConfirmButtonSubmit': sectionLoginFormMain.querySelector('#emailConfirmButtonSubmit'),
+	  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
+	};
+	
 	var setGlobalAlert = function setGlobalAlert(msg, type) {
 	  var msgType = void 0;
 	  var msgClass = void 0;
@@ -605,7 +589,7 @@
 	  setGlobalAlert('Ошибка связи', 'error');
 	};
 	
-	console.log('v45');
+	console.log('v47');
 	
 	_captcha2.default.init();
 	
@@ -632,8 +616,12 @@
 	  },
 	
 	
-	  setAlert: setGlobalAlert
+	  setAlert: setGlobalAlert,
 	
+	  showProgress: function showProgress(button, progress) {
+	    progressBar[progress].classList.remove('invisible');
+	    buttons[button].disable = true;
+	  }
 	};
 
 /***/ }),
@@ -674,6 +662,8 @@
 	
 	var captchaCallback = function captchaCallback() {
 	
+	  _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
+	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
 	  }
@@ -686,9 +676,11 @@
 	
 	  userLogin = formatLogin(loginInputLogin.value);
 	
+	  _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
+	
 	  if (_login2.default.validate(userLogin, loginInputPassword.value)) {
 	
-	    if (!window.captchaErr && captchaCount >= 2) {
+	    if (!window.captchaErr && captchaCount >= 3) {
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
 	      _login2.default.submit(userLogin, loginInputPassword.value);
@@ -955,6 +947,7 @@
 	var registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
 	var registerUserAgreement = document.querySelector('#registerUserAgreement');
 	var registerCaptcha = sectionRegister.querySelector('#registerCaptcha');
+	var registerButtonUserAgreement = sectionRegister.querySelector('#registerButtonUserAgreement');
 	
 	var captchaId = 'NO';
 	
@@ -982,6 +975,10 @@
 	
 	registerButtonCancel.addEventListener('click', function () {
 	  _main_login_window2.default.init();
+	});
+	
+	registerButtonUserAgreement.addEventListener('click', function () {
+	  window.location = 'http://bidone.ru/lopos_terms_and_agreements';
 	});
 	
 	exports.default = {

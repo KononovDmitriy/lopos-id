@@ -11,7 +11,7 @@ window.appSettings = {
 
   loginValid: {
     email: /@/,
-    id: /^[0-9a-z]{8,}1$/,
+    id: /^[0-9a-z]{8,}\d{1,2}$/,
     password: /.{3,}/
   },
 

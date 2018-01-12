@@ -16,6 +16,8 @@ let userLogin;
 
 let captchaCallback = function () {
 
+  mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
+
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
   }
@@ -28,9 +30,11 @@ loginForm.addEventListener('submit', function (event) {
 
   userLogin = formatLogin(loginInputLogin.value);
 
+  mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
+
   if (login.validate(userLogin, loginInputPassword.value)) {
 
-    if (!window.captchaErr && captchaCount >= 2) {
+    if (!window.captchaErr && captchaCount >= 3) {
       captcha.captchaExec(captchaId);
     } else {
       login.submit(userLogin, loginInputPassword.value);
