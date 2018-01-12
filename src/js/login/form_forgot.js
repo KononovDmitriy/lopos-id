@@ -13,6 +13,8 @@ let captchaId = 'NO';
 
 let captchaCallback = function () {
 
+  console.log('f c callback');
+
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
   }
@@ -26,9 +28,12 @@ forgotForm.addEventListener('submit', function (event) {
 
   if (forgot.validate(forgotInputEmail.value)) {
 
-    if (captchaId !== 'NO') {
+    if (!window.captchaErr) {
+      console.log('captcha_submit');
       captcha.captchaExec(captchaId);
     } else {
+
+      console.log('submit');
       forgot.submit(forgotInputEmail.value);
     }
 
@@ -41,10 +46,6 @@ forgotButtonCancel.addEventListener('click', function () {
 });
 
 export default {
-
-  setError(msg) {
-    forgotInputEmail.setCustomValidity(msg);
-  },
 
   show() {
     sectionForgot.classList.remove('d-none');

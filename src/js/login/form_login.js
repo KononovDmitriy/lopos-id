@@ -4,39 +4,39 @@ import captcha from './../tools/captcha.js';
 
 const sectionLogin = document.querySelector('#sectionLogin');
 const loginForm = sectionLogin.querySelector('#loginForm');
+const loginInputLogin = sectionLogin.querySelector('#loginInputLogin');
+const loginInputPassword = sectionLogin.querySelector('#loginInputPassword');
 const loginButtonRegister = loginForm.querySelector('#loginButtonRegister');
 const loginButtonForgot = loginForm.querySelector('#loginButtonForgot');
 const loginCaptcha = loginForm.querySelector('#loginCaptcha');
-
-const inputFields = {
-  'login': loginForm.querySelector('#loginInputLogin'),
-  'password': loginForm.querySelector('#loginInputPassword')
-};
 
 let captchaCount = 0;
 let captchaId = 'NO';
 let userLogin;
 
 let captchaCallback = function () {
+  console.log('log_c_cal');
 
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
   }
 
-  login.submit(userLogin, inputFields.password.value);
+  login.submit(userLogin, loginInputPassword.value);
 };
 
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  userLogin = formatLogin(inputFields.login.value);
+  userLogin = formatLogin(loginInputLogin.value);
 
-  if (login.validate(userLogin, inputFields.password.value)) {
+  if (login.validate(userLogin, loginInputPassword.value)) {
 
-    if (captchaId !== 'NO' && captchaCount >= 2) {
+    if (!window.captchaErr && captchaCount >= 2) {
+      console.log('log_c_s');
       captcha.captchaExec(captchaId);
     } else {
-      login.submit(userLogin, inputFields.password.value);
+      console.log('log_s');
+      login.submit(userLogin, loginInputPassword.value);
     }
   }
 });
@@ -57,10 +57,6 @@ loginButtonForgot.addEventListener('click', function () {
 
 export default {
 
-  setError(target, msg) {
-    inputFields[target].setCustomValidity(msg);
-  },
-
   show() {
     sectionLogin.classList.remove('d-none');
   },
@@ -71,8 +67,8 @@ export default {
 
   reset() {
     loginForm.reset();
-    inputFields.login.setCustomValidity('');
-    inputFields.password.setCustomValidity('');
+    loginInputLogin.setCustomValidity('');
+    loginInputPassword.setCustomValidity('');
 
     if (captchaId !== 'NO') {
       captcha.catchaReset(captchaId);

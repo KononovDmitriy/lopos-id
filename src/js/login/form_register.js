@@ -4,16 +4,13 @@ import captcha from './../tools/captcha.js';
 
 const sectionRegister = document.querySelector('#sectionRegister');
 const registerForm = sectionRegister.querySelector('#registerForm');
+const registerInputName = registerForm.querySelector('#registerInputName');
+const registerInputEmail = registerForm.querySelector('#registerInputEmail');
+const registerInputPassword = registerForm.querySelector('#registerInputPassword');
+const registerInputConfirmPassword = registerForm.querySelector('#registerInputConfirmPassword');
 const registerButtonCancel = registerForm.querySelector('#registerButtonCancel');
 const registerUserAgreement = document.querySelector('#registerUserAgreement');
 const registerCaptcha = sectionRegister.querySelector('#registerCaptcha');
-
-const inputFields = {
-  'name': registerForm.querySelector('#registerInputName'),
-  'email': registerForm.querySelector('#registerInputEmail'),
-  'password': registerForm.querySelector('#registerInputPassword'),
-  'confirm': registerForm.querySelector('#registerInputConfirmPassword')
-};
 
 let captchaId = 'NO';
 
@@ -23,20 +20,20 @@ let captchaCallback = function () {
     captcha.catchaReset(captchaId);
   }
 
-  register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+  register.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value);
 
 };
 
 registerForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  if (register.validate(inputFields.name.value, inputFields.email.value, inputFields.password.value,
-    inputFields.confirm.value, registerUserAgreement.checked)) {
+  if (register.validate(registerInputName.value, registerInputEmail.value, registerInputPassword.value,
+    registerInputConfirmPassword.value, registerUserAgreement.checked)) {
 
-    if (captchaId !== 'NO') {
+    if (!window.captchaErr) {
       captcha.captchaExec(captchaId);
     } else {
-      register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value);
+      register.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value);
     }
 
   }
@@ -49,10 +46,6 @@ registerButtonCancel.addEventListener('click', function () {
 
 export default {
 
-  setError(target, msg) {
-    inputFields[target].setCustomValidity(msg);
-  },
-
   show() {
     sectionRegister.classList.remove('d-none');
   },
@@ -63,10 +56,10 @@ export default {
 
   reset() {
     registerForm.reset();
-    inputFields.name.setCustomValidity('');
-    inputFields.email.setCustomValidity('');
-    inputFields.password.setCustomValidity('');
-    inputFields.confirm.setCustomValidity('');
+    registerInputName.setCustomValidity('');
+    registerInputEmail.setCustomValidity('');
+    registerInputPassword.setCustomValidity('');
+    registerInputConfirmPassword.setCustomValidity('');
 
     if (captchaId !== 'NO') {
       captcha.catchaReset(captchaId);
@@ -74,8 +67,8 @@ export default {
   },
 
   submitForm() {
-    register.submit(inputFields.name.value, inputFields.email.value, inputFields.password.value,
-      inputFields.confirm.value, registerUserAgreement.checked);
+    register.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value,
+      registerInputConfirmPassword.value, registerUserAgreement.checked);
   },
 
   setCaptcha() {

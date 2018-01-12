@@ -26,7 +26,7 @@ emailConfirmForm.addEventListener('submit', function (event) {
 
   if (confirmEmail.validate(emailConfirmInputKey.value)) {
 
-    if (captchaId !== 'NO') {
+    if (!window.captchaErr) {
       captcha.captchaExec(captchaId);
     } else {
       confirmEmail.submit(emailConfirmInputKey.value, registerInputEmail.value);
@@ -41,11 +41,6 @@ emailConfirmButtonCancel.addEventListener('click', function () {
 });
 
 export default {
-
-  setError(msg) {
-    emailConfirmInputKey.setCustomValidity(msg);
-  },
-
   show() {
     sectionConfirmEmail.classList.remove('d-none');
   },

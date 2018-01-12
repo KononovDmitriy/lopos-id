@@ -17,12 +17,7 @@
 
   <div id="login" class="container-fluid mx-auto d-none" style="min-height: 920px; height: 100vh">
 
-    <div class="alert alert-warning alert-danger fade show" role="alert">
-      <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+    <div id="globalAlert"></div>
 
     <section id='sectionLoginFormMain'>
 
@@ -37,14 +32,16 @@
           <form id=loginForm class="mx-auto" style="max-width: 400px;">
             <div class="form-group">
               <label for="loginInputLogin">Введите ID или email</label>
-              <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите ID или email">
+              <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите ID или email" data-erreset="loginLogin">
+              <span id="loginInputLoginError" class="badge badge-danger w-100"></span>
             </div>
 
             <div id='loginCaptcha'></div>
 
             <div class="form-group">
               <label for="loginInputPassword">Пароль</label>
-              <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
+              <input type="password" class="form-control" id="loginInputPassword" placeholder="Password" data-erreset="loginPassword">
+              <span id="loginInputPasswordError" class="badge badge-danger w-100"></span>
             </div>
 
             <div>
@@ -68,23 +65,26 @@
             <form id="registerForm" class="mx-auto" style="max-width: 27rem">
               <div class="form-group">
                 <label for="registerInputName">Введите имя ваше имя</label>
-                <input class="form-control" type="text" id="registerInputName" placeholder="Enter name">
+                <input id="registerInputName" class="form-control" type="text" placeholder="Enter name" data-erreset="registerLogin">
+                <span id="registerInputNameError" class="badge badge-danger w-100"></span>
               </div>
               <div class="form-group">
                 <label for="registerInputEmail">Введите адрес вашей электронной почты</label>
-                <input type="email" class="form-control" id="registerInputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                <input id="registerInputEmail" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" data-erreset="registerEmail">
+                <span id="registerInputEmailError" class="badge badge-danger w-100"></span>
               </div>
               <div class="form-group">
                 <label for="registerInputPassword">Введите пароль</label>
-                <input type="password" class="form-control" id="registerInputPassword" placeholder="Password">
+                <input id="registerInputPassword" type="password" class="form-control" placeholder="Password" data-erreset="registerPassword">
+                <span id="registerInputPasswordError" class="badge badge-danger w-100" data-erreset="registerPassword"></span>
               </div>
               <div class="form-group">
                 <label for="registerInputConfirmPassword">Повторите пароль</label>
-                <input type="password" class="form-control" id="registerInputConfirmPassword" placeholder="Confirm password">
+                <input id="registerInputConfirmPassword" type="password" class="form-control" placeholder="Confirm password" data-erreset="registerConfirm">
+                <span id="registerInputConfirmPasswordError" class="badge badge-danger w-100"></span>
               </div>
 
               <div id='registerCaptcha'></div>
-
 
               <div class="form-group">
 
@@ -102,10 +102,11 @@
               </div>
 
               <div class="form-group mt-3 form-control-lg">
-                <input id="registerUserAgreement" type="checkbox" class="mr-4 ">
+                <input id="registerUserAgreement" type="checkbox" class="mr-4 " data-erreset="registerUserAgreement">
                 <label class="" for="registerUserAgreement">
                   Я согласен!
                 </label>
+                <span id="registerUserAgreementError" class="badge badge-danger w-100"></span>
               </div>
 
             </form>
@@ -113,28 +114,6 @@
 
           <article class="mx-auto">
             <!-- Button trigger modal -->
-            <div class="input-group c mt-5" style="max-width: 27rem">
-
-
-
-
-           <!-- <input type="checkbox" id='registerUserAgreement' aria-label="Установите для согласия с пользовательским соглашением"> -->
-
-
-
-
-
-
-
-
-
-
-            </div>
-
-
-
-
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
               <div class="modal-dialog" role="document">
@@ -164,7 +143,8 @@
           <form id='emailConfirmForm' class="mx-auto" style="max-width: 27rem">
             <div class="form-group">
               <label for="emailConfirmInputKey">Введите ключ, полученный по электронной почте</label>
-              <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key">
+              <input id="emailConfirmInputKey" type="text" class="form-control" placeholder="Confirm Key" data-erreset="emailConfirmInputKey">
+              <span id="emailConfirmInputKeyError" class="badge badge-danger w-100"></span>
             </div>
 
             <div id="emailConfirmCaptcha" class="form-group"></div>
@@ -183,7 +163,8 @@
           <form id='forgotForm' class="mx-auto" style="max-width: 27rem">
             <div class="form-group">
               <label for="emailConfirmInputKey">Введите адрес электронной почты </label>
-              <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key">
+              <input id="forgotInputEmail" type="text" class="form-control" placeholder="Confirm Key" data-erreset="forgotInputEmail">
+              <span id="forgotInputEmailError" class="badge badge-danger w-100"></span>
             </div>
 
             <div id="forgotCaptcha" class="form-group"></div>

@@ -1,6 +1,5 @@
 import mainWindow from './main_login_window.js';
 import xhr from './../tools/xhr.js';
-import formRegister from './form_register.js';
 
 const regVal = window.appSettings.registerValid;
 const regUrlApi = window.appSettings.registerUrlApi;
@@ -10,16 +9,13 @@ let callbackXhrSuccess = function (response) {
   switch (response.status) {
 
   case 200:
+    mainWindow.setAlert(response.message, 'message');
     mainWindow.confirmEmail();
     break;
   case 400:
-    alert(response.message);
+    mainWindow.setAlert(response.message, 'error');
     break;
   }
-};
-
-let callbackXhrError = function (response) {
-  alert('error');
 };
 
 let validateName = function (name) {
@@ -62,27 +58,27 @@ let validateForm = function (name, email, password, confirm, userAgreement) {
   let valid = true;
 
   if (!validateName(name)) {
-    formRegister.setError('name', 'Имя!');
+    mainWindow.setError('registerLogin', 'Имя!');
     valid = false;
   }
 
   if (!validateEmail(email)) {
-    formRegister.setError('email', 'Почта!');
+    mainWindow.setError('registerEmail', 'Почта!');
     valid = false;
   }
 
   if (!validatePassword(password)) {
-    formRegister.setError('password', 'Пароль!');
+    mainWindow.setError('registerPassword', 'Пароль!');
     valid = false;
   }
 
   if (!validateConfirm(password, confirm)) {
-    formRegister.setError('confirm', 'Не совпадает!');
+    mainWindow.setError('registerConfirm', 'Не совпадает!');
     valid = false;
   }
 
   if (!userAgreement) {
-    alert('Соглашение!');
+    mainWindow.setError('registerUserAgreement', 'Соглашение');
     valid = false;
   }
 
@@ -96,7 +92,7 @@ let getRequestData = function (name, email, password) {
     metod: 'POST',
     data: requestData,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: callbackXhrError
+    callbackError: window.callbackXhrError
   };
 };
 

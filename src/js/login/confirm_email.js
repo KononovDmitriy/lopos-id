@@ -1,6 +1,6 @@
 import xhr from './../tools/xhr.js';
-import formConfirmEmail from './form_confirm_email.js';
 import dataStorage from './../tools/storage.js';
+import mainWindow from './main_login_window.js';
 
 const kodVal = window.appSettings.confirmEmailKodValid;
 const urlApi = window.appSettings.confirmEmailUrlApi;
@@ -9,21 +9,15 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 200) {
     if (response.data.status === '0') {
-      alert('Ваш пользователь заблокирован, обратитесь к администратору');
-      // сброс на страницу загрузки
+      mainWindow.setAlert(response.message, 'message');
+      mainWindow.init();
     } else {
       dataStorage.data = response.data;
       document.dispatchEvent(new Event('loginSuccess'));
     }
   } else {
-    // показ ошибки
-    alert(response.message);
+    mainWindow.setAlert(response.message, 'error');
   }
-};
-
-let callbackXhrError = function (response) {
-  // показ ошибки
-  alert('error');
 };
 
 let validateForm = function (kod) {
@@ -31,7 +25,7 @@ let validateForm = function (kod) {
   if (kodVal.test(kod)) {
     return true;
   }
-  formConfirmEmail.setError('Неверный формат кода!');
+  mainWindow.setError('emailConfirmInputKey', 'Неверный формат кода!');
   return false;
 };
 
@@ -43,7 +37,7 @@ let getRequestData = function (kod, email) {
     metod: 'POST',
     data: requestData,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: callbackXhrError
+    callbackError: window.callbackXhrError
   };
 };
 

@@ -1,6 +1,7 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
 import form from './form_login.js';
+import mainWindow from './main_login_window.js';
 
 const validId = window.appSettings.loginValid.id;
 const validEmail = window.appSettings.loginValid.email;
@@ -11,19 +12,14 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 200) {
     if (response.data.status === '0') {
-      alert('Ваш пользователь заблокирован, обратитесь к администратору');
+      mainWindow.setAlert('Ваш пользователь заблокирован, обратитесь к администратору', 'message');
     } else {
       dataStorage.data = response.data;
       document.dispatchEvent(new Event('loginSuccess'));
     }
   } else {
-    // показ ошибки
-    alert(response.message);
+    mainWindow.setAlert(response.message, 'error');
   }
-};
-
-let callbackXhrError = function (response) {
-  alert('error');
 };
 
 let getRequestDataEmail = function (userLogin, userPassword) {
@@ -33,7 +29,7 @@ let getRequestDataEmail = function (userLogin, userPassword) {
     metod: 'POST',
     data: dataApi,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: callbackXhrError
+    callbackError: window.callbackXhrError
   };
 };
 
@@ -50,7 +46,7 @@ let getRequestDataId = function (userLogin, userPassword) {
     metod: 'POST',
     data: dataApi,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: callbackXhrError
+    callbackError: window.callbackXhrError
   };
 };
 
@@ -70,13 +66,13 @@ let validateForm = function (userLogin, userPassword) {
   if (!validateData(validEmail, userLogin)) {
     if (!validateData(validId, userLogin)) {
       valid = false;
-      form.setError('login', 'Неверный формат логина');
+      mainWindow.setError('loginLogin', 'Неверный формат логина');
     }
   }
 
   if (!validateData(validPassword, userPassword)) {
     valid = false;
-    form.setError('password', 'Пароль должен быть длиннее 3-х символов');
+    mainWindow.setError('loginPassword', 'Пароль должен быть длиннее 3-х символов');
   }
 
   return valid;
