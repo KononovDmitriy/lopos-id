@@ -15,22 +15,29 @@
 
 <body>
 
-  <div id="login" class="container-fluid mx-auto d-none" style="min-height: 920px;">
-    <header>
-      <div class="container-fluid text-center" style="max-width: 27rem">
-        <img src="./img/sk1024_v6_unvisible.png" class="img-fluid rounded" style="max-width: 100%" alt="...">
-      </div>
-    </header>
+  <div id="login" class="container-fluid mx-auto d-none" style="min-height: 920px; height: 100vh">
+
+    <div class="alert alert-warning alert-danger fade show" role="alert">
+      <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
     <section id='sectionLoginFormMain'>
 
-      <section id="sectionLogin" class="">
+      <section id="sectionLogin" class="d-none">
+
+        <div class="container-fluid text-center" style="max-width: 27rem">
+          <img src="./img/sk1024_v6_unvisible.png" class="img-fluid rounded" style="max-width: 100%" alt="...">
+        </div>
+
         <div class="container-fluid">
           <h3 class="text-center text-primary">Вход</h3>
           <form id=loginForm class="mx-auto" style="max-width: 400px;">
             <div class="form-group">
-              <label for="loginInputLogin">Введите id или email</label>
-              <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите id или email">
+              <label for="loginInputLogin">Введите ID или email</label>
+              <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите ID или email">
             </div>
 
             <div id='loginCaptcha'></div>
@@ -42,13 +49,13 @@
 
             <div>
               <button id='loginButtonSubmit' type="submit" class="btn btn-primary w-100">Войти</button>
-
-              <div>
-                <button id='loginButtonForgot' type="button" class="btn btn-link">Забыли пароль?</button>
-              </div>
-
+              <button id='loginButtonForgot' type="button" class="btn btn-info w-100 mt-3">Забыли пароль?</button>
             </div>
-            <button id='loginButtonRegister' type="button" class="btn btn-link">Регистрация нового пользователя</button>
+
+            <div>
+
+              <button id='loginButtonRegister' type="button" class="btn btn-info w-100 mt-5">Регистрация нового пользователя</button>
+            </div>
           </form>
         </div>
       </section>
@@ -79,21 +86,55 @@
               <div id='registerCaptcha'></div>
 
 
-              <button id='registerButtonSubmit' type="submit" class="btn btn-success g-recaptcha" data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW" data-callback='onSubmit'>Регистрация</button>
-              <button id="registerButtonCancel" type="button" class="btn btn-danger">Отмена</button>
+              <div class="form-group">
+
+                <button id='registerButtonSubmit' type="submit" class="btn btn-danger w-100 mt-5" data-sitekey="6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW" data-callback='onSubmit'>Регистрация</button>
+                <button id="registerButtonCancel" type="button" class="btn btn-info w-100 mt-3">Отмена</button>
+
+              </div>
+
+              <div class="form-group mt-5">
+
+                <button type="button" class="btn btn-info w-100" data-toggle="modal" data-target="#exampleModalLong">
+                  <b>Cоглашение использования</b>
+                </button>
+
+              </div>
+
+              <div class="form-group mt-3 form-control-lg">
+                <input id="registerUserAgreement" type="checkbox" class="mr-4 ">
+                <label class="" for="registerUserAgreement">
+                  Я согласен!
+                </label>
+              </div>
+
             </form>
           </article>
 
-          <article>
+          <article class="mx-auto">
             <!-- Button trigger modal -->
-            <div class="input-group mx-auto mt-5" style="max-width: 27rem">
-              <span class="pt-2">
-              <input type="checkbox" id='registerUserAgreement' aria-label="Установите для согласия с пользовательским соглашением">
-            </span>
-              <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">
-              Принимаю соглашение пользователя
-            </button>
+            <div class="input-group c mt-5" style="max-width: 27rem">
+
+
+
+
+           <!-- <input type="checkbox" id='registerUserAgreement' aria-label="Установите для согласия с пользовательским соглашением"> -->
+
+
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
             <!-- Modal -->
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
               <div class="modal-dialog" role="document">
@@ -114,7 +155,6 @@
               </div>
             </div>
           </article>
-
         </div>
       </section>
 
@@ -129,13 +169,15 @@
 
             <div id="emailConfirmCaptcha" class="form-group"></div>
 
-            <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-success">Подтвердить</button>
-            <button id='emailConfirmButtonCancel' type="button" class="btn btn-danger">Отмена</button>
+             <div class="form-group">
+              <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-danger w-100">Подтвердить</button>
+              <button id='emailConfirmButtonCancel' type="button" class="btn btn-info w-100 mt-3">Отмена</button>
+            </div>
           </form>
         </div>
       </section>
 
-      <section id="sectionForgot" class="d-none mx-auto" style="max-width: 27rem">
+      <section id="sectionForgot" class="mx-auto d-none" style="max-width: 27rem">
         <div class="container-fluid">
           <h3 class="text-center text-primary">Восстановление пароля</h3>
           <form id='forgotForm' class="mx-auto" style="max-width: 27rem">
@@ -146,9 +188,9 @@
 
             <div id="forgotCaptcha" class="form-group"></div>
 
-            <div class="d-flex justify-content-between">
-              <button id='forgotButtonSubmit' type="submit" class="btn btn-success">Восстановить</button>
-              <button id='forgotButtonCancel' type="button" class="btn btn-danger">Отмена</button>
+            <div class="form-group">
+              <button id='forgotButtonSubmit' type="submit" class="btn btn-danger w-100">Восстановить</button>
+              <button id='forgotButtonCancel' type="button" class="btn btn-info w-100 mt-3">Отмена</button>
             </div>
 
           </form>
