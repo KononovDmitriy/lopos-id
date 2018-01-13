@@ -9,7 +9,6 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 400) {
     mainWindow.setAlert(response.message, 'message');
-    mainWindow.init();
   } else {
     mainWindow.setAlert(response.message, 'error');
   }

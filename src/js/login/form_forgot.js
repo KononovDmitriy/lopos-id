@@ -27,11 +27,12 @@ forgotForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
   if (forgot.validate(forgotInputEmail.value)) {
-    mainWindow.showProgress('forgotButtonSubmit', 'forgotProgress');
 
     if (!window.captchaErr) {
+      mainWindow.showProgress(false, 'forgotProgress');
       captcha.captchaExec(captchaId);
     } else {
+      mainWindow.showProgress('forgotButtonSubmit', 'forgotProgress');
       forgot.submit(forgotInputEmail.value);
     }
 

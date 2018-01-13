@@ -33,11 +33,11 @@ registerForm.addEventListener('submit', function (event) {
   if (register.validate(registerInputName.value, registerInputEmail.value, registerInputPassword.value,
     registerInputConfirmPassword.value, registerUserAgreement.checked)) {
 
-    mainWindow.showProgress('registerButtonSubmit', 'registerProgress');
-
     if (!window.captchaErr) {
+      mainWindow.showProgress(false, 'registerProgress');
       captcha.captchaExec(captchaId);
     } else {
+      mainWindow.showProgress('registerButtonSubmit', 'registerProgress');
       register.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value);
     }
 

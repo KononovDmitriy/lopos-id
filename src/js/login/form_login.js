@@ -30,11 +30,12 @@ loginForm.addEventListener('submit', function (event) {
   userLogin = formatLogin(loginInputLogin.value);
 
   if (login.validate(userLogin, loginInputPassword.value)) {
-    mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
 
     if (!window.captchaErr && captchaCount >= 3) {
+      mainWindow.showProgress(false, 'loginProgress');
       captcha.captchaExec(captchaId);
     } else {
+      mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
       login.submit(userLogin, loginInputPassword.value);
     }
   }

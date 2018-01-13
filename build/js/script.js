@@ -563,7 +563,17 @@
 	};
 	
 	var resetErrors = function resetErrors() {
-	  inputFieldsErrors;
+	  var errObj = Object.keys(inputFieldsErrors);
+	  var inObg = Object.keys(inputFields);
+	
+	  errObj.forEach(function (value) {
+	    inputFieldsErrors[value].innerHTML = '';
+	  });
+	
+	  inObg.forEach(function (value) {
+	    inputFields[value].classList.remove('border');
+	    inputFields[value].classList.remove('border-danger');
+	  });
 	};
 	
 	sectionLoginFormMain.addEventListener('change', function (event) {
@@ -578,6 +588,8 @@
 	});
 	
 	var formInit = function formInit() {
+	  globalAlert.innerHTML = '';
+	  resetErrors();
 	  _form_confirm_email2.default.reset();
 	  _form_register2.default.reset();
 	  _form_forgot2.default.reset();
@@ -586,10 +598,9 @@
 	  _form_register2.default.hide();
 	  _form_forgot2.default.hide();
 	  _form_login2.default.show();
-	  globalAlert.innerHTML = '';
 	};
 	
-	console.log('v47');
+	console.log('v49');
 	
 	_captcha2.default.init();
 	
@@ -620,7 +631,9 @@
 	
 	  showProgress: function showProgress(button, progress) {
 	    progressBar[progress].classList.remove('invisible');
-	    buttons[button].disabled = true;
+	    if (button) {
+	      buttons[button].disabled = true;
+	    }
 	  },
 	  hideProgress: function hideProgress(button, progress) {
 	    progressBar[progress].classList.add('invisible');
@@ -680,11 +693,12 @@
 	  userLogin = formatLogin(loginInputLogin.value);
 	
 	  if (_login2.default.validate(userLogin, loginInputPassword.value)) {
-	    _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
 	
 	    if (!window.captchaErr && captchaCount >= 3) {
+	      _main_login_window2.default.showProgress(false, 'loginProgress');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
+	      _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
 	      _login2.default.submit(userLogin, loginInputPassword.value);
 	    }
 	  }
@@ -766,7 +780,7 @@
 	
 	  if (response.status === 200) {
 	    if (response.data.status === '0') {
-	      _main_login_window2.default.setAlert('Ваш пользователь заблокирован, обратитесь к администратору', 'message');
+	      _main_login_window2.default.setAlert(window.appSettings.messages.responseStatus.res0, 'message');
 	    } else {
 	      _storage2.default.data = response.data;
 	      document.dispatchEvent(new Event('loginSuccess'));
@@ -778,7 +792,7 @@
 	
 	var callbackXhrError = function callbackXhrError(response) {
 	  _main_login_window2.default.hideProgress('loginButtonSubmit', 'loginProgress');
-	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
+	  _main_login_window2.default.setAlert(window.appSettings.messages.xhrError, 'error');
 	};
 	
 	var getRequestDataEmail = function getRequestDataEmail(userLogin, userPassword) {
@@ -825,13 +839,13 @@
 	  if (!validateData(validEmail, userLogin)) {
 	    if (!validateData(validId, userLogin)) {
 	      valid = false;
-	      _main_login_window2.default.setError('loginLogin', 'Неверный формат логина');
+	      _main_login_window2.default.setError('loginLogin', window.appSettings.messages.formValidation.login.login);
 	    }
 	  }
 	
 	  if (!validateData(validPassword, userPassword)) {
 	    valid = false;
-	    _main_login_window2.default.setError('loginPassword', 'Пароль должен быть длиннее 3-х символов');
+	    _main_login_window2.default.setError('loginPassword', window.appSettings.messages.formValidation.login.password);
 	  }
 	
 	  return valid;
@@ -888,7 +902,7 @@
 	
 	var captchaErrorCallback = function captchaErrorCallback(response) {
 	  window.captchaErr = true;
-	  _main_login_window2.default.setAlert('Ошибка соединения с сервером капчи', 'error');
+	  _main_login_window2.default.setAlert(window.appSettings.messages.captchaError, 'error');
 	};
 	
 	exports.default = {
@@ -975,11 +989,11 @@
 	
 	  if (_register2.default.validate(registerInputName.value, registerInputEmail.value, registerInputPassword.value, registerInputConfirmPassword.value, registerUserAgreement.checked)) {
 	
-	    _main_login_window2.default.showProgress('registerButtonSubmit', 'registerProgress');
-	
 	    if (!window.captchaErr) {
+	      _main_login_window2.default.showProgress(false, 'registerProgress');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
+	      _main_login_window2.default.showProgress('registerButtonSubmit', 'registerProgress');
 	      _register2.default.submit(registerInputName.value, registerInputEmail.value, registerInputPassword.value);
 	    }
 	  }
@@ -1059,7 +1073,7 @@
 	
 	var callbackXhrError = function callbackXhrError(response) {
 	  _main_login_window2.default.hideProgress('registerButtonSubmit', 'registerProgress');
-	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
+	  _main_login_window2.default.setAlert(window.appSettings.messages.xhrError, 'error');
 	};
 	
 	var validateName = function validateName(name) {
@@ -1098,27 +1112,27 @@
 	  var valid = true;
 	
 	  if (!validateName(name)) {
-	    _main_login_window2.default.setError('registerLogin', 'Имя!');
+	    _main_login_window2.default.setError('registerLogin', window.appSettings.messages.formValidation.registration.name);
 	    valid = false;
 	  }
 	
 	  if (!validateEmail(email)) {
-	    _main_login_window2.default.setError('registerEmail', 'Почта!');
+	    _main_login_window2.default.setError('registerEmail', window.appSettings.messages.formValidation.registration.email);
 	    valid = false;
 	  }
 	
 	  if (!validatePassword(password)) {
-	    _main_login_window2.default.setError('registerPassword', 'Пароль!');
+	    _main_login_window2.default.setError('registerPassword', window.appSettings.messages.formValidation.registration.password);
 	    valid = false;
 	  }
 	
 	  if (!validateConfirm(password, confirm)) {
-	    _main_login_window2.default.setError('registerConfirm', 'Не совпадает!');
+	    _main_login_window2.default.setError('registerConfirm', window.appSettings.messages.formValidation.registration.confirmPassword);
 	    valid = false;
 	  }
 	
 	  if (!userAgreement) {
-	    _main_login_window2.default.setError('registerUserAgreement', 'Соглашение');
+	    _main_login_window2.default.setError('registerUserAgreement', window.appSettings.messages.formValidation.registration.UserAgreement);
 	    valid = false;
 	  }
 	
@@ -1197,11 +1211,12 @@
 	  event.preventDefault();
 	
 	  if (_confirm_email2.default.validate(emailConfirmInputKey.value)) {
-	    _main_login_window2.default.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 	
 	    if (!window.captchaErr) {
+	      _main_login_window2.default.showProgress(false, 'confirmProgress');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
+	      _main_login_window2.default.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 	      _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
 	    }
 	  }
@@ -1266,7 +1281,7 @@
 	
 	  if (response.status === 200) {
 	    if (response.data.status === '0') {
-	      _main_login_window2.default.setAlert(response.message, 'message');
+	      _main_login_window2.default.setAlert(window.appSettings.messages.responseStatus.res0, 'message');
 	    } else {
 	      _storage2.default.data = response.data;
 	      document.dispatchEvent(new Event('loginSuccess'));
@@ -1278,7 +1293,7 @@
 	
 	var callbackXhrError = function callbackXhrError(response) {
 	  _main_login_window2.default.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
-	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
+	  _main_login_window2.default.setAlert(window.appSettings.messages.xhrError, 'error');
 	};
 	
 	var validateForm = function validateForm(kod) {
@@ -1286,7 +1301,7 @@
 	  if (kodVal.test(kod)) {
 	    return true;
 	  }
-	  _main_login_window2.default.setError('emailConfirmInputKey', 'Неверный формат кода!');
+	  _main_login_window2.default.setError('emailConfirmInputKey', window.appSettings.messages.formValidation.emailConfirm.key);
 	  return false;
 	};
 	
@@ -1363,11 +1378,12 @@
 	  event.preventDefault();
 	
 	  if (_forgot2.default.validate(forgotInputEmail.value)) {
-	    _main_login_window2.default.showProgress('forgotButtonSubmit', 'forgotProgress');
 	
 	    if (!window.captchaErr) {
+	      _main_login_window2.default.showProgress(false, 'forgotProgress');
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
+	      _main_login_window2.default.showProgress('forgotButtonSubmit', 'forgotProgress');
 	      _forgot2.default.submit(forgotInputEmail.value);
 	    }
 	  }
@@ -1428,7 +1444,6 @@
 	
 	  if (response.status === 400) {
 	    _main_login_window2.default.setAlert(response.message, 'message');
-	    _main_login_window2.default.init();
 	  } else {
 	    _main_login_window2.default.setAlert(response.message, 'error');
 	  }
@@ -1436,7 +1451,7 @@
 	
 	var callbackXhrError = function callbackXhrError(response) {
 	  _main_login_window2.default.hideProgress('forgotButtonSubmit', 'forgotProgress');
-	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
+	  _main_login_window2.default.setAlert(window.appSettings.messages.xhrError, 'error');
 	};
 	
 	var validateForm = function validateForm(email) {
@@ -1444,7 +1459,7 @@
 	  if (emailVal.test(email)) {
 	    return true;
 	  }
-	  _main_login_window2.default.setError('forgotInputEmail', 'Введите корректный email');
+	  _main_login_window2.default.setError('forgotInputEmail', window.appSettings.messages.formValidation.forgot.email);
 	  return false;
 	};
 	

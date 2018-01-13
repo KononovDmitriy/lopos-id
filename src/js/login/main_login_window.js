@@ -93,7 +93,6 @@ document.addEventListener('logoutSuccess', function () {
   formInit();
 });
 
-
 let formInit = function () {
   globalAlert.innerHTML = '';
   resetErrors();
@@ -107,7 +106,7 @@ let formInit = function () {
   formLogin.show();
 };
 
-console.log('v47');
+console.log('v49');
 
 captcha.init();
 
@@ -140,7 +139,9 @@ export default {
 
   showProgress(button, progress) {
     progressBar[progress].classList.remove('invisible');
-    buttons[button].disabled = true;
+    if (button) {
+      buttons[button].disabled = true;
+    }
   },
 
   hideProgress(button, progress) {

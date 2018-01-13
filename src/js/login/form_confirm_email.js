@@ -26,11 +26,12 @@ emailConfirmForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
   if (confirmEmail.validate(emailConfirmInputKey.value)) {
-    mainWindow.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 
     if (!window.captchaErr) {
+      mainWindow.showProgress(false, 'confirmProgress');
       captcha.captchaExec(captchaId);
     } else {
+      mainWindow.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
       confirmEmail.submit(emailConfirmInputKey.value, registerInputEmail.value);
     }
 
