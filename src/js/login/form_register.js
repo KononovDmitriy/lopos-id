@@ -17,6 +17,8 @@ let captchaId = 'NO';
 
 let captchaCallback = function () {
 
+  mainWindow.showProgress('registerButtonSubmit', 'registerProgress');
+
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
   }
@@ -30,6 +32,8 @@ registerForm.addEventListener('submit', function (event) {
 
   if (register.validate(registerInputName.value, registerInputEmail.value, registerInputPassword.value,
     registerInputConfirmPassword.value, registerUserAgreement.checked)) {
+
+    mainWindow.showProgress('registerButtonSubmit', 'registerProgress');
 
     if (!window.captchaErr) {
       captcha.captchaExec(captchaId);

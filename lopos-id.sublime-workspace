@@ -4,8 +4,12 @@
 		"selected_items":
 		[
 			[
-				"set",
-				"setCustomValidity"
+				"d",
+				"div\tTag"
+			],
+			[
+				"c",
+				"capId"
 			],
 			[
 				"a",
@@ -24,6 +28,10 @@
 				"dataStorage"
 			],
 			[
+				"set",
+				"setStorage"
+			],
+			[
 				"se",
 				"sessionStorage"
 			],
@@ -34,10 +42,6 @@
 			[
 				"va",
 				"value"
-			],
-			[
-				"d",
-				"directory"
 			],
 			[
 				"fun",
@@ -64,65 +68,30 @@
 	"buffers":
 	[
 		{
-			"file": "src/js/login/form_forgot.js",
-			"settings":
-			{
-				"buffer_size": 1552,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/js/login/form_register.js",
-			"settings":
-			{
-				"buffer_size": 2385,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/js/login/main_login_window.js",
 			"settings":
 			{
-				"buffer_size": 1005,
+				"buffer_size": 4495,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/js/tools/captcha.js",
-			"settings":
-			{
-				"buffer_size": 912,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/js/login/forgot.js",
-			"settings":
-			{
-				"buffer_size": 1060,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
+			"contents": "donmixa@gmail.com\n60-0a-53-57-1\n\nPass_e116\n\n6LcCxT8UAAAAADePAfRygUpreEvUj6J8oMWRE0JW\n",
 			"file": "login.txt",
+			"file_size": 91,
+			"file_write_time": 131603050618827600,
 			"settings":
 			{
 				"buffer_size": 85,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "donmixa@gmail.com"
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/js/tools/storage.js",
+			"file": "src/index.html",
 			"settings":
 			{
-				"buffer_size": 1200,
+				"buffer_size": 19164,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -152,7 +121,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 392.0
+		"width": 444.0
 	},
 	"console":
 	{
@@ -180,22 +149,21 @@
 	],
 	"file_history":
 	[
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/confirm_email.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_login.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/captcha.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_register.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/index.html",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/main.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/settings/settings.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/register.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_forgot.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_confirm_email.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/build/js/block.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/login.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/tools/captcha.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/.eslintrc.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/main.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/main_login_window.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/confirm_email.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/register.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/login.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/forgot.js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/login.txt",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/settings/settings.js",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID_START_TEST/js/login.js",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/form_register.js",
 		"/D/USERS/kds/Desktop/captcha.html",
 		"/D/USERS/kds/Desktop/invcaptcha.html",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/login/reCaptcha.js",
@@ -274,7 +242,7 @@
 	],
 	"find":
 	{
-		"height": 30.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
@@ -288,6 +256,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"firstScreen",
+			"console",
+			"import",
+			"console",
+			"import",
+			"console",
+			"condole",
+			"\n      ",
+			"console",
 			"window.appSettings.loginValid.password",
 			"window.appSettings.loginValid.email",
 			"window.appSettings.loginValid.id",
@@ -368,88 +345,16 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/js/login/form_forgot.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1552,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/js/login/form_register.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2385,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 66.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "src/js/login/main_login_window.js",
-					"semi_transient": false,
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1005,
+						"buffer_size": 4495,
 						"regions":
 						{
 						},
@@ -478,87 +383,15 @@
 					},
 					"stack_index": 0,
 					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/js/tools/captcha.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 912,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
-					"buffer": 4,
-					"file": "src/js/login/forgot.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1060,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
+					"buffer": 1,
 					"file": "login.txt",
 					"semi_transient": false,
 					"settings":
@@ -570,13 +403,12 @@
 						"selection":
 						[
 							[
-								38,
-								38
+								43,
+								33
 							]
 						],
 						"settings":
 						{
-							"auto_name": "donmixa@gmail.com",
 							"editorconfig": true,
 							"ensure_newline_at_eof_on_save": true,
 							"incomplete_sync": null,
@@ -591,16 +423,16 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "src/js/tools/storage.js",
+					"buffer": 2,
+					"file": "src/index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1200,
+						"buffer_size": 19164,
 						"regions":
 						{
 						},
@@ -618,7 +450,7 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true,
 							"trim_trailing_white_space_on_save": true
@@ -627,7 +459,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -661,7 +493,7 @@
 		"cols":
 		[
 			0.0,
-			0.515201995758,
+			0.397318177028,
 			1.0
 		],
 		"rows":
@@ -695,7 +527,7 @@
 	"project": "lopos-id.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 78.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -737,7 +569,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 220.0,
+	"side_bar_width": 262.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

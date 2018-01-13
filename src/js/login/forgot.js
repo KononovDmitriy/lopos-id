@@ -5,6 +5,7 @@ const emailVal = window.appSettings.forgotEmailValid;
 const urlApi = window.appSettings.forgotUrlApi;
 
 let callbackXhrSuccess = function (response) {
+  mainWindow.hideProgress('forgotButtonSubmit', 'forgotProgress');
 
   if (response.status === 400) {
     mainWindow.setAlert(response.message, 'message');
@@ -12,6 +13,11 @@ let callbackXhrSuccess = function (response) {
   } else {
     mainWindow.setAlert(response.message, 'error');
   }
+};
+
+let callbackXhrError = function (response) {
+  mainWindow.hideProgress('forgotButtonSubmit', 'forgotProgress');
+  mainWindow.setAlert('Ошибка связи', 'error');
 };
 
 let validateForm = function (email) {
@@ -31,7 +37,7 @@ let getRequestData = function (email) {
     metod: 'POST',
     data: requestData,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: window.callbackXhrError
+    callbackError: callbackXhrError
   };
 };
 

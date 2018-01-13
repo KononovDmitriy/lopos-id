@@ -13,6 +13,7 @@ const registerInputEmail = document.querySelector('#registerInputEmail');
 let captchaId = 'NO';
 
 let captchaCallback = function () {
+  mainWindow.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
@@ -25,12 +26,12 @@ emailConfirmForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
   if (confirmEmail.validate(emailConfirmInputKey.value)) {
+    mainWindow.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 
     if (!window.captchaErr) {
       captcha.captchaExec(captchaId);
     } else {
       confirmEmail.submit(emailConfirmInputKey.value, registerInputEmail.value);
-      mainWindow.init();
     }
 
   }

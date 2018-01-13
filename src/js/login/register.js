@@ -6,6 +6,7 @@ const regUrlApi = window.appSettings.registerUrlApi;
 
 let callbackXhrSuccess = function (response) {
 
+  mainWindow.hideProgress('registerButtonSubmit', 'registerProgress');
   switch (response.status) {
 
   case 200:
@@ -16,6 +17,11 @@ let callbackXhrSuccess = function (response) {
     mainWindow.setAlert(response.message, 'error');
     break;
   }
+};
+
+let callbackXhrError = function (response) {
+  mainWindow.hideProgress('registerButtonSubmit', 'registerProgress');
+  mainWindow.setAlert('Ошибка связи', 'error');
 };
 
 let validateName = function (name) {
@@ -92,7 +98,7 @@ let getRequestData = function (name, email, password) {
     metod: 'POST',
     data: requestData,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: window.callbackXhrError
+    callbackError: callbackXhrError
   };
 };
 

@@ -27,12 +27,10 @@ let captchaCallback = function () {
 
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
-
   userLogin = formatLogin(loginInputLogin.value);
 
-  mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
-
   if (login.validate(userLogin, loginInputPassword.value)) {
+    mainWindow.showProgress('loginButtonSubmit', 'loginProgress');
 
     if (!window.captchaErr && captchaCount >= 3) {
       captcha.captchaExec(captchaId);

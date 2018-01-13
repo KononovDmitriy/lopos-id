@@ -533,10 +533,10 @@
 	};
 	
 	var progressBar = {
-	  'loginProgress': sectionLoginFormMain.querySelector('#registerInputName'),
+	  'loginProgress': sectionLoginFormMain.querySelector('#loginProgress'),
 	  'registerProgress': sectionLoginFormMain.querySelector('#registerProgress'),
 	  'confirmProgress': sectionLoginFormMain.querySelector('#confirmProgress'),
-	  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
+	  'forgotProgress': sectionLoginFormMain.querySelector('#forgotProgress')
 	};
 	
 	var buttons = {
@@ -562,6 +562,10 @@
 	  globalAlert.innerHTML = globalAlert.innerHTML + ('<div id="globalAlert" class="alert ' + msgClass + ' fade show" role="alert">\n      <strong>' + msgType + ' </strong> ' + msg + '\n      <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n        <span aria-hidden="true">&times;</span>\n      </button>\n    </div>');
 	};
 	
+	var resetErrors = function resetErrors() {
+	  inputFieldsErrors;
+	};
+	
 	sectionLoginFormMain.addEventListener('change', function (event) {
 	
 	  inputFieldsErrors[event.target.dataset.erreset].innerHTML = '';
@@ -582,11 +586,7 @@
 	  _form_register2.default.hide();
 	  _form_forgot2.default.hide();
 	  _form_login2.default.show();
-	};
-	
-	window.callbackXhrError = function (response) {
-	
-	  setGlobalAlert('Ошибка связи', 'error');
+	  globalAlert.innerHTML = '';
 	};
 	
 	console.log('v47');
@@ -620,7 +620,11 @@
 	
 	  showProgress: function showProgress(button, progress) {
 	    progressBar[progress].classList.remove('invisible');
-	    buttons[button].disable = true;
+	    buttons[button].disabled = true;
+	  },
+	  hideProgress: function hideProgress(button, progress) {
+	    progressBar[progress].classList.add('invisible');
+	    buttons[button].disabled = false;
 	  }
 	};
 
@@ -673,12 +677,10 @@
 	
 	loginForm.addEventListener('submit', function (event) {
 	  event.preventDefault();
-	
 	  userLogin = formatLogin(loginInputLogin.value);
 	
-	  _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
-	
 	  if (_login2.default.validate(userLogin, loginInputPassword.value)) {
+	    _main_login_window2.default.showProgress('loginButtonSubmit', 'loginProgress');
 	
 	    if (!window.captchaErr && captchaCount >= 3) {
 	      _captcha2.default.captchaExec(captchaId);
@@ -760,6 +762,7 @@
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	  _form_login2.default.addCaptchaCount();
+	  _main_login_window2.default.hideProgress('loginButtonSubmit', 'loginProgress');
 	
 	  if (response.status === 200) {
 	    if (response.data.status === '0') {
@@ -773,6 +776,11 @@
 	  }
 	};
 	
+	var callbackXhrError = function callbackXhrError(response) {
+	  _main_login_window2.default.hideProgress('loginButtonSubmit', 'loginProgress');
+	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
+	};
+	
 	var getRequestDataEmail = function getRequestDataEmail(userLogin, userPassword) {
 	  var dataApi = 'email=' + userLogin + '&deviceToken=-&password=' + userPassword;
 	  return {
@@ -780,7 +788,7 @@
 	    metod: 'POST',
 	    data: dataApi,
 	    callbackSuccess: callbackXhrSuccess,
-	    callbackError: window.callbackXhrError
+	    callbackError: callbackXhrError
 	  };
 	};
 	
@@ -953,6 +961,8 @@
 	
 	var captchaCallback = function captchaCallback() {
 	
+	  _main_login_window2.default.showProgress('registerButtonSubmit', 'registerProgress');
+	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
 	  }
@@ -964,6 +974,8 @@
 	  event.preventDefault();
 	
 	  if (_register2.default.validate(registerInputName.value, registerInputEmail.value, registerInputPassword.value, registerInputConfirmPassword.value, registerUserAgreement.checked)) {
+	
+	    _main_login_window2.default.showProgress('registerButtonSubmit', 'registerProgress');
 	
 	    if (!window.captchaErr) {
 	      _captcha2.default.captchaExec(captchaId);
@@ -1032,6 +1044,7 @@
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	
+	  _main_login_window2.default.hideProgress('registerButtonSubmit', 'registerProgress');
 	  switch (response.status) {
 	
 	    case 200:
@@ -1042,6 +1055,11 @@
 	      _main_login_window2.default.setAlert(response.message, 'error');
 	      break;
 	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError(response) {
+	  _main_login_window2.default.hideProgress('registerButtonSubmit', 'registerProgress');
+	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
 	};
 	
 	var validateName = function validateName(name) {
@@ -1114,7 +1132,7 @@
 	    metod: 'POST',
 	    data: requestData,
 	    callbackSuccess: callbackXhrSuccess,
-	    callbackError: window.callbackXhrError
+	    callbackError: callbackXhrError
 	  };
 	};
 	
@@ -1166,6 +1184,7 @@
 	var captchaId = 'NO';
 	
 	var captchaCallback = function captchaCallback() {
+	  _main_login_window2.default.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
@@ -1178,12 +1197,12 @@
 	  event.preventDefault();
 	
 	  if (_confirm_email2.default.validate(emailConfirmInputKey.value)) {
+	    _main_login_window2.default.showProgress('emailConfirmButtonSubmit', 'confirmProgress');
 	
 	    if (!window.captchaErr) {
 	      _captcha2.default.captchaExec(captchaId);
 	    } else {
 	      _confirm_email2.default.submit(emailConfirmInputKey.value, registerInputEmail.value);
-	      _main_login_window2.default.init();
 	    }
 	  }
 	});
@@ -1243,11 +1262,11 @@
 	var urlApi = window.appSettings.confirmEmailUrlApi;
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	  _main_login_window2.default.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
 	
 	  if (response.status === 200) {
 	    if (response.data.status === '0') {
 	      _main_login_window2.default.setAlert(response.message, 'message');
-	      _main_login_window2.default.init();
 	    } else {
 	      _storage2.default.data = response.data;
 	      document.dispatchEvent(new Event('loginSuccess'));
@@ -1255,6 +1274,11 @@
 	  } else {
 	    _main_login_window2.default.setAlert(response.message, 'error');
 	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError(response) {
+	  _main_login_window2.default.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
+	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
 	};
 	
 	var validateForm = function validateForm(kod) {
@@ -1274,7 +1298,7 @@
 	    metod: 'POST',
 	    data: requestData,
 	    callbackSuccess: callbackXhrSuccess,
-	    callbackError: window.callbackXhrError
+	    callbackError: callbackXhrError
 	  };
 	};
 	
@@ -1326,6 +1350,8 @@
 	
 	var captchaCallback = function captchaCallback() {
 	
+	  _main_login_window2.default.showProgress('forgotButtonSubmit', 'forgotProgress');
+	
 	  if (_captcha2.default.getResponse(captchaId)) {
 	    _captcha2.default.catchaReset(captchaId);
 	  }
@@ -1337,6 +1363,7 @@
 	  event.preventDefault();
 	
 	  if (_forgot2.default.validate(forgotInputEmail.value)) {
+	    _main_login_window2.default.showProgress('forgotButtonSubmit', 'forgotProgress');
 	
 	    if (!window.captchaErr) {
 	      _captcha2.default.captchaExec(captchaId);
@@ -1397,6 +1424,7 @@
 	var urlApi = window.appSettings.forgotUrlApi;
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	  _main_login_window2.default.hideProgress('forgotButtonSubmit', 'forgotProgress');
 	
 	  if (response.status === 400) {
 	    _main_login_window2.default.setAlert(response.message, 'message');
@@ -1404,6 +1432,11 @@
 	  } else {
 	    _main_login_window2.default.setAlert(response.message, 'error');
 	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError(response) {
+	  _main_login_window2.default.hideProgress('forgotButtonSubmit', 'forgotProgress');
+	  _main_login_window2.default.setAlert('Ошибка связи', 'error');
 	};
 	
 	var validateForm = function validateForm(email) {
@@ -1423,7 +1456,7 @@
 	    metod: 'POST',
 	    data: requestData,
 	    callbackSuccess: callbackXhrSuccess,
-	    callbackError: window.callbackXhrError
+	    callbackError: callbackXhrError
 	  };
 	};
 	

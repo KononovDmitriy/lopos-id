@@ -32,10 +32,10 @@ const inputFieldsErrors = {
 };
 
 const progressBar = {
-  'loginProgress': sectionLoginFormMain.querySelector('#registerInputName'),
+  'loginProgress': sectionLoginFormMain.querySelector('#loginProgress'),
   'registerProgress': sectionLoginFormMain.querySelector('#registerProgress'),
   'confirmProgress': sectionLoginFormMain.querySelector('#confirmProgress'),
-  'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
+  'forgotProgress': sectionLoginFormMain.querySelector('#forgotProgress')
 };
 
 const buttons = {
@@ -66,6 +66,10 @@ let setGlobalAlert = function (msg, type) {
     </div>`;
 };
 
+let resetErrors = function () {
+  inputFieldsErrors
+};
+
 sectionLoginFormMain.addEventListener('change', function (event) {
 
   inputFieldsErrors[event.target.dataset.erreset].innerHTML = '';
@@ -88,11 +92,7 @@ let formInit = function () {
   formRegister.hide();
   formForgot.hide();
   formLogin.show();
-};
-
-window.callbackXhrError = function (response) {
-
-  setGlobalAlert('Ошибка связи', 'error');
+  globalAlert.innerHTML = '';
 };
 
 console.log('v47');
@@ -128,6 +128,13 @@ export default {
 
   showProgress(button, progress) {
     progressBar[progress].classList.remove('invisible');
-    buttons[button].disable = true;
+    buttons[button].disabled = true;
+  },
+
+  hideProgress(button, progress) {
+    progressBar[progress].classList.add('invisible');
+    buttons[button].disabled = false;
   }
+
+
 };

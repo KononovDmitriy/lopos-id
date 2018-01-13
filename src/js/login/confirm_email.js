@@ -6,11 +6,11 @@ const kodVal = window.appSettings.confirmEmailKodValid;
 const urlApi = window.appSettings.confirmEmailUrlApi;
 
 let callbackXhrSuccess = function (response) {
+  mainWindow.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
 
   if (response.status === 200) {
     if (response.data.status === '0') {
       mainWindow.setAlert(response.message, 'message');
-      mainWindow.init();
     } else {
       dataStorage.data = response.data;
       document.dispatchEvent(new Event('loginSuccess'));
@@ -18,6 +18,11 @@ let callbackXhrSuccess = function (response) {
   } else {
     mainWindow.setAlert(response.message, 'error');
   }
+};
+
+let callbackXhrError = function (response) {
+  mainWindow.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
+  mainWindow.setAlert('Ошибка связи', 'error');
 };
 
 let validateForm = function (kod) {
@@ -37,7 +42,7 @@ let getRequestData = function (kod, email) {
     metod: 'POST',
     data: requestData,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: window.callbackXhrError
+    callbackError: callbackXhrError
   };
 };
 

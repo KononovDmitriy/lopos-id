@@ -13,6 +13,8 @@ let captchaId = 'NO';
 
 let captchaCallback = function () {
 
+  mainWindow.showProgress('forgotButtonSubmit', 'forgotProgress');
+
   if (captcha.getResponse(captchaId)) {
     captcha.catchaReset(captchaId);
   }
@@ -25,6 +27,7 @@ forgotForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
   if (forgot.validate(forgotInputEmail.value)) {
+    mainWindow.showProgress('forgotButtonSubmit', 'forgotProgress');
 
     if (!window.captchaErr) {
       captcha.captchaExec(captchaId);

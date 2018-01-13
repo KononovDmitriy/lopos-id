@@ -9,6 +9,7 @@ const validPassword = window.appSettings.loginValid.password;
 
 let callbackXhrSuccess = function (response) {
   form.addCaptchaCount();
+  mainWindow.hideProgress('loginButtonSubmit', 'loginProgress');
 
   if (response.status === 200) {
     if (response.data.status === '0') {
@@ -22,6 +23,11 @@ let callbackXhrSuccess = function (response) {
   }
 };
 
+let callbackXhrError = function (response) {
+  mainWindow.hideProgress('loginButtonSubmit', 'loginProgress');
+  mainWindow.setAlert('Ошибка связи', 'error');
+};
+
 let getRequestDataEmail = function (userLogin, userPassword) {
   let dataApi = `email=${userLogin}&deviceToken=-&password=${userPassword}`;
   return {
@@ -29,7 +35,7 @@ let getRequestDataEmail = function (userLogin, userPassword) {
     metod: 'POST',
     data: dataApi,
     callbackSuccess: callbackXhrSuccess,
-    callbackError: window.callbackXhrError
+    callbackError: callbackXhrError
   };
 };
 
