@@ -17,7 +17,7 @@ let callbackXhrSuccess = function (response) {
 
 let callbackXhrError = function (response) {
   mainWindow.hideProgress('forgotButtonSubmit', 'forgotProgress');
-  mainWindow.setAlert('Ошибка связи', 'error');
+  mainWindow.setAlert(window.appSettings.messages.xhrError, 'error');
 };
 
 let validateForm = function (email) {
@@ -25,7 +25,8 @@ let validateForm = function (email) {
   if (emailVal.test(email)) {
     return true;
   }
-  mainWindow.setError('forgotInputEmail', 'Введите корректный email');
+  mainWindow.setError('forgotInputEmail',
+    window.appSettings.messages.formValidation.forgot.email);
   return false;
 };
 

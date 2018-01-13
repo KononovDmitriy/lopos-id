@@ -45,6 +45,7 @@ const buttons = {
   'forgotButtonSubmit': sectionLoginFormMain.querySelector('#forgotButtonSubmit')
 };
 
+
 let setGlobalAlert = function (msg, type) {
   let msgType;
   let msgClass;
@@ -67,7 +68,17 @@ let setGlobalAlert = function (msg, type) {
 };
 
 let resetErrors = function () {
-  inputFieldsErrors
+  let errObj = Object.keys(inputFieldsErrors);
+  let inObg = Object.keys(inputFields);
+
+  errObj.forEach(function (value) {
+    inputFieldsErrors[value].innerHTML = '';
+  });
+
+  inObg.forEach(function (value) {
+    inputFields[value].classList.remove('border');
+    inputFields[value].classList.remove('border-danger');
+  });
 };
 
 sectionLoginFormMain.addEventListener('change', function (event) {
@@ -84,6 +95,8 @@ document.addEventListener('logoutSuccess', function () {
 
 
 let formInit = function () {
+  globalAlert.innerHTML = '';
+  resetErrors();
   formConfirmEmail.reset();
   formRegister.reset();
   formForgot.reset();
@@ -92,7 +105,6 @@ let formInit = function () {
   formRegister.hide();
   formForgot.hide();
   formLogin.show();
-  globalAlert.innerHTML = '';
 };
 
 console.log('v47');

@@ -21,7 +21,7 @@ let callbackXhrSuccess = function (response) {
 
 let callbackXhrError = function (response) {
   mainWindow.hideProgress('registerButtonSubmit', 'registerProgress');
-  mainWindow.setAlert('Ошибка связи', 'error');
+  mainWindow.setAlert(window.appSettings.messages.xhrError, 'error');
 };
 
 let validateName = function (name) {
@@ -64,27 +64,32 @@ let validateForm = function (name, email, password, confirm, userAgreement) {
   let valid = true;
 
   if (!validateName(name)) {
-    mainWindow.setError('registerLogin', 'Имя!');
+    mainWindow.setError('registerLogin',
+      window.appSettings.messages.formValidation.registration.name);
     valid = false;
   }
 
   if (!validateEmail(email)) {
-    mainWindow.setError('registerEmail', 'Почта!');
+    mainWindow.setError('registerEmail',
+      window.appSettings.messages.formValidation.registration.email);
     valid = false;
   }
 
   if (!validatePassword(password)) {
-    mainWindow.setError('registerPassword', 'Пароль!');
+    mainWindow.setError('registerPassword',
+      window.appSettings.messages.formValidation.registration.password);
     valid = false;
   }
 
   if (!validateConfirm(password, confirm)) {
-    mainWindow.setError('registerConfirm', 'Не совпадает!');
+    mainWindow.setError('registerConfirm',
+      window.appSettings.messages.formValidation.registration.confirmPassword);
     valid = false;
   }
 
   if (!userAgreement) {
-    mainWindow.setError('registerUserAgreement', 'Соглашение');
+    mainWindow.setError('registerUserAgreement',
+      window.appSettings.messages.formValidation.registration.UserAgreement);
     valid = false;
   }
 

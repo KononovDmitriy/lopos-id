@@ -10,7 +10,7 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 200) {
     if (response.data.status === '0') {
-      mainWindow.setAlert(response.message, 'message');
+      mainWindow.setAlert(window.appSettings.messages.responseStatus.res0, 'message');
     } else {
       dataStorage.data = response.data;
       document.dispatchEvent(new Event('loginSuccess'));
@@ -22,7 +22,7 @@ let callbackXhrSuccess = function (response) {
 
 let callbackXhrError = function (response) {
   mainWindow.hideProgress('emailConfirmButtonSubmit', 'confirmProgress');
-  mainWindow.setAlert('Ошибка связи', 'error');
+  mainWindow.setAlert(window.appSettings.messages.xhrError, 'error');
 };
 
 let validateForm = function (kod) {
@@ -30,7 +30,8 @@ let validateForm = function (kod) {
   if (kodVal.test(kod)) {
     return true;
   }
-  mainWindow.setError('emailConfirmInputKey', 'Неверный формат кода!');
+  mainWindow.setError('emailConfirmInputKey',
+    window.appSettings.messages.formValidation.emailConfirm.key);
   return false;
 };
 

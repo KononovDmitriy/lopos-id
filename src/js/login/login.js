@@ -13,7 +13,7 @@ let callbackXhrSuccess = function (response) {
 
   if (response.status === 200) {
     if (response.data.status === '0') {
-      mainWindow.setAlert('Ваш пользователь заблокирован, обратитесь к администратору', 'message');
+      mainWindow.setAlert(window.appSettings.messages.responseStatus.res0, 'message');
     } else {
       dataStorage.data = response.data;
       document.dispatchEvent(new Event('loginSuccess'));
@@ -25,7 +25,7 @@ let callbackXhrSuccess = function (response) {
 
 let callbackXhrError = function (response) {
   mainWindow.hideProgress('loginButtonSubmit', 'loginProgress');
-  mainWindow.setAlert('Ошибка связи', 'error');
+  mainWindow.setAlert(window.appSettings.messages.xhrError, 'error');
 };
 
 let getRequestDataEmail = function (userLogin, userPassword) {
@@ -72,13 +72,15 @@ let validateForm = function (userLogin, userPassword) {
   if (!validateData(validEmail, userLogin)) {
     if (!validateData(validId, userLogin)) {
       valid = false;
-      mainWindow.setError('loginLogin', 'Неверный формат логина');
+      mainWindow.setError('loginLogin',
+        window.appSettings.messages.formValidation.login.login);
     }
   }
 
   if (!validateData(validPassword, userPassword)) {
     valid = false;
-    mainWindow.setError('loginPassword', 'Пароль должен быть длиннее 3-х символов');
+    mainWindow.setError('loginPassword',
+      window.appSettings.messages.formValidation.login.password);
   }
 
   return valid;

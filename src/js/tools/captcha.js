@@ -6,7 +6,7 @@ import mainWindow from './../login/main_login_window.js';
 
 let captchaErrorCallback = function (response) {
   window.captchaErr = true;
-  mainWindow.setAlert('Ошибка соединения с сервером капчи', 'error');
+  mainWindow.setAlert(window.appSettings.messages.captchaError, 'error');
 };
 
 export default {
