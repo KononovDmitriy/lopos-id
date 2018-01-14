@@ -600,7 +600,7 @@
 	  _form_login2.default.show();
 	};
 	
-	console.log('v49');
+	console.log('v51');
 	
 	_captcha2.default.init();
 	
@@ -1004,7 +1004,8 @@
 	});
 	
 	registerButtonUserAgreement.addEventListener('click', function () {
-	  window.location = 'http://bidone.ru/lopos_terms_and_agreements';
+	  // window.location = 'http://bidone.ru/lopos_terms_and_agreements';
+	  window.open('http://bidone.ru/lopos_terms_and_agreements');
 	});
 	
 	exports.default = {

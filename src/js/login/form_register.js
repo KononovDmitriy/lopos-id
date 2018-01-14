@@ -50,7 +50,8 @@ registerButtonCancel.addEventListener('click', function () {
 });
 
 registerButtonUserAgreement.addEventListener('click', function () {
-  window.location = 'http://bidone.ru/lopos_terms_and_agreements';
+  // window.location = 'http://bidone.ru/lopos_terms_and_agreements';
+  window.open('http://bidone.ru/lopos_terms_and_agreements');
 });
 
 export default {

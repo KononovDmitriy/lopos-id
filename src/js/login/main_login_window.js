@@ -106,7 +106,7 @@ let formInit = function () {
   formLogin.show();
 };
 
-console.log('v49');
+console.log('v51');
 
 captcha.init();
 
