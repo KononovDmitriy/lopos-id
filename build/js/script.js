@@ -64,7 +64,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('v52');
+	console.log('v55');
 	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
