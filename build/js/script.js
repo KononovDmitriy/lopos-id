@@ -64,6 +64,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	console.log('v52');
+	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
 	var login = document.querySelector('#login');
@@ -599,8 +601,6 @@
 	  _form_forgot2.default.hide();
 	  _form_login2.default.show();
 	};
-	
-	console.log('v51');
 	
 	_captcha2.default.init();
 	
