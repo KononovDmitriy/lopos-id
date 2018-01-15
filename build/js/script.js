@@ -64,7 +64,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('v55');
+	console.log('v54');
 	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
@@ -80,12 +80,71 @@
 	  app.classList.remove('d-none');
 	};
 	
+	var initMarkup = function initMarkup() {
+	  // чистим меню
+	  document.querySelectorAll('.nav-link').forEach(function (item) {
+	    return item.classList.remove('active');
+	  });
+	  document.querySelectorAll('.nav-item.dropdown').forEach(function (item) {
+	    return item.classList.remove('show');
+	  });
+	
+	  // чистим вкладки
+	  document.querySelectorAll('.tab-pane').forEach(function (item) {
+	    return item.classList.add('fade');
+	  });
+	
+	  // чистим вкладки
+	  document.querySelectorAll('.dropdown-item').forEach(function (item) {
+	    return item.classList.remove('active');
+	  });
+	  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-selected', 'false'));
+	  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-expanded', 'false'));
+	};
+	
+	var hashObserver = function hashObserver() {
+	  switch (window.location.hash) {
+	    case '#list-log':
+	
+	      document.querySelector('#list-log-list').dispatchEvent(new Event('click'));
+	      document.querySelector('#list-log-list').classList.add('active');
+	      document.querySelector('#list-log').classList.add('active');
+	      document.querySelector('#list-log').classList.remove('fade');
+	      console.log('log-list');
+	      break;
+	    case '#list-profile':
+	      document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
+	      document.querySelector('#list-profile-list').classList.add('active');
+	      document.querySelector('#list-online-list').classList.add('active');
+	      document.querySelector('#list-profile').classList.add('active');
+	      document.querySelector('#list-profile').classList.remove('fade');
+	      console.log('log-profile');
+	      break;
+	
+	    default:
+	      /*
+	      document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
+	      document.querySelector('#list-profile-list').classList.add('active');
+	      document.querySelector('#list-online-list').classList.add('active');
+	      document.querySelector('#list-profile').classList.add('active');
+	      document.querySelector('#list-profile').classList.remove('fade');
+	      console.log('log-profile2');
+	      */
+	      break;
+	
+	  }
+	};
+	
 	// ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 	var start = function start() {
 	  if (_storage2.default.isSetFlag) {
+	    console.log('hi');
 	    showAppHideLogin();
 	    _onlineProfile2.default.start();
 	    _log2.default.start();
+	    initMarkup();
+	    // window.location.hash = '#list-profile';
+	    hashObserver();
 	  } else {
 	    showLoginHideApp();
 	    _main_login_window2.default.init();
@@ -98,15 +157,57 @@
 	  _log2.default.stop();
 	  _onlineProfile2.default.stop();
 	  _storage2.default.clean();
+	  window.location.hash = '';
 	  document.dispatchEvent(new Event('logoutSuccess'));
 	};
 	
 	// ========== НАЧАЛО РАБОТЫ ==========
+	initMarkup();
+	hashObserver();
 	start();
 	document.addEventListener('loginSuccess', start);
 	
+	/*
+	if (window.location.hash) {
+	  document.querySelector(window.location.hash).dispatchEvent(new Event('click'));
+	} else {
+	  document.querySelector('#list-profile').dispatchEvent(new Event('click'));
+	}
+	*/
 	// ========== ЗАВЕРШЕНИЕ РАБОТЫ ==========
 	exit.addEventListener('click', stop);
+	
+	/*
+	
+	Возможные сценарии запуска приложения:
+
+	1. Обновление страницы в ходе работы после успешной авторизации
+	2. Открытие страницы в новой вкладке + авторизация
+	3. Открытие страницы в новой вкладке + регистрация
+	4. Выход и новая регистрация без перезагрузки страницы в той же вкладке
+
+	NB1: на старте оба контейнера (app и login) скрыты
+	NB2: событие loginSuccess создается в модулях confirm_email.js и login.js
+
+	Алгоритм:
+	(1)
+	 - проверяем sessionStorage и авторизацию, если данные пользователя есть, то выполняем функцию start:
+	    - показываем контейнер app и прячем login
+	    - запускаем profileButton, чтобы заново записать в Онлайн/Профиль данные пользователя
+	    - запускаем logButton, который при клике на кнопку журнала начнет грузить данные
+	 (2,3)
+	 - показываем контейнер login
+	 - mainWindow.firstScreen() =?= может переименуем его во что-то типа authority =?=
+	 - слушаем возникновение события loginSuccess на документе и выполняем функцию start (см. п.1)
+	 событие loginSuccess вызывается модулями авторизации/регистрации и сообщает нам, что данная процедура пройдена
+	 (4)
+	 - слушаем click по кнопке exit и обрабатываем выход, запустив функцию stop:
+	    - прячем контейнер app и показываем login
+	    - останавливаем модуль с журналом: чистим счетчики, кэш неотрисованных нод, прячем все сообщения о процессе загрузки и чистим контейнер, чистим обработчики клика и скролла
+	    - чистим sessionStorage
+	    - создаем событие logoutSuccess на document, по которому можно сделать все необходимое с формой авторизации
+
+	*/
 
 /***/ }),
 /* 1 */
@@ -127,8 +228,8 @@
 	    localStorage.setItem('directory', loadedData.directory);
 	    localStorage.setItem('operatorId', loadedData.operator_id);
 	    localStorage.setItem('token', loadedData.token);
-	    localStorage.setItem('current_business', loadedData.current_business);
-	    localStorage.setItem('current_stock', loadedData.current_stock);
+	    localStorage.setItem('currentBusiness', loadedData.current_business);
+	    localStorage.setItem('currentStock', loadedData.current_stock);
 	  },
 	
 	  // возвращаем данные
@@ -140,8 +241,8 @@
 	      email: localStorage.getItem('email'),
 	      operatorId: localStorage.getItem('operatorId'),
 	      token: localStorage.getItem('token'),
-	      currentBusiness: localStorage.getItem('current_business'),
-	      currentStock: localStorage.getItem('current_stock')
+	      currentBusiness: localStorage.getItem('currentBusiness'),
+	      currentStock: localStorage.getItem('currentStock')
 	    };
 	  },
 	
@@ -159,8 +260,8 @@
 	    localStorage.removeItem('email');
 	    localStorage.removeItem('operatorId');
 	    localStorage.removeItem('token');
-	    localStorage.removeItem('current_business');
-	    localStorage.removeItem('current_stock');
+	    localStorage.removeItem('currentBusiness');
+	    localStorage.removeItem('currentStock');
 	  }
 	};
 
@@ -241,6 +342,7 @@
 	
 	// отправка запроса на новую порцию
 	var getLog = function getLog() {
+	  console.log('get.log');
 	  if (logCardNodes.length === 0) {
 	    loaderWait.classList.remove('d-none');
 	    window.removeEventListener('scroll', onMouseScroll);

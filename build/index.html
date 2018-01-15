@@ -2,7 +2,7 @@
 <html lang="ru">
 
 <head>
-  <title>LoPOS</title>
+  <title>Lopos</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -175,7 +175,7 @@
     <div>
 
       <!--МЕНЮ (КНОПКИ)-->
-      <nav class="d-flex flex-wrap">
+      <nav class="d-flex justify-content-between">
 
         <ul class="nav nav-tabs" id="list-tab" role="tablist">
 
@@ -235,18 +235,21 @@
             <a class="nav-link" id="list-log-list" data-toggle="list" href="#list-log" role="tab" aria-controls="log">Журнал операций</a>
           </li>
 
-          <!--Онлайн-->
+                <!--Онлайн-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="list-online-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="online">Онлайн</a>
 
-            <div class="dropdown-menu">
+            <div class="dropdown-menu  dropdown-menu-right">
               <a class="dropdown-item" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Профиль</a>
               <a class="dropdown-item" id="list-users-list" data-toggle="list" href="#list-users" role="tab" aria-controls="users">Пользователи</a>
               <a class="dropdown-item" id="list-setup-list" data-toggle="list" href="#list-setup" role="tab" aria-controls="setup">Настройка</a>
+              <a class="dropdown-item badge badge-danger pt-2 pb-2 ml-4 w-50" id="profile-exit" data-toggle="list" href="#" role="tab" aria-controls="setup">Выйти</a>
+              <!--<button type="button" id="profile-exit" class="btn btn-danger  ml-auto">Выйти</button>-->
             </div>
           </li>
         </ul>
-        <button type="button" id="profile-exit" class="btn btn-danger  ml-auto p-2">Выйти</button>
+
+
       </nav>
 
       <!--МЕНЮ (КОНТЕЙНЕРЫ)-->

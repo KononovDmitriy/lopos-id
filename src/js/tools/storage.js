@@ -8,8 +8,8 @@ export default {
     localStorage.setItem('directory', loadedData.directory);
     localStorage.setItem('operatorId', loadedData.operator_id);
     localStorage.setItem('token', loadedData.token);
-    localStorage.setItem('current_business', loadedData.current_business);
-    localStorage.setItem('current_stock', loadedData.current_stock);
+    localStorage.setItem('currentBusiness', loadedData.current_business);
+    localStorage.setItem('currentStock', loadedData.current_stock);
   },
 
   // возвращаем данные
@@ -21,8 +21,8 @@ export default {
       email: localStorage.getItem('email'),
       operatorId: localStorage.getItem('operatorId'),
       token: localStorage.getItem('token'),
-      currentBusiness: localStorage.getItem('current_business'),
-      currentStock: localStorage.getItem('current_stock'),
+      currentBusiness: localStorage.getItem('currentBusiness'),
+      currentStock: localStorage.getItem('currentStock'),
     };
   },
 
@@ -38,8 +38,8 @@ export default {
     localStorage.removeItem('email');
     localStorage.removeItem('operatorId');
     localStorage.removeItem('token');
-    localStorage.removeItem('current_business');
-    localStorage.removeItem('current_stock');
+    localStorage.removeItem('currentBusiness');
+    localStorage.removeItem('currentStock');
   }
 
 };

@@ -50,6 +50,7 @@ const onErrorLogLoad = () => {
 
 // отправка запроса на новую порцию
 const getLog = () => {
+  console.log('get.log');
   if (logCardNodes.length === 0) {
     loaderWait.classList.remove('d-none');
     window.removeEventListener('scroll', onMouseScroll);
