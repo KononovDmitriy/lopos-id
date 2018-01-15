@@ -3,7 +3,7 @@ import logButton from './buttons/log.js';
 import profileButton from './buttons/online-profile.js';
 import mainWindow from './login/main_login_window.js';
 
-console.log('v52');
+console.log('v54');
 
 const exit = document.querySelector('#profile-exit');
 const app = document.querySelector('#app');
