@@ -121,23 +121,27 @@
 	
 	  // заполняем хранилище
 	  set data(loadedData) {
-	    sessionStorage.setItem('nickname', loadedData.nickname);
-	    sessionStorage.setItem('lastLogin', loadedData.lastLogin);
-	    sessionStorage.setItem('email', loadedData.email);
-	    sessionStorage.setItem('directory', loadedData.directory);
-	    sessionStorage.setItem('operatorId', loadedData.operator_id);
-	    sessionStorage.setItem('token', loadedData.token);
+	    localStorage.setItem('nickname', loadedData.nickname);
+	    localStorage.setItem('lastLogin', loadedData.lastLogin);
+	    localStorage.setItem('email', loadedData.email);
+	    localStorage.setItem('directory', loadedData.directory);
+	    localStorage.setItem('operatorId', loadedData.operator_id);
+	    localStorage.setItem('token', loadedData.token);
+	    localStorage.setItem('current_business', loadedData.current_business);
+	    localStorage.setItem('current_stock', loadedData.current_stock);
 	  },
 	
 	  // возвращаем данные
 	  get data() {
 	    return {
-	      nickname: sessionStorage.getItem('nickname'),
-	      lastLogin: sessionStorage.getItem('lastLogin'),
-	      directory: sessionStorage.getItem('directory'),
-	      email: sessionStorage.getItem('email'),
-	      operatorId: sessionStorage.getItem('operatorId'),
-	      token: sessionStorage.getItem('token')
+	      nickname: localStorage.getItem('nickname'),
+	      lastLogin: localStorage.getItem('lastLogin'),
+	      directory: localStorage.getItem('directory'),
+	      email: localStorage.getItem('email'),
+	      operatorId: localStorage.getItem('operatorId'),
+	      token: localStorage.getItem('token'),
+	      currentBusiness: localStorage.getItem('current_business'),
+	      currentStock: localStorage.getItem('current_stock')
 	    };
 	  },
 	
@@ -149,12 +153,14 @@
 	
 	  // чистим хранилище
 	  clean: function clean() {
-	    sessionStorage.removeItem('nickname');
-	    sessionStorage.removeItem('lastLogin');
-	    sessionStorage.removeItem('directory');
-	    sessionStorage.removeItem('email');
-	    sessionStorage.removeItem('operatorId');
-	    sessionStorage.removeItem('token');
+	    localStorage.removeItem('nickname');
+	    localStorage.removeItem('lastLogin');
+	    localStorage.removeItem('directory');
+	    localStorage.removeItem('email');
+	    localStorage.removeItem('operatorId');
+	    localStorage.removeItem('token');
+	    localStorage.removeItem('current_business');
+	    localStorage.removeItem('current_stock');
 	  }
 	};
 
