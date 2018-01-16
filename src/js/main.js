@@ -1,6 +1,7 @@
 import auth from './tools/storage.js';
 import logButton from './buttons/log.js';
 import profileButton from './buttons/online-profile.js';
+import enterprisesButton from './buttons/reference-enterprises.js';
 import mainWindow from './login/main_login_window.js';
 
 console.log('v54');
@@ -19,63 +20,32 @@ const showAppHideLogin = () => {
   app.classList.remove('d-none');
 };
 
+// чистим меню и вкладки
 const initMarkup = () => {
-  // чистим меню
   document.querySelectorAll('.nav-link').forEach((item) => item.classList.remove('active'));
   document.querySelectorAll('.nav-item.dropdown').forEach((item) => item.classList.remove('show'));
-
-  // чистим вкладки
   document.querySelectorAll('.tab-pane').forEach((item) => item.classList.add('fade'));
-
-  // чистим вкладки
   document.querySelectorAll('.dropdown-item').forEach((item) => item.classList.remove('active'));
-  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-selected', 'false'));
-  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-expanded', 'false'));
 };
 
 const hashObserver = () => {
-  switch (window.location.hash) {
-  case '#list-log':
-
-    document.querySelector('#list-log-list').dispatchEvent(new Event('click'));
-    document.querySelector('#list-log-list').classList.add('active');
-    document.querySelector('#list-log').classList.add('active');
-    document.querySelector('#list-log').classList.remove('fade');
-    console.log('log-list');
-    break;
-  case '#list-profile':
-    document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
-    document.querySelector('#list-profile-list').classList.add('active');
-    document.querySelector('#list-online-list').classList.add('active');
-    document.querySelector('#list-profile').classList.add('active');
-    document.querySelector('#list-profile').classList.remove('fade');
-    console.log('log-profile');
-    break;
-
-  default:
-      /*
-    document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
-    document.querySelector('#list-profile-list').classList.add('active');
-    document.querySelector('#list-online-list').classList.add('active');
-    document.querySelector('#list-profile').classList.add('active');
-    document.querySelector('#list-profile').classList.remove('fade');
-    console.log('log-profile2');
-      */
-    break;
-
+  let hash = window.location.hash;
+  if (hash) {
+    document.querySelector(`${hash}-list`).dispatchEvent(new Event('click'));
+    document.querySelector(`${hash}-list`).classList.add('active');
+    document.querySelector(`${hash}`).classList.add('active');
+    document.querySelector(`${hash}`).classList.remove('fade');
   }
-
 };
 
 // ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 const start = () => {
   if (auth.isSetFlag) {
-    console.log('hi');
     showAppHideLogin();
     profileButton.start();
     logButton.start();
+    enterprisesButton.start();
     initMarkup();
-    // window.location.hash = '#list-profile';
     hashObserver();
   } else {
     showLoginHideApp();
@@ -99,13 +69,6 @@ hashObserver();
 start();
 document.addEventListener('loginSuccess', start);
 
-/*
-if (window.location.hash) {
-  document.querySelector(window.location.hash).dispatchEvent(new Event('click'));
-} else {
-  document.querySelector('#list-profile').dispatchEvent(new Event('click'));
-}
-*/
 // ========== ЗАВЕРШЕНИЕ РАБОТЫ ==========
 exit.addEventListener('click', stop);
 

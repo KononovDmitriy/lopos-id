@@ -2,7 +2,7 @@
 <html lang="ru">
 
 <head>
-  <title>Lopos</title>
+  <title>LoPOS</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +14,7 @@
 </head>
 
 <body>
+  <script src="js/metrika.js"></script>
 
   <div id="login" class="container-fluid mx-auto d-none" style="min-height: 920px; height: 100vh">
     <div id="globalAlert" class="position-absolute w-75 ml-3"></div>
@@ -23,7 +24,7 @@
       <section id="sectionLogin" class="d-none">
 
         <div class="container-fluid text-center" style="max-width: 27rem">
-          <img src="./img/lopos_web_logo.png" class="img-fluid rounded" style="max-width: 100%;" alt="...">
+          <img src="./img/lopos_web_logo.png" class="img-fluid rounded" style="max-width: 100%; width: 200px; height: 200px;" alt="...">
         </div>
 
         <div class="container-fluid">
@@ -177,7 +178,7 @@
       <!--МЕНЮ (КНОПКИ)-->
       <nav class="d-flex justify-content-between">
 
-        <ul class="nav nav-tabs" id="list-tab" role="tablist">
+        <ul class="nav nav-tabs d-flex w-100 justify-content-between" id="list-tab" role="tablist">
 
           <!--Операции-->
           <li class="nav-item dropdown">
@@ -236,15 +237,14 @@
           </li>
 
                 <!--Онлайн-->
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown ml-auto">
             <a class="nav-link dropdown-toggle" id="list-online-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="online">Онлайн</a>
 
             <div class="dropdown-menu  dropdown-menu-right">
               <a class="dropdown-item" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Профиль</a>
               <a class="dropdown-item" id="list-users-list" data-toggle="list" href="#list-users" role="tab" aria-controls="users">Пользователи</a>
               <a class="dropdown-item" id="list-setup-list" data-toggle="list" href="#list-setup" role="tab" aria-controls="setup">Настройка</a>
-              <a class="dropdown-item badge badge-danger pt-2 pb-2 ml-4 w-50" id="profile-exit" data-toggle="list" href="#" role="tab" aria-controls="setup">Выйти</a>
-              <!--<button type="button" id="profile-exit" class="btn btn-danger  ml-auto">Выйти</button>-->
+              <a class="dropdown-item text-danger" id="profile-exit" data-toggle="list" href="#" role="tab" aria-controls="setup">Выйти</a>
             </div>
           </li>
         </ul>
@@ -307,7 +307,11 @@
           <p>КЛЮЧЕВЫЕ СЛОВА (UNDER CONSTRUCTION)</p>
         </div>
         <div class="tab-pane fade" id="list-enterprises" role="tabpanel" aria-labelledby="list-enterprises-list">
-          <p>ПРЕДПРИЯТИЯ (UNDER CONSTRUCTION)</p>
+          <div id="list-enterprises-header" class="d-flex justify-content-between mb-2 mt-2">
+            <span>ПРЕДПРИЯТИЯ</span>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#enterprises-add">+</button>
+          </div>
+          <div id="list-enterprises-body"></div>
         </div>
 
         <!--ЖУРНАЛ-->
@@ -338,6 +342,45 @@
       </div>
     </div>
   </div>
+
+  <!-- ========================= ФОРМЫ - МОДАЛЬНЫЕ ОКНА ========================= -->
+
+  <!-- Справочники / добавление предприятия -->
+  <div class="modal fade" id="enterprises-add" tabindex="-1" role="dialog" aria-labelledby="enterprises-add" aria-hidden="true">
+  <div class="modal-dialog" style="width: 300px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="enterprises-add-label">Создать предприятие</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="enterprises-add" >
+          <div class="form-group">
+            <label for="enterprise-name">Название</label>
+            <input type="text" class="form-control" id="enterprise-name" aria-describedby="enterprise-name" placeholder="Название предприятия">
+          </div>
+          <div class="form-group">
+            <label for="enterprise-balance">Баланс</label>
+            <input type="text" class="form-control" id="enterprise-balance" placeholder="Баланс">
+          </div>
+          <div class="form-group d-flex justify-content-between">
+            <label for="enterprise-money">Валюта</label>
+            <select class="custom-select"  id="enterprise-money">
+              <option value="rur" selected>RUR</option>
+              <option value="usd">USD</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Создать</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary w-100" data-dismiss="modal">Отменить</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <!-- Optional JavaScript -->

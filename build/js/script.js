@@ -58,7 +58,11 @@
 	
 	var _onlineProfile2 = _interopRequireDefault(_onlineProfile);
 	
-	var _main_login_window = __webpack_require__(7);
+	var _referenceEnterprises = __webpack_require__(7);
+	
+	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
+	
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -80,70 +84,40 @@
 	  app.classList.remove('d-none');
 	};
 	
+	// чистим меню и вкладки
 	var initMarkup = function initMarkup() {
-	  // чистим меню
 	  document.querySelectorAll('.nav-link').forEach(function (item) {
 	    return item.classList.remove('active');
 	  });
 	  document.querySelectorAll('.nav-item.dropdown').forEach(function (item) {
 	    return item.classList.remove('show');
 	  });
-	
-	  // чистим вкладки
 	  document.querySelectorAll('.tab-pane').forEach(function (item) {
 	    return item.classList.add('fade');
 	  });
-	
-	  // чистим вкладки
 	  document.querySelectorAll('.dropdown-item').forEach(function (item) {
 	    return item.classList.remove('active');
 	  });
-	  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-selected', 'false'));
-	  // document.querySelectorAll('.dropdown-item').forEach((item) => item.setAttribute('aria-expanded', 'false'));
 	};
 	
 	var hashObserver = function hashObserver() {
-	  switch (window.location.hash) {
-	    case '#list-log':
-	
-	      document.querySelector('#list-log-list').dispatchEvent(new Event('click'));
-	      document.querySelector('#list-log-list').classList.add('active');
-	      document.querySelector('#list-log').classList.add('active');
-	      document.querySelector('#list-log').classList.remove('fade');
-	      console.log('log-list');
-	      break;
-	    case '#list-profile':
-	      document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
-	      document.querySelector('#list-profile-list').classList.add('active');
-	      document.querySelector('#list-online-list').classList.add('active');
-	      document.querySelector('#list-profile').classList.add('active');
-	      document.querySelector('#list-profile').classList.remove('fade');
-	      console.log('log-profile');
-	      break;
-	
-	    default:
-	      /*
-	      document.querySelector('#list-profile-list').dispatchEvent(new Event('click'));
-	      document.querySelector('#list-profile-list').classList.add('active');
-	      document.querySelector('#list-online-list').classList.add('active');
-	      document.querySelector('#list-profile').classList.add('active');
-	      document.querySelector('#list-profile').classList.remove('fade');
-	      console.log('log-profile2');
-	      */
-	      break;
-	
+	  var hash = window.location.hash;
+	  if (hash) {
+	    document.querySelector(hash + '-list').dispatchEvent(new Event('click'));
+	    document.querySelector(hash + '-list').classList.add('active');
+	    document.querySelector('' + hash).classList.add('active');
+	    document.querySelector('' + hash).classList.remove('fade');
 	  }
 	};
 	
 	// ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 	var start = function start() {
 	  if (_storage2.default.isSetFlag) {
-	    console.log('hi');
 	    showAppHideLogin();
 	    _onlineProfile2.default.start();
 	    _log2.default.start();
+	    _referenceEnterprises2.default.start();
 	    initMarkup();
-	    // window.location.hash = '#list-profile';
 	    hashObserver();
 	  } else {
 	    showLoginHideApp();
@@ -167,13 +141,6 @@
 	start();
 	document.addEventListener('loginSuccess', start);
 	
-	/*
-	if (window.location.hash) {
-	  document.querySelector(window.location.hash).dispatchEvent(new Event('click'));
-	} else {
-	  document.querySelector('#list-profile').dispatchEvent(new Event('click'));
-	}
-	*/
 	// ========== ЗАВЕРШЕНИЕ РАБОТЫ ==========
 	exit.addEventListener('click', stop);
 	
@@ -450,7 +417,7 @@
 	    var cardHeader = item.ha_comment.split('\n');
 	    cardHeader[1] = cardHeader[1] ? cardHeader[1] : '';
 	
-	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <img class="mr-3 rounded-circle p-1" src="img/user-male-filled-32.png" title="' + item.ha_operator_name + '" style="background-color: #' + getIconColor + '" width="30" alt="' + item.ha_operator_name + '">\n        <img class="mr-3" src="img/' + imgName + '.png" width="30" alt="Generic placeholder image">\n        <div class="media-body">\n          <b>' + cardHeader[0] + '</b>\n          ' + cardHeader[1] + '\n          <div class="badge text-right text-muted float-right">' + new Date(+(item.ha_time + '000')).toLocaleString() + ' *' + index + ' *' + item.ha_id + '</div>\n        </div>\n      </div>';
+	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <img class="mr-3 rounded-circle p-1" src="img/user-male-filled-32.png" title="' + item.ha_operator_name + '" style="background-color: #' + getIconColor + '" width="30" alt="' + item.ha_operator_name + '">\n        <img class="mr-3" src="img/' + imgName + '.png" width="30" alt="Generic placeholder image">\n        <div class="media-body">\n          <b>' + cardHeader[0] + '</b>\n          ' + cardHeader[1] + '\n          <div class="badge text-right text-muted float-right">' + new Date(+(item.ha_time + '000')).toLocaleString() + '</div>\n        </div>\n      </div>';
 	  },
 	  addCardToContainer: function addCardToContainer(cardMarkupItem) {
 	    listLogBody.insertAdjacentHTML('beforeend', cardMarkupItem);
@@ -593,23 +560,151 @@
 	  value: true
 	});
 	
-	var _form_login = __webpack_require__(8);
+	var _xhr = __webpack_require__(4);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceEnterprises = __webpack_require__(8);
+	
+	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
+	
+	var _tools = __webpack_require__(9);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listEnterprises = document.querySelector('#list-enterprises-list');
+	var loaderSpinnerId = 'loader-enterprises';
+	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
+	
+	var onSuccessEnterprisesLoad = function onSuccessEnterprisesLoad(loadedEnterprises) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  if (loadedEnterprises.status === 200) {
+	    _referenceEnterprises2.default.drawDataInContainer(loadedEnterprises.data);
+	  } else {
+	    _referenceEnterprises2.default.drawMarkupInContainer('<p>' + loadedEnterprises.message + '</p>');
+	  }
+	};
+	
+	var onErrorEnterprisesLoad = function onErrorEnterprisesLoad(error) {
+	  console.log(error);
+	};
+	
+	var getEnterprises = function getEnterprises() {
+	  _referenceEnterprises2.default.cleanContainer();
+	  _referenceEnterprises2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/1',
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessEnterprisesLoad,
+	    callbackError: onErrorEnterprisesLoad
+	  };
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    listEnterprises.addEventListener('click', getEnterprises);
+	  },
+	  stop: function stop() {
+	    _referenceEnterprises2.default.cleanContainer();
+	    listEnterprises.removeEventListener('click', getEnterprises);
+	  }
+	};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listEnterprisesBody = document.querySelector('#list-enterprises-body');
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listEnterprisesBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? 'V' : '';
+	
+	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <div class="media-body">\n          <b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '\n          <div class="badge text-right float-right"><span class="badge badge-pill badge-success">' + currentEnterpriseFlag + '</span> <button type="button" class="btn btn-primary btn-sm" data-enterprise-id="' + item.b_id + '"> > </button> </div>\n        </div>\n      </div>';
+	  },
+	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
+	    var _this = this;
+	
+	    enterprisesData.forEach(function (item) {
+	      return listEnterprisesBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    });
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listEnterprisesBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  getWaitSpinner: function getWaitSpinner(id, message) {
+	    return "\n      <div id=\"loader\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	  },
+	  getLoadSpinner: function getLoadSpinner(id, message) {
+	    return "\n      <div id=\"" + id + "\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	  },
+	  getError: function getError(id, message) {
+	    return "\n      <div id=\"loader-fail\" class=\"container-fluid bg-danger text-white text-center mb-5\" style=\"height: 25;\">" + message + "</div>";
+	  }
+	};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _form_login = __webpack_require__(11);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _form_register = __webpack_require__(11);
+	var _form_register = __webpack_require__(14);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _form_confirm_email = __webpack_require__(13);
+	var _form_confirm_email = __webpack_require__(16);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
-	var _form_forgot = __webpack_require__(15);
+	var _form_forgot = __webpack_require__(18);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
-	var _captcha = __webpack_require__(10);
+	var _captcha = __webpack_require__(13);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -750,7 +845,7 @@
 	};
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -759,15 +854,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _login = __webpack_require__(9);
+	var _login = __webpack_require__(12);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
-	var _captcha = __webpack_require__(10);
+	var _captcha = __webpack_require__(13);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -851,7 +946,7 @@
 	};
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -868,11 +963,11 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _form_login = __webpack_require__(8);
+	var _form_login = __webpack_require__(11);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -977,7 +1072,7 @@
 	};
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -986,23 +1081,23 @@
 	  value: true
 	});
 	
-	var _form_register = __webpack_require__(11);
+	var _form_register = __webpack_require__(14);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _form_login = __webpack_require__(8);
+	var _form_login = __webpack_require__(11);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _form_confirm_email = __webpack_require__(13);
+	var _form_confirm_email = __webpack_require__(16);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
-	var _form_forgot = __webpack_require__(15);
+	var _form_forgot = __webpack_require__(18);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1045,7 +1140,7 @@
 	};
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1054,15 +1149,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _register = __webpack_require__(12);
+	var _register = __webpack_require__(15);
 	
 	var _register2 = _interopRequireDefault(_register);
 	
-	var _captcha = __webpack_require__(10);
+	var _captcha = __webpack_require__(13);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1143,7 +1238,7 @@
 	};
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1152,7 +1247,7 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1273,7 +1368,7 @@
 	};
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1282,15 +1377,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _confirm_email = __webpack_require__(14);
+	var _confirm_email = __webpack_require__(17);
 	
 	var _confirm_email2 = _interopRequireDefault(_confirm_email);
 	
-	var _captcha = __webpack_require__(10);
+	var _captcha = __webpack_require__(13);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1359,7 +1454,7 @@
 	};
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1376,7 +1471,7 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1440,7 +1535,7 @@
 	};
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1449,15 +1544,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _forgot = __webpack_require__(16);
+	var _forgot = __webpack_require__(19);
 	
 	var _forgot2 = _interopRequireDefault(_forgot);
 	
-	var _captcha = __webpack_require__(10);
+	var _captcha = __webpack_require__(13);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1526,7 +1621,7 @@
 	};
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1539,7 +1634,7 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _main_login_window = __webpack_require__(7);
+	var _main_login_window = __webpack_require__(10);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	

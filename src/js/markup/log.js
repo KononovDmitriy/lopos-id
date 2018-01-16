@@ -52,7 +52,7 @@ export default {
         <div class="media-body">
           <b>${cardHeader[0]}</b>
           ${cardHeader[1]}
-          <div class="badge text-right text-muted float-right">${new Date(+(item.ha_time + '000')).toLocaleString()} *${index} *${item.ha_id}</div>
+          <div class="badge text-right text-muted float-right">${new Date(+(item.ha_time + '000')).toLocaleString()}</div>
         </div>
       </div>`;
   },
