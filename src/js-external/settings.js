@@ -1,43 +1,43 @@
 window.appSettings = {
   // SiteKey для капчи
-  reCaptchaSiteKey: '6Lct5j8UAAAAAJkVidQhkOxmBhI9uj28IQ5-Ltp9',
+  'reCaptchaSiteKey': '6Lct5j8UAAAAAJkVidQhkOxmBhI9uj28IQ5-Ltp9',
 
-  xhrSettings: {
+  'xhrSettings': {
   // Адрес ApiDesigber, интервал ожидания ответа, кодировка
     urlApi: 'https://lopos.bidone.ru/api/v1/',
     timeout: 10000,
     contentType: 'application/x-www-form-urlencoded',
   },
   // Шаборны валидации формы входа
-  loginValid: {
+  'loginValid': {
     email: /@/,
     id: /^[0-9a-z]{8,}\d{1,2}$/,
     password: /.{3,}/
   },
   // Ссылки на апи для формы входа
-  loginUrlApi: {
+  'loginUrlApi': {
     email: 'user_boss/login',
     id: 'lopos_directory/{{dir}}/authorization/login'
   },
   // Шаборны валидации формы регистрации
-  registerValid: {
+  'registerValid': {
     email: /@/,
     password: /.{3,}/,
     name: /^[а-яёА-ЯЁA-Za-z\s]+$/
   },
   // Ссылки на апи для формы регистрации
-  registerUrlApi: 'user_boss/registration',
+  'registerUrlApi': 'user_boss/registration',
   // Шаборны валидации формы подтверждения почты
-  confirmEmailKodValid: /[\d]{4}/,
+  'confirmEmailKodValid': /[\d]{4}/,
   // Ссылки на апи для формы подтверждения почты
-  confirmEmailUrlApi: 'user_boss/submit_registration',
+  'confirmEmailUrlApi': 'user_boss/submit_registration',
   // Шаборны валидации формы восстановления пароля
-  forgotEmailValid: /@/,
+  'forgotEmailValid': /@/,
   // Ссылки на апи для формы восстановления пароля
-  forgotUrlApi: 'user_boss/forgot',
+  'forgotUrlApi': 'user_boss/forgot',
 
   // Сообщения
-  messages: {
+  'messages': {
 
     // Ошибка обращения к серверу через AJAX
     'xhrError': 'Ошибка связи с сервером приложения',
@@ -73,6 +73,19 @@ window.appSettings = {
       forgot: {
         email: 'Введите корректный email'
       }
+    }
+  },
+
+    // Форма добавления организации
+  'formAddEnterprise': {
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business',
+    validPatterns: {
+      'name': /^[A-Za-zа-яА-ЯЁё1-9\s]+&/,
+      'balance': /[\d]+/
+    },
+    validMessage: {
+      'name': 'в названии минимум 1 буква',
+      'balance': 'формат: 0.00 или 0'
     }
   }
 };

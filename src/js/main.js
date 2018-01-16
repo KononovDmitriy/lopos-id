@@ -3,6 +3,7 @@ import logButton from './buttons/log.js';
 import profileButton from './buttons/online-profile.js';
 import enterprisesButton from './buttons/reference-enterprises.js';
 import mainWindow from './login/main_login_window.js';
+import enterprisesButtonForm from './buttons/reference-enterprises-add.js';
 
 console.log('v54');
 
@@ -66,6 +67,9 @@ const stop = () => {
 // ========== НАЧАЛО РАБОТЫ ==========
 initMarkup();
 hashObserver();
+
+enterprisesButtonForm.start();
+
 start();
 document.addEventListener('loginSuccess', start);
 

@@ -66,6 +66,10 @@
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
+	var _referenceEnterprisesAdd = __webpack_require__(20);
+	
+	var _referenceEnterprisesAdd2 = _interopRequireDefault(_referenceEnterprisesAdd);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	console.log('v54');
@@ -138,6 +142,9 @@
 	// ========== НАЧАЛО РАБОТЫ ==========
 	initMarkup();
 	hashObserver();
+	
+	_referenceEnterprisesAdd2.default.start();
+	
 	start();
 	document.addEventListener('loginSuccess', start);
 	
@@ -1689,6 +1696,86 @@
 	  },
 	  validate: function validate(email) {
 	    return validateForm(email);
+	  }
+	};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(4);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
+	var validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
+	var validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
+	var validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
+	
+	var enterprisesAdd = document.querySelector('#enterprises-add');
+	var form = enterprisesAdd.querySelector('#enterprises-add-form');
+	
+	var name = form.querySelector('#enterprise-name');
+	var nameValid = form.querySelector('#enterprises-name-valid');
+	var balance = form.querySelector('#enterprise-balance');
+	var balanceValid = form.querySelector('#enterprise-balance-valid');
+	var money = form.querySelector('#enterprise-money');
+	
+	var spinner = form.querySelector('#enterprises-add-spinner');
+	
+	var buttonSubmit = form.querySelector('#enterprises-add-submit');
+	var buttonCancel = form.querySelector('#enterprises-add-cancel');
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {};
+	
+	var callbackXhrError = function callbackXhrError(response) {};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validNamePattern.test(name.value)) {
+	    valid = false;
+	    nameValid.innerHTML = validNameMessage;
+	  }
+	  if (!validBalancePattern.test(balance.value)) {
+	    valid = false;
+	    balanceValid.innerHTML = validBalanceMessage;
+	  }
+	
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	  console.log(money.value);
+	
+	  if (validateForm()) {
+	    console.log("valid ok");
+	    submitForm();
+	    return true;
+	  }
+	  console.log("valid no");
+	  return false;
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    form.addEventListener('submit', formSubmitHandler);
+	    form.addEventListener('change', function (evt) {
+	      if (evt.target.nextElementSibling) {
+	        evt.target.nextElementSibling.innerHTML = '';
+	      }
+	    });
 	  }
 	};
 
