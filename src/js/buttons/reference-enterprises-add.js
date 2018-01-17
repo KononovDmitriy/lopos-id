@@ -38,7 +38,10 @@ const callbackXhrSuccess = (response) => {
   case 200:
     formReset();
     enterprisesAdd.classList.remove('show');
-    document.querySelector('.modal-backdrop').classList.remove('show');
+    let el = document.querySelector('.modal-backdrop');
+    if (el) {
+      el.classList.remove('show');
+    }
 
     // Вывести response.message в зеленое сообщение
     alert(response.message);

@@ -5,7 +5,7 @@ import enterprisesButton from './buttons/reference-enterprises.js';
 import mainWindow from './login/main_login_window.js';
 import enterprisesButtonForm from './buttons/reference-enterprises-add.js';
 
-console.log('ver: 2D2');
+console.log('ver: 2D3');
 
 const exit = document.querySelector('#profile-exit');
 const app = document.querySelector('#app');
