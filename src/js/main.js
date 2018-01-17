@@ -1,11 +1,15 @@
 import auth from './tools/storage.js';
+import mainWindow from './login/main_login_window.js';
 import logButton from './buttons/log.js';
 import profileButton from './buttons/online-profile.js';
 import enterprisesButton from './buttons/reference-enterprises.js';
-import mainWindow from './login/main_login_window.js';
-import enterprisesButtonForm from './buttons/reference-enterprises-add.js';
+import enterprisesButtonFormAdd from './buttons/reference-enterprises-add.js';
+import enterprisesButtonFormEdit from './buttons/reference-enterprises-edit.js';
+import pointsButton from './buttons/reference-points.js';
+import buyersButton from './buttons/reference-buyers.js';
 
 console.log('ver: 2D3');
+console.log('ver: 2A3');
 
 const exit = document.querySelector('#profile-exit');
 const app = document.querySelector('#app');
@@ -46,8 +50,12 @@ const start = () => {
     profileButton.start();
     logButton.start();
     enterprisesButton.start();
+    pointsButton.start();
+    buyersButton.start();
     initMarkup();
     hashObserver();
+    enterprisesButtonFormAdd.start();
+    enterprisesButtonFormEdit.start();
   } else {
     showLoginHideApp();
     mainWindow.init();
@@ -67,9 +75,6 @@ const stop = () => {
 // ========== НАЧАЛО РАБОТЫ ==========
 initMarkup();
 hashObserver();
-
-enterprisesButtonForm.start();
-
 start();
 document.addEventListener('loginSuccess', start);
 

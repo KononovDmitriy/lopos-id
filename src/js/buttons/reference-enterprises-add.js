@@ -1,5 +1,6 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
+import enterprisesButton from './reference-enterprises.js';
 
 const appUrl = window.appSettings.formAddEnterprise.UrlApi;
 const validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
@@ -8,7 +9,8 @@ const validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
 const validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
 
 
-const enterprisesAdd = document.querySelector('#enterprises-add');
+const body = document.querySelector('body');
+const enterprisesAdd = body.querySelector('#enterprises-add');
 const form = enterprisesAdd.querySelector('#enterprises-add-form');
 
 const name = form.querySelector('#enterprise-name');
@@ -37,17 +39,13 @@ const callbackXhrSuccess = (response) => {
   switch (response.status) {
   case 200:
     formReset();
-    enterprisesAdd.classList.remove('show');
-    let el = document.querySelector('.modal-backdrop');
-    if (el) {
-      el.classList.remove('show');
-    }
+    $('#enterprises-add').modal('hide');
 
     // Вывести response.message в зеленое сообщение
     alert(response.message);
 
     // Сюда метод перезагрузки списка
-
+    enterprisesButton.redraw();
     break;
   case 400:
 

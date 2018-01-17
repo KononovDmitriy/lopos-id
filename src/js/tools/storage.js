@@ -26,6 +26,14 @@ export default {
     };
   },
 
+  set currentBusiness(id) {
+    localStorage.setItem('currentBusiness', id);
+  },
+
+  set currentStock(id) {
+    localStorage.setItem('currentStock', id);
+  },
+
   get isSetFlag() {
     return Object.values(this.data).some((item) => item !== null);
   },
@@ -40,6 +48,50 @@ export default {
     localStorage.removeItem('token');
     localStorage.removeItem('currentBusiness');
     localStorage.removeItem('currentStock');
-  }
+  },
+
+  // ВСЯКОЕ ПРОЧЕЕ
+
+  set currentEnterpriseId(id) {
+    sessionStorage.setItem('currentEnterpriseId', id);
+  },
+
+  get currentEnterpriseId() {
+    return sessionStorage.getItem('currentEnterpriseId');
+  },
+
+  set currentEnterpriseName(name) {
+    sessionStorage.setItem('currentEnterpriseName', name);
+  },
+
+  get currentEnterpriseName() {
+    return sessionStorage.getItem('currentEnterpriseName');
+  },
+
+
+  set currentStockId(id) {
+    sessionStorage.setItem('currentStockId', id);
+  },
+
+  get currentStockId() {
+    return sessionStorage.getItem('currentStockId');
+  },
+
+  set currentStockName(name) {
+    sessionStorage.setItem('currentStockName', name);
+  },
+
+  get currentStockName() {
+    return sessionStorage.getItem('currentStockName');
+  },
+
+  set currentKontragent(type) {
+    sessionStorage.setItem('currentKontragent', type);
+  },
+
+  get currentKontragent() {
+    return sessionStorage.getItem('currentKontragent');
+  },
+
 
 };

@@ -5,29 +5,24 @@ const appUrl = window.appSettings.formEditEnterprise.UrlApi;
 const validNamePattern = window.appSettings.formEditEnterprise.validPatterns.name;
 const validNameMessage = window.appSettings.formEditEnterprise.validMessage.name;
 
+const body = document.querySelector('body');
+const enterprisesCarEedit = body.querySelector('#enterprises-card-edit');
+const form = enterprisesCarEedit.querySelector('#enterprises-card-edit-form');
 
+const name = form.querySelector('#enterprises-card-edit-name');
+const nameValid = form.querySelector('#enterprises-card-edit-valid');
 
-const enterprisesEdit = document.querySelector('#enterprises-edit');
-const form = enterprisesEdit.querySelector('#enterprises-edit-form');
+const spinner = form.querySelector('#enterprises-card-edit-spinner');
 
-const name = form.querySelector('#enterprise-name');
-const nameValid = form.querySelector('#enterprises-name-valid');
-const balance = form.querySelector('#enterprise-balance');
-const balanceValid = form.querySelector('#enterprise-balance-valid');
-const currency = form.querySelector('#enterprise-money');
-
-const spinner = form.querySelector('#enterprises-add-spinner');
-
-const buttonSubmit = form.querySelector('#enterprises-add-submit');
-const buttonCancel = form.querySelector('#enterprises-add-cancel');
-const buttonClose = enterprisesEdit.querySelector('#enterprises-add-close');
+const buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
+const buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
+const buttonClose = enterprisesCarEedit.querySelector('#enterprises-card-edit-close');
 
 const stor = dataStorage.data;
 
 const formReset = () => {
   form.reset();
   nameValid.innerHTML = '';
-  balanceValid.innerHTML = '';
 };
 
 const callbackXhrSuccess = (response) => {
@@ -36,11 +31,7 @@ const callbackXhrSuccess = (response) => {
   switch (response.status) {
   case 200:
     formReset();
-    enterprisesEdit.classList.remove('show');
-    let el = document.querySelector('.modal-backdrop');
-    if (el) {
-      el.classList.remove('show');
-    }
+    $('#enterprises-card-edit').modal('hide');
 
     // Вывести response.message в зеленое сообщение
     alert(response.message);
@@ -79,25 +70,22 @@ const validateForm = () => {
   let valid = true;
 
   if (!validNamePattern.test(name.value)) {
+    console.log('!val');
     valid = false;
     nameValid.innerHTML = validNameMessage;
   }
-  if (!validBalancePattern.test(balance.value)) {
-    valid = false;
-    balanceValid.innerHTML = validBalanceMessage;
-  }
-
   return valid;
 };
 
 const submitForm = () => {
-  let postData = `name=${name.value}&balance=${balance.value}&currency=${currency.value}&token=${stor.token}`;
+  let postData = `name=${name.value}&token=${stor.token}`;
   let urlApp = appUrl.replace('{{dir}}', stor.directory);
   urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+  urlApp = urlApp.replace('{{id}}', dataStorage.currentEnterpriseId);
 
   let response = {
     url: urlApp,
-    metod: 'POST',
+    metod: 'PUT',
     data: postData,
     callbackSuccess: callbackXhrSuccess,
     callbackError: callbackXhrError
