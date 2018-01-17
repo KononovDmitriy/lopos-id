@@ -8,7 +8,7 @@ import enterprisesButtonFormEdit from './buttons/reference-enterprises-edit.js';
 import pointsButton from './buttons/reference-points.js';
 import buyersButton from './buttons/reference-buyers.js';
 
-console.log('ver: 2D3');
+console.log('ver: 2D4');
 console.log('ver: 2A3');
 
 const exit = document.querySelector('#profile-exit');
