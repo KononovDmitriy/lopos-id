@@ -72,7 +72,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('v54');
+	console.log('ver: 2D2');
 	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
@@ -1713,8 +1713,13 @@
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var appUrl = window.appSettings.formAddEnterprise.UrlApi;
 	var validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
 	var validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
 	var validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
@@ -1727,16 +1732,63 @@
 	var nameValid = form.querySelector('#enterprises-name-valid');
 	var balance = form.querySelector('#enterprise-balance');
 	var balanceValid = form.querySelector('#enterprise-balance-valid');
-	var money = form.querySelector('#enterprise-money');
+	var currency = form.querySelector('#enterprise-money');
 	
 	var spinner = form.querySelector('#enterprises-add-spinner');
 	
 	var buttonSubmit = form.querySelector('#enterprises-add-submit');
 	var buttonCancel = form.querySelector('#enterprises-add-cancel');
+	var buttonClose = enterprisesAdd.querySelector('#enterprises-add-close');
 	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {};
+	var stor = _storage2.default.data;
 	
-	var callbackXhrError = function callbackXhrError(response) {};
+	var formReset = function formReset() {
+	  form.reset();
+	  nameValid.innerHTML = '';
+	  balanceValid.innerHTML = '';
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      enterprisesAdd.classList.remove('show');
+	      document.querySelector('.modal-backdrop').classList.remove('show');
+	
+	      // Вывести response.message в зеленое сообщение
+	      alert(response.message);
+	
+	      // Сюда метод перезагрузки списка
+	
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(response.message);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
 	
 	var validateForm = function validateForm() {
 	  var valid = true;
@@ -1753,23 +1805,40 @@
 	  return valid;
 	};
 	
-	var submitForm = function submitForm() {};
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&balance=' + balance.value + '&currency=' + currency.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'POST',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  _xhr2.default.request = response;
+	};
 	
 	var formSubmitHandler = function formSubmitHandler(evt) {
 	  evt.preventDefault();
-	  console.log(money.value);
 	
 	  if (validateForm()) {
-	    console.log("valid ok");
+	    showSpinner();
 	    submitForm();
-	    return true;
 	  }
-	  console.log("valid no");
-	  return false;
 	};
 	
 	exports.default = {
 	  start: function start() {
+	
+	    buttonCancel.addEventListener('click', function () {
+	      formReset();
+	    });
+	    buttonClose.addEventListener('click', function () {
+	      formReset();
+	    });
 	    form.addEventListener('submit', formSubmitHandler);
 	    form.addEventListener('change', function (evt) {
 	      if (evt.target.nextElementSibling) {

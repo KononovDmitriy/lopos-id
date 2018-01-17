@@ -80,11 +80,11 @@ window.appSettings = {
   'formAddEnterprise': {
     UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business',
     validPatterns: {
-      'name': /^[A-Za-zа-яА-ЯЁё1-9\s]+&/,
-      'balance': /[\d]+/
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+      'balance': /(^\d+$)|(^\d+\.\d{2}$)/
     },
     validMessage: {
-      'name': 'в названии минимум 1 буква',
+      'name': 'минимум 1 буква',
       'balance': 'формат: 0.00 или 0'
     }
   }
