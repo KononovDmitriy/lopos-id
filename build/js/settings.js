@@ -87,5 +87,16 @@ window.appSettings = {
       'name': 'минимум 1 буква',
       'balance': 'формат: 0.00 или 0'
     }
+  },
+
+   // Форма редактирования организации
+  'formEditEnterprise': {
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
+    validPatterns: {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    validMessage: {
+      'name': 'минимум 1 буква'
+    }
   }
 };

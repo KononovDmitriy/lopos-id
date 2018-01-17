@@ -387,6 +387,38 @@
     </div>
   </div>
 </div>
+<!-- Справочники / редактирование предприятия -->
+<div class="modal fade" id="enterprises-edit" tabindex="-1" role="dialog" aria-labelledby="enterprises-add" aria-hidden="true">
+  <div class="modal-dialog" style="width: 300px;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="enterprises-edit-label">Изменить предприятие</h5>
+        <button id="enterprises-edit-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id = "enterprises-edit-form" name="enterprises-add" >
+          <div class="form-group">
+            <label for="enterprise-name">Название</label>
+            <input type="text" class="form-control" id="enterprise-edit-name" aria-describedby="enterprise-name" placeholder="Название предприятия">
+            <span id="enterprises-edit-name-valid" class="badge badge-danger w-100"></span>
+          </div>
+
+          <div id="enterprises-edit-spinner" class="progress text-white mb-3 invisible">
+            <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+
+          <button id="enterprises-edit-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+
+          <button id="enterprises-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#enterprises-edit">+</button>
 
 
   <!-- Optional JavaScript -->
