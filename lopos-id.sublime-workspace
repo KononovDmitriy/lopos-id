@@ -79,15 +79,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "src/js/main.js",
-			"settings":
-			{
-				"buffer_size": 4129,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -136,7 +127,8 @@
 	[
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID",
 		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src",
-		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js"
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js",
+		"/D/USERS/kds/Documents/DEV/LOPOS-ID/src/js/buttons"
 	],
 	"file_history":
 	[
@@ -363,45 +355,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "src/js/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4129,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								559,
-								559
-							]
-						],
-						"settings":
-						{
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		},
 		{
@@ -438,7 +393,7 @@
 		"cols":
 		[
 			0.0,
-			0.810445818547,
+			0.47975274924,
 			1.0
 		],
 		"rows":

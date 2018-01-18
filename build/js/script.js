@@ -78,9 +78,13 @@
 	
 	var _referencePoints2 = _interopRequireDefault(_referencePoints);
 	
-	var _referenceBuyers = __webpack_require__(24);
+	var _referenceContractors = __webpack_require__(24);
 	
-	var _referenceBuyers2 = _interopRequireDefault(_referenceBuyers);
+	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
+	
+	var _referenceKeywords = __webpack_require__(27);
+	
+	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -135,7 +139,8 @@
 	    _log2.default.start();
 	    _referenceEnterprises2.default.start();
 	    _referencePoints2.default.start();
-	    _referenceBuyers2.default.start();
+	    _referenceContractors2.default.start();
+	    _referenceKeywords2.default.start();
 	    initMarkup();
 	    hashObserver();
 	    _referenceEnterprisesAdd2.default.start();
@@ -164,38 +169,6 @@
 	
 	// ========== ЗАВЕРШЕНИЕ РАБОТЫ ==========
 	exit.addEventListener('click', stop);
-	
-	/*
-	
-	Возможные сценарии запуска приложения:
-
-	1. Обновление страницы в ходе работы после успешной авторизации
-	2. Открытие страницы в новой вкладке + авторизация
-	3. Открытие страницы в новой вкладке + регистрация
-	4. Выход и новая регистрация без перезагрузки страницы в той же вкладке
-
-	NB1: на старте оба контейнера (app и login) скрыты
-	NB2: событие loginSuccess создается в модулях confirm_email.js и login.js
-
-	Алгоритм:
-	(1)
-	 - проверяем sessionStorage и авторизацию, если данные пользователя есть, то выполняем функцию start:
-	    - показываем контейнер app и прячем login
-	    - запускаем profileButton, чтобы заново записать в Онлайн/Профиль данные пользователя
-	    - запускаем logButton, который при клике на кнопку журнала начнет грузить данные
-	 (2,3)
-	 - показываем контейнер login
-	 - mainWindow.firstScreen() =?= может переименуем его во что-то типа authority =?=
-	 - слушаем возникновение события loginSuccess на документе и выполняем функцию start (см. п.1)
-	 событие loginSuccess вызывается модулями авторизации/регистрации и сообщает нам, что данная процедура пройдена
-	 (4)
-	 - слушаем click по кнопке exit и обрабатываем выход, запустив функцию stop:
-	    - прячем контейнер app и показываем login
-	    - останавливаем модуль с журналом: чистим счетчики, кэш неотрисованных нод, прячем все сообщения о процессе загрузки и чистим контейнер, чистим обработчики клика и скролла
-	    - чистим sessionStorage
-	    - создаем событие logoutSuccess на document, по которому можно сделать все необходимое с формой авторизации
-
-	*/
 
 /***/ }),
 /* 1 */
@@ -295,12 +268,12 @@
 	    return sessionStorage.getItem('currentStockName');
 	  },
 	
-	  set currentKontragent(type) {
-	    sessionStorage.setItem('currentKontragent', type);
+	  set currentContractor(type) {
+	    sessionStorage.setItem('currentContractor', type);
 	  },
 	
-	  get currentKontragent() {
-	    return sessionStorage.getItem('currentKontragent');
+	  get currentContractor() {
+	    return sessionStorage.getItem('currentContractor');
 	  }
 	
 	};
@@ -1666,6 +1639,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var listEnterprises = document.querySelector('#list-enterprises-list');
+	var listEnterprisesHeader = document.querySelector('#list-enterprises-header');
 	var listEnterprisesBody = document.querySelector('#list-enterprises-body');
 	var listEnterprisesCard = document.querySelector('#list-enterprises-card');
 	var listEnterprisesCardReturnBtn = document.querySelector('#list-enterprises-card-return-btn');
@@ -1683,7 +1657,7 @@
 	var listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
 	
 	var loaderSpinnerId = 'loader-enterprises';
-	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMessage = 'Загрузка';
 	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 	
 	var onSuccessEnterprisesLoad = function onSuccessEnterprisesLoad(loadedEnterprises) {
@@ -1738,7 +1712,9 @@
 	};
 	
 	var onListEnterprisesBodyClick = function onListEnterprisesBodyClick(evt) {
-	  if (evt.target.tagName === 'BUTTON') {
+	  if (evt.target.tagName === 'BUTTON' || evt.target.tagName === 'IMG') {
+	    listEnterprisesHeader.classList.remove('d-flex');
+	    listEnterprisesHeader.classList.add('d-none');
 	    listEnterprisesBody.classList.add('d-none');
 	    listEnterprisesCard.classList.remove('d-none');
 	
@@ -1755,6 +1731,8 @@
 	var onListEnterprisesCardReturnBtn = function onListEnterprisesCardReturnBtn() {
 	  listEnterprisesBody.classList.remove('d-none');
 	  listEnterprisesCard.classList.add('d-none');
+	  listEnterprisesHeader.classList.add('d-flex');
+	  listEnterprisesHeader.classList.remove('d-none');
 	  listEnterprisesCardName.innerText = '';
 	  listEnterprisesCardDate.innerText = '';
 	  listEnterprisesCardBalance.innerText = '';
@@ -1800,9 +1778,9 @@
 	    listEnterprisesBody.innerHTML = '';
 	  },
 	  getElement: function getElement(item) {
-	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? 'V' : '';
+	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? '<button type="button" class="btn p-0 bg-white reference-icon""><img src="img/icons8-checked-96.png" alt=""></button>' : '';
 	
-	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <div class="media-body">\n          <b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '\n          <div class="badge text-right float-right"><span class="badge badge-pill badge-success">' + currentEnterpriseFlag + '</span> <button type="button" class="btn btn-primary btn-sm" data-enterprise-id="' + item.b_id + '"> > </button> </div>\n        </div>\n      </div>';
+	    return '\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '</div>\n      <div>\n        ' + currentEnterpriseFlag + '\n\n        <button type="button" class="btn p-0 bg-white reference-icon" data-enterprise-id="' + item.b_id + '" style="background-image: url(img/arrow-right.png); background-size: cover;"></button>\n      </div>\n    </div>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2159,7 +2137,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var loaderSpinnerId = 'loader-enterprises';
-	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMessage = 'Загрузка';
 	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 	
 	var listPoints = document.querySelector('#list-points-list');
@@ -2167,6 +2145,16 @@
 	var pointsCheckBtn = document.querySelector('#points-check');
 	var pointsEditBtn = document.querySelector('#points-edit-btn');
 	var pointsEditName = document.querySelector('#points-edit-name');
+	
+	var enableCheckEditButtons = function enableCheckEditButtons() {
+	  pointsCheckBtn.removeAttribute('disabled');
+	  pointsEditBtn.removeAttribute('disabled');
+	};
+	
+	var disableCheckEditButtons = function disableCheckEditButtons() {
+	  pointsCheckBtn.setAttribute('disabled', 'disabled');
+	  pointsEditBtn.setAttribute('disabled', 'disabled');
+	};
 	
 	var onSuccessPointsLoad = function onSuccessPointsLoad(loadedPoints) {
 	  document.querySelector('#' + loaderSpinnerId).remove();
@@ -2179,8 +2167,7 @@
 	};
 	
 	var selectedString = '';
-	pointsCheckBtn.setAttribute('disabled', 'disabled');
-	pointsEditBtn.setAttribute('disabled', 'disabled');
+	disableCheckEditButtons();
 	
 	var onErrorPointsLoad = function onErrorPointsLoad(error) {
 	  console.log(error);
@@ -2193,25 +2180,19 @@
 	  }
 	  selectedString = evt.target.labels[0];
 	  selectedString.classList.add('bg-light');
-	  pointsCheckBtn.removeAttribute('disabled');
-	  pointsEditBtn.removeAttribute('disabled');
+	  enableCheckEditButtons();
 	});
 	
 	pointsCheckBtn.addEventListener('click', function () {
 	  if (!pointsCheckBtn.hasAttribute('disabled')) {
-	    console.dir(selectedString);
-	    console.log(selectedString.dataset);
 	    _storage2.default.currentStock = selectedString.dataset.stockId;
-	    pointsCheckBtn.setAttribute('disabled', 'disabled');
-	    pointsEditBtn.setAttribute('disabled', 'disabled');
+	    disableCheckEditButtons();
 	    getPoints();
 	  }
 	});
 	
 	pointsEditBtn.addEventListener('click', function () {
 	  if (!pointsEditBtn.hasAttribute('disabled')) {
-	    console.dir(selectedString);
-	    console.log(selectedString.dataset);
 	    _storage2.default.currentStockId = selectedString.dataset.stockId;
 	    _storage2.default.currentStockName = selectedString.dataset.stockName;
 	    pointsEditName.value = selectedString.dataset.stockName;
@@ -2219,10 +2200,10 @@
 	});
 	
 	var getPoints = function getPoints() {
+	  disableCheckEditButtons();
+	
 	  _referencePoints2.default.cleanContainer();
 	  _referencePoints2.default.drawMarkupInContainer(loaderSpinnerMarkup);
-	  pointsCheckBtn.setAttribute('disabled', 'disabled');
-	  pointsEditBtn.setAttribute('disabled', 'disabled');
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
@@ -2271,7 +2252,7 @@
 	  getElement: function getElement(item) {
 	    var currentStockFlag = item.id === _storage2.default.data['currentStock'] ? 'V' : '';
 	
-	    return '\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '" class="card mb-0 p-1 rounded-0" style="width: 100%" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n        <div>\n          <b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '\n          <div class="badge text-right float-right">\n            <span class="badge badge-pill badge-success">' + currentStockFlag + '</span>\n          </div>\n      </label>';
+	    return '\n\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '"  class="d-flex justify-content-between border rounded-0 m-0" style="min-height: 33px;" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        <span class="badge badge-pill badge-success">' + currentStockFlag + '</span>\n      </div>\n      </label>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2303,13 +2284,13 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _referenceBuyers = __webpack_require__(25);
+	var _referenceContractors = __webpack_require__(25);
 	
-	var _referenceBuyers2 = _interopRequireDefault(_referenceBuyers);
+	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
 	
-	var _referenceBuyersCard = __webpack_require__(26);
+	var _referenceContractorsCard = __webpack_require__(26);
 	
-	var _referenceBuyersCard2 = _interopRequireDefault(_referenceBuyersCard);
+	var _referenceContractorsCard2 = _interopRequireDefault(_referenceContractorsCard);
 	
 	var _tools = __webpack_require__(19);
 	
@@ -2317,48 +2298,65 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var loaderSpinnerId = 'loader-enterprises';
-	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerId = 'loader-contractors';
+	var loaderSpinnerMessage = 'Загрузка';
 	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 	
-	var listBuyers = document.querySelector('#list-buyers-list');
-	var listSuppliers = document.querySelector('#list-suppliers-list');
-	var listBuyersHeaderType = document.querySelector('#list-buyers-header-type');
+	var listBuyers = document.querySelector('#list-contractor-buyers-list');
+	var listSuppliers = document.querySelector('#list-contractor-suppliers-list');
 	
-	var listBuyersAddBtn = document.querySelector('#buyers-add-btn');
-	var listBuyersAddForm = document.querySelector('#buyers-add-form');
-	var listBuyersBody = document.querySelector('#list-buyers-body');
-	var listBuyersCard = document.querySelector('#list-buyers-card');
-	var listBuyersCardReturnBtn = document.querySelector('#list-buyers-card-return-btn');
-	var listBuyersCardEditBtn = document.querySelector('#list-buyers-card-edit-btn');
+	var listContractorsHeaderType = document.querySelector('#list-contractors-header-type');
+	var listContractorsAddBtn = document.querySelector('#contractors-add-btn');
+	var listContractorsAddForm = document.querySelector('#contractors-add-form');
+	var listContractorsHeader = document.querySelector('#list-contractors-header');
+	var listContractorsBody = document.querySelector('#list-contractors-body');
+	var listContractorsCard = document.querySelector('#list-contractors-card');
+	var listContractorsCardReturnBtn = document.querySelector('#list-contractors-card-return-btn');
+	var listContractorsCardEditBtn = document.querySelector('#list-contractors-card-edit-btn');
 	
-	var listBuyersFormEditName = document.querySelector('#buyers-name');
-	var listBuyersFormEditDescribe = document.querySelector('#buyers-describe');
-	var listBuyersFormEditContact = document.querySelector('#buyers-contact');
-	var listBuyersFormEditEmail = document.querySelector('#buyers-email');
+	var listContractorsFormEditLabel = document.querySelector('#contractors-add-label');
+	var listContractorsFormEditName = document.querySelector('#contractors-name');
+	var listContractorsFormEditDescribe = document.querySelector('#contractors-describe');
+	var listContractorsFormEditContact = document.querySelector('#contractors-contact');
+	var listContractorsFormEditEmail = document.querySelector('#contractors-email');
 	
-	listBuyersAddBtn.addEventListener('click', function () {
-	  listBuyersAddForm.reset();
+	var ContractorType = {
+	  SUPPLIER: 1,
+	  BUYER: 2
+	};
+	
+	var showBodyHideCard = function showBodyHideCard() {
+	  listContractorsBody.classList.remove('d-none');
+	  listContractorsCard.classList.add('d-none');
+	};
+	
+	var hideBodyShowCard = function hideBodyShowCard() {
+	  listContractorsBody.classList.add('d-none');
+	  listContractorsCard.classList.remove('d-none');
+	};
+	
+	listContractorsAddBtn.addEventListener('click', function () {
+	  listContractorsAddForm.reset();
 	});
 	
-	listBuyersCardReturnBtn.addEventListener('click', function () {
-	  listBuyersBody.classList.remove('d-none');
-	  listBuyersCard.classList.add('d-none');
-	  getBuyers(_storage2.default.currentKontragent);
+	listContractorsCardReturnBtn.addEventListener('click', function () {
+	  showBodyHideCard();
+	  listContractorsHeader.classList.add('d-flex');
+	  listContractorsHeader.classList.remove('d-none');
+	  getContractors(_storage2.default.currentContractor);
 	});
 	
-	var onSuccessBuyersLoad = function onSuccessBuyersLoad(loadedBuyers) {
+	var onSuccessContractorsLoad = function onSuccessContractorsLoad(loadedContractors) {
 	  document.querySelector('#' + loaderSpinnerId).remove();
-	  if (loadedBuyers.status === 200) {
-	    console.log(loadedBuyers);
-	    _referenceBuyersCard2.default.cleanContainer();
-	    _referenceBuyers2.default.drawDataInContainer(loadedBuyers.data);
+	  if (loadedContractors.status === 200) {
+	    _referenceContractorsCard2.default.cleanContainer();
+	    _referenceContractors2.default.drawDataInContainer(loadedContractors.data);
 	  } else {
-	    _referenceBuyers2.default.drawMarkupInContainer('<p>' + loadedBuyers.message + '</p>');
+	    _referenceContractors2.default.drawMarkupInContainer('<p>' + loadedContractors.message + '</p>');
 	  }
 	};
 	
-	var onErrorBuyersLoad = function onErrorBuyersLoad(error) {
+	var onErrorContractorsLoad = function onErrorContractorsLoad(error) {
 	  console.log(error);
 	};
 	
@@ -2366,16 +2364,16 @@
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  if (loadedBuyerCard.status === 200) {
 	    console.log(loadedBuyerCard);
-	    _referenceBuyersCard2.default.drawDataInContainer(loadedBuyerCard.data);
+	    _referenceContractorsCard2.default.drawDataInContainer(loadedBuyerCard.data);
 	
-	    listBuyersCardEditBtn.addEventListener('click', function () {
-	      listBuyersFormEditName.value = loadedBuyerCard.data.name;
-	      listBuyersFormEditDescribe.value = loadedBuyerCard.data.description;
-	      listBuyersFormEditContact.value = loadedBuyerCard.data.contact;
-	      listBuyersFormEditEmail.value = loadedBuyerCard.data.email;
+	    listContractorsCardEditBtn.addEventListener('click', function () {
+	      listContractorsFormEditName.value = loadedBuyerCard.data.name;
+	      listContractorsFormEditDescribe.value = loadedBuyerCard.data.description;
+	      listContractorsFormEditContact.value = loadedBuyerCard.data.contact;
+	      listContractorsFormEditEmail.value = loadedBuyerCard.data.email;
 	    });
 	  } else {
-	    _referenceBuyersCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
+	    _referenceContractorsCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
 	  }
 	};
 	
@@ -2383,11 +2381,12 @@
 	  console.log(error);
 	};
 	
-	var onListBuyersBodyClick = function onListBuyersBodyClick(evt) {
+	var onListContractorsBodyClick = function onListContractorsBodyClick(evt) {
 	  if (evt.target.tagName === 'BUTTON') {
-	    listBuyersBody.classList.add('d-none');
-	    listBuyersCard.classList.remove('d-none');
-	    _referenceBuyersCard2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	    hideBodyShowCard();
+	    listContractorsHeader.classList.remove('d-flex');
+	    listContractorsHeader.classList.add('d-none');
+	    _referenceContractorsCard2.default.drawMarkupInContainer(loaderSpinnerMarkup);
 	
 	    _xhr2.default.request = {
 	      metod: 'POST',
@@ -2399,38 +2398,39 @@
 	  }
 	};
 	
-	listBuyersBody.addEventListener('click', onListBuyersBodyClick);
+	listContractorsBody.addEventListener('click', onListContractorsBodyClick);
 	
-	var getBuyers = function getBuyers(type) {
-	  console.log(type);
-	  listBuyersBody.classList.remove('d-none');
-	  listBuyersCard.classList.add('d-none');
-	  listBuyersHeaderType.innerHTML = type === 1 ? 'Поставщики' : 'Покупатели';
-	  _referenceBuyers2.default.cleanContainer();
-	  _referenceBuyers2.default.drawMarkupInContainer(loaderSpinnerMarkup);
-	  _storage2.default.currentKontragent = type;
+	var getContractors = function getContractors(type) {
+	  showBodyHideCard();
+	  listContractorsHeaderType.innerHTML = type === ContractorType.SUPPLIER ? 'ПОСТАВЩИКИ' : 'ПОКУПАТЕЛИ';
+	  listContractorsFormEditLabel.innerHTML = type === ContractorType.SUPPLIER ? 'Поставщики' : 'Покупатели';
+	  _storage2.default.currentContractor = type;
+	
+	  _referenceContractors2.default.cleanContainer();
+	  _referenceContractors2.default.drawMarkupInContainer(loaderSpinnerMarkup);
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
 	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/kontr_agent',
 	    data: 'view_last=0&token=' + _storage2.default.data.token + '&type=' + type,
-	    callbackSuccess: onSuccessBuyersLoad,
-	    callbackError: onErrorBuyersLoad
+	    callbackSuccess: onSuccessContractorsLoad,
+	    callbackError: onErrorContractorsLoad
 	  };
 	};
 	
 	exports.default = {
 	  start: function start() {
-	    listBuyers.addEventListener('click', getBuyers.bind(null, 2));
-	    listSuppliers.addEventListener('click', getBuyers.bind(null, 1));
+	    listBuyers.addEventListener('click', getContractors.bind(null, ContractorType.BUYER));
+	    listSuppliers.addEventListener('click', getContractors.bind(null, ContractorType.SUPPLIER));
 	  },
 	
 	
-	  redraw: getBuyers,
+	  redraw: getContractors,
 	
 	  stop: function stop() {
-	    _referenceBuyers2.default.cleanContainer();
-	    listBuyers.removeEventListener('click', getBuyers);
+	    _referenceContractors2.default.cleanContainer();
+	    listBuyers.removeEventListener('click', getContractors);
+	    listSuppliers.addEventListener('click', getContractors);
 	  }
 	};
 
@@ -2443,27 +2443,25 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var listBuyersBody = document.querySelector('#list-buyers-body');
-	// import auth from '../tools/storage.js';
+	var listContractorsBody = document.querySelector('#list-contractors-body');
 	
 	exports.default = {
 	  cleanContainer: function cleanContainer() {
-	    listBuyersBody.innerHTML = '';
+	    listContractorsBody.innerHTML = '';
 	  },
 	  getElement: function getElement(item) {
-	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? 'V' : '';
 	
-	    return '\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '" class="card mb-0 p-1 rounded-0" style="width: 100%" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n        <div>\n          <b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '\n          <div class="badge text-right float-right">\n            <button type="button" class="btn btn-light" data-buyer-id="' + item.id + '"> &rarr; </button>\n          </div>\n      </label>';
+	    return '\n\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        <button type="button" class="btn btn-primary btn-sm" data-buyer-id="' + item.id + '"> &rarr; </button>\n      </div>\n    </div>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(buyersBodyData) {
 	    var _this = this;
 	
 	    buyersBodyData.forEach(function (item) {
-	      return listBuyersBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	      return listContractorsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
 	    });
 	  },
 	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
-	    listBuyersBody.insertAdjacentHTML('beforeend', markup);
+	    listContractorsBody.insertAdjacentHTML('beforeend', markup);
 	  }
 	};
 
@@ -2476,7 +2474,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var listBuyersCardBody = document.querySelector('#list-buyers-card-body');
+	var listContractorsCardBody = document.querySelector('#list-contractors-card-body');
 	
 	// import auth from '../tools/storage.js';
 	
@@ -2486,7 +2484,7 @@
 	};
 	exports.default = {
 	  cleanContainer: function cleanContainer() {
-	    listBuyersCardBody.innerHTML = '';
+	    listContractorsCardBody.innerHTML = '';
 	  },
 	  getElement: function getElement(item) {
 	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? 'V' : '';
@@ -2496,17 +2494,123 @@
 	  drawDataInContainer: function drawDataInContainer(buyersCardData) {
 	    var _this = this;
 	
-	    listBuyersCardBody.insertAdjacentHTML('beforeend', drawHeaderInContainer(buyersCardData));
+	    listContractorsCardBody.insertAdjacentHTML('beforeend', drawHeaderInContainer(buyersCardData));
 	    if (buyersCardData.naklads) {
 	      buyersCardData.naklads.forEach(function (item) {
-	        return listBuyersCardBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	        return listContractorsCardBody.insertAdjacentHTML('beforeend', _this.getElement(item));
 	      });
 	    } else {
-	      listBuyersCardBody.insertAdjacentHTML('beforeend', '<p class="border">Накладных нет</p>');
+	      listContractorsCardBody.insertAdjacentHTML('beforeend', '<p class="border">Накладных нет</p>');
 	    }
 	  },
 	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
-	    listBuyersCardBody.insertAdjacentHTML('beforeend', markup);
+	    listContractorsCardBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceKeywords = __webpack_require__(28);
+	
+	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
+	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var loaderSpinnerId = 'loader-enterprises';
+	var loaderSpinnerMessage = 'Загрузка';
+	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
+	
+	var listKeywords = document.querySelector('#list-keywords-list');
+	
+	var onSuccessKeywordsLoad = function onSuccessKeywordsLoad(loadedKeywords) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  console.log(loadedKeywords);
+	  if (loadedKeywords.status === 200) {
+	    _referenceKeywords2.default.drawDataInContainer(loadedKeywords.data);
+	  } else {
+	    _referenceKeywords2.default.drawMarkupInContainer('<p>' + loadedKeywords.message + '</p>');
+	  }
+	};
+	
+	var onErrorKeywordsLoad = function onErrorKeywordsLoad(error) {
+	  console.log(error);
+	};
+	
+	var getKeywords = function getKeywords() {
+	  _referenceKeywords2.default.cleanContainer();
+	  _referenceKeywords2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/tag',
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessKeywordsLoad,
+	    callbackError: onErrorKeywordsLoad
+	  };
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    listKeywords.addEventListener('click', getKeywords);
+	  },
+	
+	
+	  redraw: getKeywords,
+	
+	  stop: function stop() {
+	    _referenceKeywords2.default.cleanContainer();
+	    listKeywords.removeEventListener('click', getKeywords);
+	  }
+	};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var listKeywordsBody = document.querySelector('#list-keywords-body');
+	
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listKeywordsBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	
+	    return '\n      <span class="badge" style="background-color: #' + item.hex_color + '">#' + item.name + '</span>';
+	  },
+	  drawDataInContainer: function drawDataInContainer(keywordsData) {
+	    var _this = this;
+	
+	    keywordsData.forEach(function (item) {
+	      return listKeywordsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    });
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listKeywordsBody.insertAdjacentHTML('beforeend', markup);
 	  }
 	};
 

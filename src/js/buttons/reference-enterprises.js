@@ -4,6 +4,7 @@ import enterprisesMarkup from '../markup/reference-enterprises.js';
 import toolsMarkup from '../markup/tools.js';
 
 const listEnterprises = document.querySelector('#list-enterprises-list');
+const listEnterprisesHeader = document.querySelector('#list-enterprises-header');
 const listEnterprisesBody = document.querySelector('#list-enterprises-body');
 const listEnterprisesCard = document.querySelector('#list-enterprises-card');
 const listEnterprisesCardReturnBtn = document.querySelector('#list-enterprises-card-return-btn');
@@ -21,7 +22,7 @@ const listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-ca
 const listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
 
 const loaderSpinnerId = 'loader-enterprises';
-const loaderSpinnerMessage = 'Ждем загрузки предприятий';
+const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const onSuccessEnterprisesLoad = (loadedEnterprises) => {
@@ -78,7 +79,9 @@ const onErrorEnterpriseCardLoad = (error) => {
 };
 
 const onListEnterprisesBodyClick = (evt) => {
-  if (evt.target.tagName === 'BUTTON') {
+  if (evt.target.tagName === 'BUTTON' || evt.target.tagName === 'IMG') {
+    listEnterprisesHeader.classList.remove('d-flex');
+    listEnterprisesHeader.classList.add('d-none');
     listEnterprisesBody.classList.add('d-none');
     listEnterprisesCard.classList.remove('d-none');
 
@@ -95,6 +98,8 @@ const onListEnterprisesBodyClick = (evt) => {
 const onListEnterprisesCardReturnBtn = () => {
   listEnterprisesBody.classList.remove('d-none');
   listEnterprisesCard.classList.add('d-none');
+  listEnterprisesHeader.classList.add('d-flex');
+  listEnterprisesHeader.classList.remove('d-none');
   listEnterprisesCardName.innerText = '';
   listEnterprisesCardDate.innerText = '';
   listEnterprisesCardBalance.innerText = '';

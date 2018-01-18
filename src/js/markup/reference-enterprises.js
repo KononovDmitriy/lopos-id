@@ -8,16 +8,17 @@ export default {
   },
 
   getElement(item) {
-    const currentEnterpriseFlag = (item.b_id === auth.data['currentBusiness']) ? 'V' : '';
+    const currentEnterpriseFlag = (item.b_id === auth.data['currentBusiness']) ? '<button type="button" class="btn p-0 bg-white reference-icon""><img src="img/icons8-checked-96.png" alt=""></button>' : '';
 
     return `
-    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">
-      <div class="media">
-        <div class="media-body">
-          <b>ID: </b>${item.b_id} <b>Имя: </b>${item.b_name} <b>Почта: </b>${item.b_owner_email} <b>Время: </b>${new Date(+(item.b_time_activity + '000')).toLocaleString()}
-          <div class="badge text-right float-right"><span class="badge badge-pill badge-success">${currentEnterpriseFlag}</span> <button type="button" class="btn btn-primary btn-sm" data-enterprise-id="${item.b_id}"> > </button> </div>
-        </div>
-      </div>`;
+    <div class="d-flex justify-content-between border rounded-0">
+      <div><b>ID: </b>${item.b_id} <b>Имя: </b>${item.b_name} <b>Почта: </b>${item.b_owner_email} <b>Время: </b>${new Date(+(item.b_time_activity + '000')).toLocaleString()}</div>
+      <div>
+        ${currentEnterpriseFlag}
+
+        <button type="button" class="btn p-0 bg-white reference-icon" data-enterprise-id="${item.b_id}" style="background-image: url(img/arrow-right.png); background-size: cover;"></button>
+      </div>
+    </div>`;
   },
 
   drawDataInContainer(enterprisesData) {
