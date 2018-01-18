@@ -1,7 +1,9 @@
 module.exports = {
+
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jquery": true
     },
     "extends": "htmlacademy/es6",
     "parserOptions": {
@@ -24,15 +26,15 @@ module.exports = {
             "always"
         ],
 
+        "no-alert": [
+            "off"
+        ],
+
         "no-var": [
             "error"
         ],
 
         "no-console": [
-            "off"
-        ],
-
-        "no-alert": [
             "off"
         ]
     }
