@@ -85,12 +85,12 @@ export default {
     return sessionStorage.getItem('currentStockName');
   },
 
-  set currentKontragent(type) {
-    sessionStorage.setItem('currentKontragent', type);
+  set currentContractor(type) {
+    sessionStorage.setItem('currentContractor', type);
   },
 
-  get currentKontragent() {
-    return sessionStorage.getItem('currentKontragent');
+  get currentContractor() {
+    return sessionStorage.getItem('currentContractor');
   },
 
 

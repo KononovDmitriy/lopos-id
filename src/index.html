@@ -30,7 +30,7 @@
         <div class="container-fluid">
           <h3 class="text-center text-primary">Вход</h3>
           <form id=loginForm class="mx-auto" style="max-width: 400px;">
-             <div id='loginCaptcha'></div>
+            <div id='loginCaptcha'></div>
             <div class="form-group">
               <label for="loginInputLogin">Введите ID или email</label>
               <input class="form-control" type="text" id="loginInputLogin" placeholder="Введите ID или email" data-erreset="loginLogin">
@@ -43,9 +43,9 @@
               <span id="loginInputPasswordError" class="badge badge-danger w-100"></span>
             </div>
 
-               <div id="loginProgress" class="progress mb-3 invisible">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-              </div>
+            <div id="loginProgress" class="progress mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
 
             <div>
               <button id='loginButtonSubmit' type="submit" class="btn btn-danger w-100">
@@ -132,11 +132,11 @@
               <span id="emailConfirmInputKeyError" class="badge badge-danger w-100"></span>
             </div>
 
-              <div id="confirmProgress" class="progress mb-3 invisible">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-              </div>
+            <div id="confirmProgress" class="progress mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
 
-             <div class="form-group">
+            <div class="form-group">
               <button id='emailConfirmButtonSubmit' type="submit" class="btn btn-danger w-100">Подтвердить</button>
               <button id='emailConfirmButtonCancel' type="button" class="btn btn-info w-100 mt-3">Отмена</button>
             </div>
@@ -171,7 +171,7 @@
     </section>
   </div>
 
-  <div id="app" class="container mt-3 mb-5 d-none"  style="min-height: 920px;">
+  <div id="app" class="container mt-3 mb-5 d-none" style="min-height: 920px;">
 
     <div>
 
@@ -222,8 +222,8 @@
             <a class="nav-link dropdown-toggle" id="list-reference-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="reference">Справочники</a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" id="list-supplier-list" data-toggle="list" href="#list-supplier" role="tab" aria-controls="supplier">Поставщики</a>
-              <a class="dropdown-item" id="list-buyer-list" data-toggle="list" href="#list-buyer" role="tab" aria-controls="buyer">Покупатели</a>
+              <a class="dropdown-item" id="list-contractor-suppliers-list" data-toggle="list" href="#list-contractors" role="tab" aria-controls="contractors">Поставщики</a>
+              <a class="dropdown-item" id="list-contractor-buyers-list" data-toggle="list" href="#list-contractors" role="tab" aria-controls="contractors">Покупатели</a>
               <a class="dropdown-item" id="list-points-list" data-toggle="list" href="#list-points" role="tab" aria-controls="points">Точки продаж</a>
               <a class="dropdown-item" id="list-keywords-list" data-toggle="list" href="#list-keywords" role="tab" aria-controls="keywords">Ключевые слова</a>
               <a class="dropdown-item" id="list-enterprises-list" data-toggle="list" href="#list-enterprises" role="tab" aria-controls="enterprises">Предприятия</a>
@@ -236,7 +236,7 @@
             <a class="nav-link" id="list-log-list" data-toggle="list" href="#list-log" role="tab" aria-controls="log">Журнал операций</a>
           </li>
 
-                <!--Онлайн-->
+          <!--Онлайн-->
           <li class="nav-item dropdown ml-auto">
             <a class="nav-link dropdown-toggle" id="list-online-list" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="online">Онлайн</a>
 
@@ -294,24 +294,90 @@
         </div>
 
         <!--СПРАВОЧНИКИ-->
-        <div class="tab-pane fade" id="list-supplier" role="tabpanel" aria-labelledby="list-supplier-list">
-          <p>ПОСТАВЩИКИ (UNDER CONSTRUCTION)</p>
+
+        <div class="tab-pane fade" id="list-contractors" role="tabpanel" aria-labelledby="list-contractors-list">
+          <div id="list-contractors-header" class="d-flex flex-nowrap mb-2 mt-2">
+            <span id="list-contractors-header-type" class="mr-auto pt-2 pb-2"></span>
+            <button id="contractors-add-btn" type="button" class="btn btn-success p-2 mr-1" data-toggle="modal" data-target="#contractors-add">+</button>
+          </div>
+          <div id="list-contractors-body"></div>
+
+          <div id="list-contractors-card" class="d-none">
+
+            <div id="list-contractors-card-header" class="d-flex flex-nowrap">
+              <div class="d-flex mr-auto pt-2 pb-2">
+                <button id="list-contractors-card-return-btn" type="button" class="btn btn-success"> &larr; </button>
+                <span id="list-contractors-card-name" class="border"></span>
+              </div>
+              <button id="list-contractors-card-edit-btn" type="button" class="btn btn-warning p-2 border" data-toggle="modal" data-target="#contractors-add">/</button>
+            </div>
+
+            <div id="list-contractors-card-body"></div>
+          </div>
+
         </div>
-        <div class="tab-pane fade" id="list-buyer" role="tabpanel" aria-labelledby="list-buyer-list">
-          <p>ПОКУПАТЕЛИ (UNDER CONSTRUCTION)</p>
-        </div>
+
         <div class="tab-pane fade" id="list-points" role="tabpanel" aria-labelledby="list-points-list">
-          <p>ТОЧКИ ПРОДАЖ (UNDER CONSTRUCTION)</p>
+          <div id="list-points-header" class="d-flex flex-nowrap mb-2 mt-2">
+            <span class="mr-auto pt-2 pb-2">ТОЧКИ ПРОДАЖ</span>
+            <button id="points-add-btn" type="button" class="btn btn-success p-2 mr-1" data-toggle="modal" data-target="#points-add">+</button>
+            <button id="points-check" type="button" class="btn btn-success p-2 mr-1">V</button>
+            <button id="points-edit-btn" type="button" class="btn btn-warning p-2" data-toggle="modal" data-target="#points-edit">/</button>
+          </div>
+          <div id="list-points-body"></div>
         </div>
+
         <div class="tab-pane fade" id="list-keywords" role="tabpanel" aria-labelledby="list-keywords-list">
-          <p>КЛЮЧЕВЫЕ СЛОВА (UNDER CONSTRUCTION)</p>
+          <div id="list-keywords-header" class="d-flex justify-content-between mb-2 mt-2">
+            <span>КЛЮЧЕВЫЕ СЛОВА</span>
+            <button type="button" class="btn btn-success p-0 reference-icon" data-toggle="modal" data-target="#keywords-add"><img src="img/plus-math-50.png" alt=""></button>
+          </div>
+          <div id="list-keywords-body"></div>
+
         </div>
         <div class="tab-pane fade" id="list-enterprises" role="tabpanel" aria-labelledby="list-enterprises-list">
           <div id="list-enterprises-header" class="d-flex justify-content-between mb-2 mt-2">
-            <span>ПРЕДПРИЯТИЯ</span>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#enterprises-add">+</button>
+            <h2>ПРЕДПРИЯТИЯ</h2>
+            <button type="button" class="btn btn-success p-0 reference-icon" data-toggle="modal" data-target="#enterprises-add"><img src="img/plus-math-50.png" alt=""></button>
           </div>
           <div id="list-enterprises-body"></div>
+
+          <div id="list-enterprises-card" class="d-none">
+            <div class="d-flex flex-nowrap">
+              <div class="d-flex mr-auto">
+                <button id="list-enterprises-card-return-btn" type="button" class="btn btn-success p-0 reference-icon"><img src="img/icons8-left-100.png" alt=""></button>
+                <h2 id="list-enterprises-card-name"></h2>
+              </div>
+              <button id="list-enterprises-card-check-btn" type="button" class="btn btn-success p-0 reference-icon"><img src="img/icons8-checked-48.png" alt=""></button>
+              <button id="list-enterprises-card-edit-btn" type="button" class="btn btn-warning p-0 reference-icon" data-toggle="modal" data-target="#enterprises-card-edit"><img src="img/icons8-edit-50.png" alt=""></button>
+              <button id="list-enterprises-card-delete-btn" type="button" class="btn btn-danger p-0 reference-icon"><img src="img/trash-100.png" alt=""></button>
+            </div>
+            <div>
+              <div>
+                <span>Баланс</span>
+                <span id="list-enterprises-card-balance"></span>
+              </div>
+              <div>
+                <span>Дата создания</span>
+                <span id="list-enterprises-card-date"></span>
+              </div>
+              <div>
+                <span>Свойства</span>
+                <ul>
+                  <li>
+                    <span>Отрицательные остатки</span>
+                    <span id="list-enterprises-card-negative-tailings"></span>
+                  </li>
+                  <li>
+                    <span>Отрицательный баланс</span>
+                    <span id="list-enterprises-card-negative-balance"></span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
         <!--ЖУРНАЛ-->
@@ -347,80 +413,225 @@
 
   <!-- Справочники / добавление предприятия -->
   <div class="modal fade" id="enterprises-add" tabindex="-1" role="dialog" aria-labelledby="enterprises-add" aria-hidden="true">
-  <div class="modal-dialog" style="width: 300px;" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="enterprises-add-label">Создать предприятие</h5>
-        <button id="enterprises-add-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enterprises-add-label">Создать предприятие</h5>
+          <button id="enterprises-add-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-        <form id = "enterprises-add-form" name="enterprises-add" >
-          <div class="form-group">
-            <label for="enterprise-name">Название</label>
-            <input type="text" class="form-control" id="enterprise-name" aria-describedby="enterprise-name" placeholder="Название предприятия">
-            <span id="enterprises-name-valid" class="badge badge-danger w-100"></span>
-          </div>
-          <div class="form-group">
-            <label for="enterprise-balance">Баланс</label>
-            <input type="text" class="form-control" id="enterprise-balance" placeholder="Баланс" value=0>
-            <span id="enterprise-balance-valid" class="badge badge-danger w-100"></span>
-          </div>
-          <div class="form-group d-flex justify-content-between">
-            <label for="enterprise-money">Валюта</label>
-            <select class="custom-select"  id="enterprise-money">
+        </div>
+        <div class="modal-body">
+          <form id="enterprises-add-form" name="enterprises-add">
+            <div class="form-group">
+              <label for="enterprise-name">Название</label>
+              <input type="text" class="form-control" id="enterprise-name" aria-describedby="enterprise-name" placeholder="Название предприятия">
+              <span id="enterprises-name-valid" class="badge badge-danger w-100"></span>
+            </div>
+            <div class="form-group">
+              <label for="enterprise-balance">Баланс</label>
+              <input type="text" class="form-control" id="enterprise-balance" placeholder="Баланс" value=0>
+              <span id="enterprise-balance-valid" class="badge badge-danger w-100"></span>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+              <label for="enterprise-money">Валюта</label>
+              <select class="custom-select" id="enterprise-money">
               <option value="rur" selected>RUR</option>
               <option value="usd">USD</option>
             </select>
-          </div>
+            </div>
 
-          <div id="enterprises-add-spinner" class="progress text-white mb-3 invisible">
-            <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
+            <div id="enterprises-add-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
 
-          <button id="enterprises-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+            <button id="enterprises-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
 
-          <button id="enterprises-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
-        </form>
+            <button id="enterprises-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Справочники / редактирование предприятия -->
-<div class="modal fade" id="enterprises-edit" tabindex="-1" role="dialog" aria-labelledby="enterprises-add" aria-hidden="true">
-  <div class="modal-dialog" style="width: 300px;" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="enterprises-edit-label">Изменить предприятие</h5>
-        <button id="enterprises-edit-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+  <!-- Справочники / редактирование карточки предприятия -->
+  <div class="modal fade" id="enterprises-card-edit" tabindex="-1" role="dialog" aria-labelledby="enterprises-card-edit" aria-hidden="true">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enterprises-card-edit-label">Переименовать</h5>
+          <button id="enterprises-card-edit-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-        <form id = "enterprises-edit-form" name="enterprises-add" >
-          <div class="form-group">
-            <label for="enterprise-name">Название</label>
-            <input type="text" class="form-control" id="enterprise-edit-name" aria-describedby="enterprise-name" placeholder="Название предприятия">
-            <span id="enterprises-edit-name-valid" class="badge badge-danger w-100"></span>
-          </div>
+        </div>
+        <div class="modal-body">
+          <form id="enterprises-card-edit-form" name="enterprises-card-edit">
+            <div class="form-group">
+              <label for="enterprise-name">Название</label>
+              <input type="text" class="form-control" id="enterprises-card-edit-name" aria-describedby="enterprises-card-edit-name" placeholder="Название предприятия">
+              <span id="enterprises-card-edit-valid" class="badge badge-danger w-100"></span>
+            </div>
 
-          <div id="enterprises-edit-spinner" class="progress text-white mb-3 invisible">
-            <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
+            <div id="enterprises-card-edit-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
 
-          <button id="enterprises-edit-submit" type="submit" class="btn btn-primary w-100">Создать</button>
-
-          <button id="enterprises-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
-        </form>
+            <button id="enterprises-card-edit-submit" type="submit" class="btn btn-primary w-100">Переименовать</button>
+            <button id="enterprises-card-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#enterprises-edit">+</button>
+  <!-- Справочники / создание новой точки -->
+  <div class="modal fade" id="points-add" tabindex="-1" role="dialog" aria-labelledby="points-add" aria-hidden="true">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="points-add-label">Создать точку</h5>
+          <button id="points-add-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form id="points-add-form" name="points-add">
+            <div class="form-group">
+              <label for="points-add-name">Название</label>
+              <input type="text" class="form-control" id="points-add-name" aria-describedby="points-add-name" placeholder="Название точки">
+              <span id="points-add-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div id="points-add-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <button id="points-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+
+            <button id="points-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Справочники / редактирование точки -->
+  <div class="modal fade" id="points-edit" tabindex="-1" role="dialog" aria-labelledby="points-edit" aria-hidden="true">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="points-add-label">Редактировать точку</h5>
+          <button id="points-edit-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form id="points-edit-form" name="points-edit">
+            <div class="form-group">
+              <label for="points-edit-name">Название</label>
+              <input type="text" class="form-control" id="points-edit-name" aria-describedby="points-edit-name" placeholder="Название точки">
+              <span id="points-edit-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div id="points-edit-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <button id="points-edit-submit" type="submit" class="btn btn-primary w-100">Изменить</button>
+
+            <button id="points-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
+  <!-- Справочники / добавление покупателя -->
+  <div class="modal fade" id="contractors-add" tabindex="-1" role="dialog" aria-labelledby="contractors-add" aria-hidden="true">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contractors-add-label">Покупатель/Поставщик</h5>
+          <button id="contractors-add-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form id="contractors-add-form" name="contractors-add">
+
+            <div class="form-group">
+              <label for="contractors-email">Название</label>
+              <input type="text" class="form-control" id="contractors-name" aria-describedby="contractors-name" placeholder="Название">
+              <span id="contractors-name-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contractors-describe">Описание</label>
+              <input type="text" class="form-control" id="contractors-describe" aria-describedby="contractors-describe" placeholder="Описание">
+              <span id="contractors-describe-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contractors-contact">Контактное лицо</label>
+              <input type="text" class="form-control" id="contractors-contact" aria-describedby="contractors-contact" placeholder="Контактное лицо">
+              <span id="contractors-contact-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contractors-phone">Контактное лицо</label>
+              <input type="text" class="form-control" id="contractors-phone" aria-describedby="contractors-phone" placeholder="Телефон">
+              <span id="contractors-phone-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contractors-email">Email</label>
+              <input type="email" class="form-control" id="contractors-email" aria-describedby="contractors-email" placeholder="Email">
+            </div>
+
+            <div id="contractors-add-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <button id="contractors-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+
+            <button id="contractors-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Справочники / создание ключевого слова -->
+  <div class="modal fade" id="keywords-add" tabindex="-1" role="dialog" aria-labelledby="keywords-add" aria-hidden="true">
+    <div class="modal-dialog" style="width: 300px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="points-add-label">Создать ключевое слово</h5>
+          <button id="keywords-add-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form id="keywords-add-form" name="keywords-add">
+            <div class="form-group">
+              <label for="keywords-add-name">Новое название</label>
+              <input type="text" class="form-control" id="keywords-add-name" aria-describedby="keywords-add-name" placeholder="Название">
+              <span id="points-add-valid" class="badge badge-danger w-100"></span>
+            </div>
+
+            <div id="points-add-spinner" class="progress text-white mb-3 invisible">
+              <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <button id="keywords-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+
+            <button id="keywords-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

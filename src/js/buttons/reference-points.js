@@ -4,7 +4,7 @@ import pointsMarkup from '../markup/reference-points.js';
 import toolsMarkup from '../markup/tools.js';
 
 const loaderSpinnerId = 'loader-enterprises';
-const loaderSpinnerMessage = 'Ждем загрузки предприятий';
+const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const listPoints = document.querySelector('#list-points-list');
@@ -12,6 +12,16 @@ const listPointsBody = document.querySelector('#list-points-body');
 const pointsCheckBtn = document.querySelector('#points-check');
 const pointsEditBtn = document.querySelector('#points-edit-btn');
 const pointsEditName = document.querySelector('#points-edit-name');
+
+const enableCheckEditButtons = () => {
+  pointsCheckBtn.removeAttribute('disabled');
+  pointsEditBtn.removeAttribute('disabled');
+};
+
+const disableCheckEditButtons = () => {
+  pointsCheckBtn.setAttribute('disabled', 'disabled');
+  pointsEditBtn.setAttribute('disabled', 'disabled');
+};
 
 const onSuccessPointsLoad = (loadedPoints) => {
   document.querySelector(`#${loaderSpinnerId}`).remove();
@@ -25,8 +35,7 @@ const onSuccessPointsLoad = (loadedPoints) => {
 };
 
 let selectedString = '';
-pointsCheckBtn.setAttribute('disabled', 'disabled');
-pointsEditBtn.setAttribute('disabled', 'disabled');
+disableCheckEditButtons();
 
 const onErrorPointsLoad = (error) => {
   console.log(error);
@@ -39,25 +48,19 @@ listPointsBody.addEventListener('change', function (evt) {
   }
   selectedString = evt.target.labels[0];
   selectedString.classList.add('bg-light');
-  pointsCheckBtn.removeAttribute('disabled');
-  pointsEditBtn.removeAttribute('disabled');
+  enableCheckEditButtons();
 });
 
 pointsCheckBtn.addEventListener('click', function () {
   if (!pointsCheckBtn.hasAttribute('disabled')) {
-    console.dir(selectedString);
-    console.log(selectedString.dataset);
     auth.currentStock = selectedString.dataset.stockId;
-    pointsCheckBtn.setAttribute('disabled', 'disabled');
-    pointsEditBtn.setAttribute('disabled', 'disabled');
+    disableCheckEditButtons();
     getPoints();
   }
 });
 
 pointsEditBtn.addEventListener('click', function () {
   if (!pointsEditBtn.hasAttribute('disabled')) {
-    console.dir(selectedString);
-    console.log(selectedString.dataset);
     auth.currentStockId = selectedString.dataset.stockId;
     auth.currentStockName = selectedString.dataset.stockName;
     pointsEditName.value = selectedString.dataset.stockName;
@@ -65,10 +68,10 @@ pointsEditBtn.addEventListener('click', function () {
 });
 
 const getPoints = () => {
+  disableCheckEditButtons();
+
   pointsMarkup.cleanContainer();
   pointsMarkup.drawMarkupInContainer(loaderSpinnerMarkup);
-  pointsCheckBtn.setAttribute('disabled', 'disabled');
-  pointsEditBtn.setAttribute('disabled', 'disabled');
 
   xhr.request = {
     metod: 'POST',
