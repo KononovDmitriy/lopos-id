@@ -21,7 +21,7 @@ const listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-ca
 const listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
 
 const loaderSpinnerId = 'loader-enterprises';
-const loaderSpinnerMessage = 'Ждем загрузки предприятий';
+const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const onSuccessEnterprisesLoad = (loadedEnterprises) => {

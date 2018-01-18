@@ -5,7 +5,7 @@ import contractorsCardMarkup from '../markup/reference-contractors-card.js';
 import toolsMarkup from '../markup/tools.js';
 
 const loaderSpinnerId = 'loader-enterprises';
-const loaderSpinnerMessage = 'Ждем загрузки предприятий';
+const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const listBuyers = document.querySelector('#list-contractor-buyers-list');
