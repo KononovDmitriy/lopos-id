@@ -6,7 +6,7 @@ import enterprisesButton from './buttons/reference-enterprises.js';
 import enterprisesButtonFormAdd from './buttons/reference-enterprises-add.js';
 import enterprisesButtonFormEdit from './buttons/reference-enterprises-edit.js';
 import pointsButton from './buttons/reference-points.js';
-import buyersButton from './buttons/reference-buyers.js';
+import contractorsButton from './buttons/reference-contractors.js';
 
 console.log('ver: 2D4');
 console.log('ver: 2A3');
@@ -51,7 +51,7 @@ const start = () => {
     logButton.start();
     enterprisesButton.start();
     pointsButton.start();
-    buyersButton.start();
+    contractorsButton.start();
     initMarkup();
     hashObserver();
     enterprisesButtonFormAdd.start();
