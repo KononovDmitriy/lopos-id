@@ -8,12 +8,6 @@ const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const listKeywords = document.querySelector('#list-keywords-list');
-/*
-const listPointsBody = document.querySelector('#list-points-body');
-const pointsCheckBtn = document.querySelector('#points-check');
-const pointsEditBtn = document.querySelector('#points-edit-btn');
-const pointsEditName = document.querySelector('#points-edit-name');
-*/
 
 const onSuccessKeywordsLoad = (loadedKeywords) => {
   document.querySelector(`#${loaderSpinnerId}`).remove();
@@ -30,28 +24,6 @@ const onErrorKeywordsLoad = (error) => {
   console.log(error);
 };
 
-/*
-pointsCheckBtn.addEventListener('click', function () {
-  if (!pointsCheckBtn.hasAttribute('disabled')) {
-    console.dir(selectedString);
-    console.log(selectedString.dataset);
-    auth.currentStock = selectedString.dataset.stockId;
-    pointsCheckBtn.setAttribute('disabled', 'disabled');
-    pointsEditBtn.setAttribute('disabled', 'disabled');
-    getPoints();
-  }
-});
-
-pointsEditBtn.addEventListener('click', function () {
-  if (!pointsEditBtn.hasAttribute('disabled')) {
-    console.dir(selectedString);
-    console.log(selectedString.dataset);
-    auth.currentStockId = selectedString.dataset.stockId;
-    auth.currentStockName = selectedString.dataset.stockName;
-    pointsEditName.value = selectedString.dataset.stockName;
-  }
-});
-*/
 const getKeywords = () => {
   keywordsMarkup.cleanContainer();
   keywordsMarkup.drawMarkupInContainer(loaderSpinnerMarkup);

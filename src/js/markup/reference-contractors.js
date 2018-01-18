@@ -1,7 +1,5 @@
 const listContractorsBody = document.querySelector('#list-contractors-body');
 
-// import auth from '../tools/storage.js';
-
 export default {
 
   cleanContainer() {
@@ -9,17 +7,15 @@ export default {
   },
 
   getElement(item) {
-    // const currentStockFlag = (item.id === auth.data['currentStock']) ? 'V' : '';
 
     return `
-    <input type="radio" id="${item.id}" name="contact" value="email" class="d-none">
-    <label id="log-row" for="${item.id}" class="card mb-0 p-1 rounded-0" style="width: 100%" data-stock-id="${item.id}" data-stock-name="${item.name}">
-        <div>
-          <b>ID: </b>${item.id} <b>Имя: </b>${item.name}
-          <div class="badge text-right float-right">
-            <button type="button" class="btn btn-light" data-buyer-id="${item.id}"> &rarr; </button>
-          </div>
-      </label>`;
+
+    <div class="d-flex justify-content-between border rounded-0">
+      <div><b>ID: </b>${item.id} <b>Имя: </b>${item.name}</div>
+      <div>
+        <button type="button" class="btn btn-primary btn-sm" data-buyer-id="${item.id}"> &rarr; </button>
+      </div>
+    </div>`;
   },
 
   drawDataInContainer(buyersBodyData) {
