@@ -89,9 +89,9 @@ window.appSettings = {
     }
   },
 
-   // Форма редактирования организации
+  // Форма редактирования организации
   'formEditEnterprise': {
-    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{id}}',
     validPatterns: {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
     },

@@ -50,29 +50,42 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _log = __webpack_require__(2);
+	var _main_login_window = __webpack_require__(2);
+	
+	var _main_login_window2 = _interopRequireDefault(_main_login_window);
+	
+	var _log = __webpack_require__(13);
 	
 	var _log2 = _interopRequireDefault(_log);
 	
-	var _onlineProfile = __webpack_require__(5);
+	var _onlineProfile = __webpack_require__(15);
 	
 	var _onlineProfile2 = _interopRequireDefault(_onlineProfile);
 	
-	var _referenceEnterprises = __webpack_require__(7);
+	var _referenceEnterprises = __webpack_require__(17);
 	
 	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
-	
-	var _main_login_window = __webpack_require__(10);
-	
-	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
 	var _referenceEnterprisesAdd = __webpack_require__(20);
 	
 	var _referenceEnterprisesAdd2 = _interopRequireDefault(_referenceEnterprisesAdd);
 	
+	var _referenceEnterprisesEdit = __webpack_require__(21);
+	
+	var _referenceEnterprisesEdit2 = _interopRequireDefault(_referenceEnterprisesEdit);
+	
+	var _referencePoints = __webpack_require__(22);
+	
+	var _referencePoints2 = _interopRequireDefault(_referencePoints);
+	
+	var _referenceBuyers = __webpack_require__(24);
+	
+	var _referenceBuyers2 = _interopRequireDefault(_referenceBuyers);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D3');
+	console.log('ver: 2D4');
+	console.log('ver: 2A3');
 	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
@@ -121,8 +134,12 @@
 	    _onlineProfile2.default.start();
 	    _log2.default.start();
 	    _referenceEnterprises2.default.start();
+	    _referencePoints2.default.start();
+	    _referenceBuyers2.default.start();
 	    initMarkup();
 	    hashObserver();
+	    _referenceEnterprisesAdd2.default.start();
+	    _referenceEnterprisesEdit2.default.start();
 	  } else {
 	    showLoginHideApp();
 	    _main_login_window2.default.init();
@@ -142,9 +159,6 @@
 	// ========== НАЧАЛО РАБОТЫ ==========
 	initMarkup();
 	hashObserver();
-	
-	_referenceEnterprisesAdd2.default.start();
-	
 	start();
 	document.addEventListener('loginSuccess', start);
 	
@@ -220,6 +234,14 @@
 	    };
 	  },
 	
+	  set currentBusiness(id) {
+	    localStorage.setItem('currentBusiness', id);
+	  },
+	
+	  set currentStock(id) {
+	    localStorage.setItem('currentStock', id);
+	  },
+	
 	  get isSetFlag() {
 	    return Object.values(this.data).some(function (item) {
 	      return item !== null;
@@ -236,7 +258,51 @@
 	    localStorage.removeItem('token');
 	    localStorage.removeItem('currentBusiness');
 	    localStorage.removeItem('currentStock');
+	  },
+	
+	
+	  // ВСЯКОЕ ПРОЧЕЕ
+	
+	  set currentEnterpriseId(id) {
+	    sessionStorage.setItem('currentEnterpriseId', id);
+	  },
+	
+	  get currentEnterpriseId() {
+	    return sessionStorage.getItem('currentEnterpriseId');
+	  },
+	
+	  set currentEnterpriseName(name) {
+	    sessionStorage.setItem('currentEnterpriseName', name);
+	  },
+	
+	  get currentEnterpriseName() {
+	    return sessionStorage.getItem('currentEnterpriseName');
+	  },
+	
+	  set currentStockId(id) {
+	    sessionStorage.setItem('currentStockId', id);
+	  },
+	
+	  get currentStockId() {
+	    return sessionStorage.getItem('currentStockId');
+	  },
+	
+	  set currentStockName(name) {
+	    sessionStorage.setItem('currentStockName', name);
+	  },
+	
+	  get currentStockName() {
+	    return sessionStorage.getItem('currentStockName');
+	  },
+	
+	  set currentKontragent(type) {
+	    sessionStorage.setItem('currentKontragent', type);
+	  },
+	
+	  get currentKontragent() {
+	    return sessionStorage.getItem('currentKontragent');
 	  }
+	
 	};
 
 /***/ }),
@@ -249,469 +315,23 @@
 	  value: true
 	});
 	
-	var _log = __webpack_require__(3);
-	
-	var _log2 = _interopRequireDefault(_log);
-	
-	var _xhr = __webpack_require__(4);
-	
-	var _xhr2 = _interopRequireDefault(_xhr);
-	
-	var _storage = __webpack_require__(1);
-	
-	var _storage2 = _interopRequireDefault(_storage);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var listLog = document.querySelector('#list-log-list');
-	var listLogBody = document.querySelector('#log-body');
-	var loader = document.querySelector('#loader');
-	var loaderWait = document.querySelector('#loader-wait');
-	var loaderFinish = document.querySelector('#loader-finish');
-	var loaderFail = document.querySelector('#loader-fail');
-	
-	// начальная позиция и смещение
-	var logCardNodes = [];
-	var position = 0;
-	var count = 200;
-	var drawSet = count / 4;
-	
-	// отрисовка порции карточек
-	var drawCardSet = function drawCardSet() {
-	  return logCardNodes.splice(0, drawSet).forEach(_log2.default.addCardToContainer);
-	};
-	
-	// создание нод по полученной порции данных
-	var createCardNodes = function createCardNodes(cardData) {
-	  return cardData.forEach(function (item, index) {
-	    return logCardNodes.push(_log2.default.getElement(item, index));
-	  });
-	};
-	
-	// успех загрузки
-	var onSuccessLogLoad = function onSuccessLogLoad(logResponse) {
-	  var loadedLog = logResponse.data;
-	
-	  loaderWait.classList.add('d-none');
-	  if (loadedLog.length) {
-	    createCardNodes(loadedLog);
-	  } else {
-	    loaderFinish.classList.remove('d-none');
-	    window.removeEventListener('scroll', onMouseScroll);
-	    return;
-	  }
-	  if (position === 0) {
-	    drawCardSet();
-	  }
-	  window.addEventListener('scroll', onMouseScroll);
-	};
-	
-	// ошибка загрузки
-	var onErrorLogLoad = function onErrorLogLoad() {
-	  loaderFail.classList.remove('d-none');
-	  loader.classList.add('d-none');
-	  loaderWait.classList.add('d-none');
-	  loaderFinish.classList.add('d-none');
-	};
-	
-	// отправка запроса на новую порцию
-	var getLog = function getLog() {
-	  console.log('get.log');
-	  if (logCardNodes.length === 0) {
-	    loaderWait.classList.remove('d-none');
-	    window.removeEventListener('scroll', onMouseScroll);
-	    _xhr2.default.request = {
-	      metod: 'POST',
-	      url: 'lopos_directory/' + _storage2.default.data.directory + '/update_log/' + Date.now() + '/story',
-	      data: 'position=' + position + '&count=' + count + '&token=' + _storage2.default.data.token,
-	      callbackSuccess: onSuccessLogLoad,
-	      callbackError: onErrorLogLoad
-	    };
-	  }
-	};
-	
-	// "ленивая отрисовка" журнала
-	var isBottomReached = function isBottomReached() {
-	  return listLogBody.getBoundingClientRect().bottom - window.innerHeight <= 150;
-	};
-	
-	var onMouseScroll = function onMouseScroll(evt) {
-	
-	  if (isBottomReached() && logCardNodes.length > 0) {
-	    loader.classList.remove('d-none');
-	    window.removeEventListener('scroll', onMouseScroll);
-	
-	    window.setTimeout(function () {
-	      window.addEventListener('scroll', onMouseScroll);
-	      loader.classList.add('d-none');
-	      drawCardSet();
-	    }, 500);
-	  } else if (logCardNodes.length === 0) {
-	    position += count;
-	    getLog();
-	  }
-	};
-	
-	exports.default = {
-	  start: function start() {
-	    listLog.addEventListener('click', getLog);
-	  },
-	  stop: function stop() {
-	    _log2.default.cleanContainer();
-	    logCardNodes = [];
-	    position = 0;
-	
-	    loaderFail.classList.add('d-none');
-	    loader.classList.add('d-none');
-	    loaderWait.classList.add('d-none');
-	    loaderFinish.classList.add('d-none');
-	
-	    listLog.removeEventListener('click', getLog);
-	    window.removeEventListener('scroll', onMouseScroll);
-	  }
-	};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var listLogBody = document.querySelector('#log-body');
-	
-	exports.default = {
-	  cleanContainer: function cleanContainer() {
-	    listLogBody.innerHTML = '';
-	  },
-	  getElement: function getElement(item, index) {
-	    var getIconColor = item.ha_operator_hex ? item.ha_operator_hex : 'F4002C';
-	    var hasMinusInComments = item.ha_comment.includes('-');
-	    var imgName = '';
-	
-	    if (item.ha_kontr_agent_id_fk) {
-	      imgName = 'buyers';
-	    }
-	    if (item.ha_nomenclature_card_id_fk) {
-	      imgName = 'ic_my_nomenclature';
-	    }
-	    if (item.ha_group_good_id_fk) {
-	      imgName = 'groups';
-	    }
-	    if (item.ha_good_id_fk || item.ha_price_id_fk) {
-	      imgName = 'goods';
-	    }
-	    if (item.ha_tag_id_fk) {
-	      imgName = 'ic_my_tag';
-	    }
-	
-	    if (item.ha_balance_act_id_fk && hasMinusInComments) {
-	      imgName = 'expenses';
-	    } else if (item.ha_balance_act_id_fk && !hasMinusInComments) {
-	      imgName = 'revenue';
-	    }
-	
-	    if (item.ha_naklad_id_fk && hasMinusInComments) {
-	      imgName = 'admission';
-	    } else if (item.ha_naklad_id_fk && !hasMinusInComments) {
-	      imgName = 'sale';
-	    }
-	
-	    imgName = imgName ? imgName : 'other_ic_history';
-	
-	    var cardHeader = item.ha_comment.split('\n');
-	    cardHeader[1] = cardHeader[1] ? cardHeader[1] : '';
-	
-	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <img class="mr-3 rounded-circle p-1" src="img/user-male-filled-32.png" title="' + item.ha_operator_name + '" style="background-color: #' + getIconColor + '" width="30" alt="' + item.ha_operator_name + '">\n        <img class="mr-3" src="img/' + imgName + '.png" width="30" alt="Generic placeholder image">\n        <div class="media-body">\n          <b>' + cardHeader[0] + '</b>\n          ' + cardHeader[1] + '\n          <div class="badge text-right text-muted float-right">' + new Date(+(item.ha_time + '000')).toLocaleString() + '</div>\n        </div>\n      </div>';
-	  },
-	  addCardToContainer: function addCardToContainer(cardMarkupItem) {
-	    listLogBody.insertAdjacentHTML('beforeend', cardMarkupItem);
-	  }
-	};
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	
-	  set request(requestParameters) {
-	
-	    var ErrorAttr = {
-	      FILE: 'xhr.js',
-	      MESSADGE: {
-	        JSON_ERR: 'XHR: JSON error converting response.',
-	        LOAD_ERR: 'Load Error.',
-	        CONNECT_ERR: 'Connection error.',
-	        TIMEOUT_ERR: 'Сonnection timeout exceeded'
-	      }
-	    };
-	
-	    var getError = function getError(messadge, row, error) {
-	      var newError = new SyntaxError(messadge, ErrorAttr.FILE, row);
-	      newError.cause = error;
-	      return newError;
-	    };
-	
-	    var xhr = new XMLHttpRequest();
-	
-	    xhr.addEventListener('load', function () {
-	
-	      if (xhr.status === 200) {
-	        var response = '';
-	
-	        try {
-	
-	          response = JSON.parse(xhr.response);
-	        } catch (error) {
-	          requestParameters.callbackError(getError(ErrorAttr.MESSADGE.JSON_ERR, 26, error));
-	        }
-	
-	        requestParameters.callbackSuccess(response);
-	      } else {
-	        requestParameters.callbackError(getError(ErrorAttr.MESSADGE.LOAD_ERR + ' ' + xhr.statusText, 35, ''));
-	      }
-	    });
-	
-	    xhr.addEventListener('error', function () {
-	      requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' ' + xhr.statusText, 42, ''));
-	    });
-	
-	    xhr.addEventListener('timeout', function () {
-	      requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' (' + xhr.timeout + 'ms.)', 50, ''));
-	    });
-	
-	    xhr.timeout = window.appSettings.xhrSettings.timeout;
-	    xhr.open(requestParameters.metod, window.appSettings.xhrSettings.urlApi + requestParameters.url, true);
-	    xhr.setRequestHeader('Content-Type', window.appSettings.xhrSettings.contentType);
-	
-	    if (requestParameters.metod === 'GET') {
-	      requestParameters.data = '';
-	    }
-	
-	    xhr.send(requestParameters.data);
-	  }
-	
-	};
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _onlineProfile = __webpack_require__(6);
-	
-	var _onlineProfile2 = _interopRequireDefault(_onlineProfile);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  start: function start() {
-	    _onlineProfile2.default.setProfile();
-	  },
-	  stop: function stop() {
-	    _onlineProfile2.default.clearProfile();
-	  }
-	};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _storage = __webpack_require__(1);
-	
-	var _storage2 = _interopRequireDefault(_storage);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var listProfile = document.querySelector('#list-profile');
-	
-	var prepareProfileMarkup = function prepareProfileMarkup() {
-	  return '\n  <div id="profile" class="card p-3 w-50 text-dark">\n    <h3>\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442</h3>\n    <p><span>\u0418\u043C\u044F: </span><span>' + _storage2.default.data.nickname + '</span></p>\n    <p><span>\u0412\u0440\u0435\u043C\u044F \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0435\u0433\u043E \u0432\u0445\u043E\u0434\u0430: </span><span>' + _storage2.default.data.lastLogin + '</span></p>\n    <p><span></span>\u041A\u0430\u0442\u0430\u043B\u043E\u0433: <span>' + _storage2.default.data.directory + '</span></p>\n    <p><span></span>\u041F\u043E\u0447\u0442\u0430: <span>' + _storage2.default.data.email + '</span></p>\n  </div>';
-	};
-	
-	exports.default = {
-	  setProfile: function setProfile() {
-	    listProfile.innerHTML = _storage2.default.isSetFlag ? prepareProfileMarkup() : '';
-	  },
-	  clearProfile: function clearProfile() {
-	    listProfile.innerHTML = '';
-	  }
-	};
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _xhr = __webpack_require__(4);
-	
-	var _xhr2 = _interopRequireDefault(_xhr);
-	
-	var _storage = __webpack_require__(1);
-	
-	var _storage2 = _interopRequireDefault(_storage);
-	
-	var _referenceEnterprises = __webpack_require__(8);
-	
-	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
-	
-	var _tools = __webpack_require__(9);
-	
-	var _tools2 = _interopRequireDefault(_tools);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var listEnterprises = document.querySelector('#list-enterprises-list');
-	var loaderSpinnerId = 'loader-enterprises';
-	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
-	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
-	
-	var onSuccessEnterprisesLoad = function onSuccessEnterprisesLoad(loadedEnterprises) {
-	  document.querySelector('#' + loaderSpinnerId).remove();
-	  if (loadedEnterprises.status === 200) {
-	    _referenceEnterprises2.default.drawDataInContainer(loadedEnterprises.data);
-	  } else {
-	    _referenceEnterprises2.default.drawMarkupInContainer('<p>' + loadedEnterprises.message + '</p>');
-	  }
-	};
-	
-	var onErrorEnterprisesLoad = function onErrorEnterprisesLoad(error) {
-	  console.log(error);
-	};
-	
-	var getEnterprises = function getEnterprises() {
-	  _referenceEnterprises2.default.cleanContainer();
-	  _referenceEnterprises2.default.drawMarkupInContainer(loaderSpinnerMarkup);
-	
-	  _xhr2.default.request = {
-	    metod: 'POST',
-	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/1',
-	    data: 'view_last=0&token=' + _storage2.default.data.token,
-	    callbackSuccess: onSuccessEnterprisesLoad,
-	    callbackError: onErrorEnterprisesLoad
-	  };
-	};
-	
-	exports.default = {
-	  start: function start() {
-	    listEnterprises.addEventListener('click', getEnterprises);
-	  },
-	  stop: function stop() {
-	    _referenceEnterprises2.default.cleanContainer();
-	    listEnterprises.removeEventListener('click', getEnterprises);
-	  }
-	};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _storage = __webpack_require__(1);
-	
-	var _storage2 = _interopRequireDefault(_storage);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var listEnterprisesBody = document.querySelector('#list-enterprises-body');
-	exports.default = {
-	  cleanContainer: function cleanContainer() {
-	    listEnterprisesBody.innerHTML = '';
-	  },
-	  getElement: function getElement(item) {
-	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? 'V' : '';
-	
-	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <div class="media-body">\n          <b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '\n          <div class="badge text-right float-right"><span class="badge badge-pill badge-success">' + currentEnterpriseFlag + '</span> <button type="button" class="btn btn-primary btn-sm" data-enterprise-id="' + item.b_id + '"> > </button> </div>\n        </div>\n      </div>';
-	  },
-	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
-	    var _this = this;
-	
-	    enterprisesData.forEach(function (item) {
-	      return listEnterprisesBody.insertAdjacentHTML('beforeend', _this.getElement(item));
-	    });
-	  },
-	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
-	    listEnterprisesBody.insertAdjacentHTML('beforeend', markup);
-	  }
-	};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  getWaitSpinner: function getWaitSpinner(id, message) {
-	    return "\n      <div id=\"loader\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
-	  },
-	  getLoadSpinner: function getLoadSpinner(id, message) {
-	    return "\n      <div id=\"" + id + "\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
-	  },
-	  getError: function getError(id, message) {
-	    return "\n      <div id=\"loader-fail\" class=\"container-fluid bg-danger text-white text-center mb-5\" style=\"height: 25;\">" + message + "</div>";
-	  }
-	};
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _form_login = __webpack_require__(11);
+	var _form_login = __webpack_require__(3);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _form_register = __webpack_require__(14);
+	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _form_confirm_email = __webpack_require__(16);
+	var _form_confirm_email = __webpack_require__(9);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
-	var _form_forgot = __webpack_require__(18);
+	var _form_forgot = __webpack_require__(11);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
-	var _captcha = __webpack_require__(13);
+	var _captcha = __webpack_require__(6);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -852,7 +472,7 @@
 	};
 
 /***/ }),
-/* 11 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -861,15 +481,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _login = __webpack_require__(12);
+	var _login = __webpack_require__(4);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
-	var _captcha = __webpack_require__(13);
+	var _captcha = __webpack_require__(6);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -953,7 +573,7 @@
 	};
 
 /***/ }),
-/* 12 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -962,7 +582,7 @@
 	  value: true
 	});
 	
-	var _xhr = __webpack_require__(4);
+	var _xhr = __webpack_require__(5);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
@@ -970,11 +590,11 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _form_login = __webpack_require__(11);
+	var _form_login = __webpack_require__(3);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1079,7 +699,77 @@
 	};
 
 /***/ }),
-/* 13 */
+/* 5 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	
+	  set request(requestParameters) {
+	
+	    var ErrorAttr = {
+	      FILE: 'xhr.js',
+	      MESSADGE: {
+	        JSON_ERR: 'XHR: JSON error converting response.',
+	        LOAD_ERR: 'Load Error.',
+	        CONNECT_ERR: 'Connection error.',
+	        TIMEOUT_ERR: 'Сonnection timeout exceeded'
+	      }
+	    };
+	
+	    var getError = function getError(messadge, row, error) {
+	      var newError = new SyntaxError(messadge, ErrorAttr.FILE, row);
+	      newError.cause = error;
+	      return newError;
+	    };
+	
+	    var xhr = new XMLHttpRequest();
+	
+	    xhr.addEventListener('load', function () {
+	
+	      if (xhr.status === 200) {
+	        var response = '';
+	
+	        try {
+	
+	          response = JSON.parse(xhr.response);
+	        } catch (error) {
+	          requestParameters.callbackError(getError(ErrorAttr.MESSADGE.JSON_ERR, 26, error));
+	        }
+	
+	        requestParameters.callbackSuccess(response);
+	      } else {
+	        requestParameters.callbackError(getError(ErrorAttr.MESSADGE.LOAD_ERR + ' ' + xhr.statusText, 35, ''));
+	      }
+	    });
+	
+	    xhr.addEventListener('error', function () {
+	      requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' ' + xhr.statusText, 42, ''));
+	    });
+	
+	    xhr.addEventListener('timeout', function () {
+	      requestParameters.callbackError(getError(ErrorAttr.MESSADGE.CONNECT_ERR + ' (' + xhr.timeout + 'ms.)', 50, ''));
+	    });
+	
+	    xhr.timeout = window.appSettings.xhrSettings.timeout;
+	    xhr.open(requestParameters.metod, window.appSettings.xhrSettings.urlApi + requestParameters.url, true);
+	    xhr.setRequestHeader('Content-Type', window.appSettings.xhrSettings.contentType);
+	
+	    if (requestParameters.metod === 'GET') {
+	      requestParameters.data = '';
+	    }
+	
+	    xhr.send(requestParameters.data);
+	  }
+	
+	};
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1088,23 +778,23 @@
 	  value: true
 	});
 	
-	var _form_register = __webpack_require__(14);
+	var _form_register = __webpack_require__(7);
 	
 	var _form_register2 = _interopRequireDefault(_form_register);
 	
-	var _form_login = __webpack_require__(11);
+	var _form_login = __webpack_require__(3);
 	
 	var _form_login2 = _interopRequireDefault(_form_login);
 	
-	var _form_confirm_email = __webpack_require__(16);
+	var _form_confirm_email = __webpack_require__(9);
 	
 	var _form_confirm_email2 = _interopRequireDefault(_form_confirm_email);
 	
-	var _form_forgot = __webpack_require__(18);
+	var _form_forgot = __webpack_require__(11);
 	
 	var _form_forgot2 = _interopRequireDefault(_form_forgot);
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1147,7 +837,7 @@
 	};
 
 /***/ }),
-/* 14 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1156,15 +846,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _register = __webpack_require__(15);
+	var _register = __webpack_require__(8);
 	
 	var _register2 = _interopRequireDefault(_register);
 	
-	var _captcha = __webpack_require__(13);
+	var _captcha = __webpack_require__(6);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1245,7 +935,7 @@
 	};
 
 /***/ }),
-/* 15 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1254,11 +944,11 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _xhr = __webpack_require__(4);
+	var _xhr = __webpack_require__(5);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
@@ -1375,7 +1065,7 @@
 	};
 
 /***/ }),
-/* 16 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1384,15 +1074,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _confirm_email = __webpack_require__(17);
+	var _confirm_email = __webpack_require__(10);
 	
 	var _confirm_email2 = _interopRequireDefault(_confirm_email);
 	
-	var _captcha = __webpack_require__(13);
+	var _captcha = __webpack_require__(6);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1461,7 +1151,7 @@
 	};
 
 /***/ }),
-/* 17 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1470,7 +1160,7 @@
 	  value: true
 	});
 	
-	var _xhr = __webpack_require__(4);
+	var _xhr = __webpack_require__(5);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
@@ -1478,7 +1168,7 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1542,7 +1232,7 @@
 	};
 
 /***/ }),
-/* 18 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1551,15 +1241,15 @@
 	  value: true
 	});
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
-	var _forgot = __webpack_require__(19);
+	var _forgot = __webpack_require__(12);
 	
 	var _forgot2 = _interopRequireDefault(_forgot);
 	
-	var _captcha = __webpack_require__(13);
+	var _captcha = __webpack_require__(6);
 	
 	var _captcha2 = _interopRequireDefault(_captcha);
 	
@@ -1628,7 +1318,7 @@
 	};
 
 /***/ }),
-/* 19 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1637,11 +1327,11 @@
 	  value: true
 	});
 	
-	var _xhr = __webpack_require__(4);
+	var _xhr = __webpack_require__(5);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
-	var _main_login_window = __webpack_require__(10);
+	var _main_login_window = __webpack_require__(2);
 	
 	var _main_login_window2 = _interopRequireDefault(_main_login_window);
 	
@@ -1700,7 +1390,7 @@
 	};
 
 /***/ }),
-/* 20 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1709,7 +1399,11 @@
 	  value: true
 	});
 	
-	var _xhr = __webpack_require__(4);
+	var _log = __webpack_require__(14);
+	
+	var _log2 = _interopRequireDefault(_log);
+	
+	var _xhr = __webpack_require__(5);
 	
 	var _xhr2 = _interopRequireDefault(_xhr);
 	
@@ -1719,13 +1413,462 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var listLog = document.querySelector('#list-log-list');
+	var listLogBody = document.querySelector('#log-body');
+	var loader = document.querySelector('#loader');
+	var loaderWait = document.querySelector('#loader-wait');
+	var loaderFinish = document.querySelector('#loader-finish');
+	var loaderFail = document.querySelector('#loader-fail');
+	
+	// начальная позиция и смещение
+	var logCardNodes = [];
+	var position = 0;
+	var count = 200;
+	var drawSet = count / 4;
+	
+	// отрисовка порции карточек
+	var drawCardSet = function drawCardSet() {
+	  return logCardNodes.splice(0, drawSet).forEach(_log2.default.addCardToContainer);
+	};
+	
+	// создание нод по полученной порции данных
+	var createCardNodes = function createCardNodes(cardData) {
+	  return cardData.forEach(function (item, index) {
+	    return logCardNodes.push(_log2.default.getElement(item, index));
+	  });
+	};
+	
+	// успех загрузки
+	var onSuccessLogLoad = function onSuccessLogLoad(logResponse) {
+	  var loadedLog = logResponse.data;
+	
+	  loaderWait.classList.add('d-none');
+	  if (loadedLog.length) {
+	    createCardNodes(loadedLog);
+	  } else {
+	    loaderFinish.classList.remove('d-none');
+	    window.removeEventListener('scroll', onMouseScroll);
+	    return;
+	  }
+	  if (position === 0) {
+	    drawCardSet();
+	  }
+	  window.addEventListener('scroll', onMouseScroll);
+	};
+	
+	// ошибка загрузки
+	var onErrorLogLoad = function onErrorLogLoad() {
+	  loaderFail.classList.remove('d-none');
+	  loader.classList.add('d-none');
+	  loaderWait.classList.add('d-none');
+	  loaderFinish.classList.add('d-none');
+	};
+	
+	// отправка запроса на новую порцию
+	var getLog = function getLog() {
+	  console.log('get.log');
+	  if (logCardNodes.length === 0) {
+	    loaderWait.classList.remove('d-none');
+	    window.removeEventListener('scroll', onMouseScroll);
+	    _xhr2.default.request = {
+	      metod: 'POST',
+	      url: 'lopos_directory/' + _storage2.default.data.directory + '/update_log/' + Date.now() + '/story',
+	      data: 'position=' + position + '&count=' + count + '&token=' + _storage2.default.data.token,
+	      callbackSuccess: onSuccessLogLoad,
+	      callbackError: onErrorLogLoad
+	    };
+	  }
+	};
+	
+	// "ленивая отрисовка" журнала
+	var isBottomReached = function isBottomReached() {
+	  return listLogBody.getBoundingClientRect().bottom - window.innerHeight <= 150;
+	};
+	
+	var onMouseScroll = function onMouseScroll(evt) {
+	
+	  if (isBottomReached() && logCardNodes.length > 0) {
+	    loader.classList.remove('d-none');
+	    window.removeEventListener('scroll', onMouseScroll);
+	
+	    window.setTimeout(function () {
+	      window.addEventListener('scroll', onMouseScroll);
+	      loader.classList.add('d-none');
+	      drawCardSet();
+	    }, 500);
+	  } else if (logCardNodes.length === 0) {
+	    position += count;
+	    getLog();
+	  }
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    listLog.addEventListener('click', getLog);
+	  },
+	  stop: function stop() {
+	    _log2.default.cleanContainer();
+	    logCardNodes = [];
+	    position = 0;
+	
+	    loaderFail.classList.add('d-none');
+	    loader.classList.add('d-none');
+	    loaderWait.classList.add('d-none');
+	    loaderFinish.classList.add('d-none');
+	
+	    listLog.removeEventListener('click', getLog);
+	    window.removeEventListener('scroll', onMouseScroll);
+	  }
+	};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var listLogBody = document.querySelector('#log-body');
+	
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listLogBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item, index) {
+	    var getIconColor = item.ha_operator_hex ? item.ha_operator_hex : 'F4002C';
+	    var hasMinusInComments = item.ha_comment.includes('-');
+	    var imgName = '';
+	
+	    if (item.ha_kontr_agent_id_fk) {
+	      imgName = 'buyers';
+	    }
+	    if (item.ha_nomenclature_card_id_fk) {
+	      imgName = 'ic_my_nomenclature';
+	    }
+	    if (item.ha_group_good_id_fk) {
+	      imgName = 'groups';
+	    }
+	    if (item.ha_good_id_fk || item.ha_price_id_fk) {
+	      imgName = 'goods';
+	    }
+	    if (item.ha_tag_id_fk) {
+	      imgName = 'ic_my_tag';
+	    }
+	
+	    if (item.ha_balance_act_id_fk && hasMinusInComments) {
+	      imgName = 'expenses';
+	    } else if (item.ha_balance_act_id_fk && !hasMinusInComments) {
+	      imgName = 'revenue';
+	    }
+	
+	    if (item.ha_naklad_id_fk && hasMinusInComments) {
+	      imgName = 'admission';
+	    } else if (item.ha_naklad_id_fk && !hasMinusInComments) {
+	      imgName = 'sale';
+	    }
+	
+	    imgName = imgName ? imgName : 'other_ic_history';
+	
+	    var cardHeader = item.ha_comment.split('\n');
+	    cardHeader[1] = cardHeader[1] ? cardHeader[1] : '';
+	
+	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <img class="mr-3 rounded-circle p-1" src="img/user-male-filled-32.png" title="' + item.ha_operator_name + '" style="background-color: #' + getIconColor + '" width="30" alt="' + item.ha_operator_name + '">\n        <img class="mr-3" src="img/' + imgName + '.png" width="30" alt="Generic placeholder image">\n        <div class="media-body">\n          <b>' + cardHeader[0] + '</b>\n          ' + cardHeader[1] + '\n          <div class="badge text-right text-muted float-right">' + new Date(+(item.ha_time + '000')).toLocaleString() + '</div>\n        </div>\n      </div>';
+	  },
+	  addCardToContainer: function addCardToContainer(cardMarkupItem) {
+	    listLogBody.insertAdjacentHTML('beforeend', cardMarkupItem);
+	  }
+	};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _onlineProfile = __webpack_require__(16);
+	
+	var _onlineProfile2 = _interopRequireDefault(_onlineProfile);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  start: function start() {
+	    _onlineProfile2.default.setProfile();
+	  },
+	  stop: function stop() {
+	    _onlineProfile2.default.clearProfile();
+	  }
+	};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listProfile = document.querySelector('#list-profile');
+	
+	var prepareProfileMarkup = function prepareProfileMarkup() {
+	  return '\n  <div id="profile" class="card p-3 w-50 text-dark">\n    <h3>\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442</h3>\n    <p><span>\u0418\u043C\u044F: </span><span>' + _storage2.default.data.nickname + '</span></p>\n    <p><span>\u0412\u0440\u0435\u043C\u044F \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0435\u0433\u043E \u0432\u0445\u043E\u0434\u0430: </span><span>' + _storage2.default.data.lastLogin + '</span></p>\n    <p><span></span>\u041A\u0430\u0442\u0430\u043B\u043E\u0433: <span>' + _storage2.default.data.directory + '</span></p>\n    <p><span></span>\u041F\u043E\u0447\u0442\u0430: <span>' + _storage2.default.data.email + '</span></p>\n  </div>';
+	};
+	
+	exports.default = {
+	  setProfile: function setProfile() {
+	    listProfile.innerHTML = _storage2.default.isSetFlag ? prepareProfileMarkup() : '';
+	  },
+	  clearProfile: function clearProfile() {
+	    listProfile.innerHTML = '';
+	  }
+	};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceEnterprises = __webpack_require__(18);
+	
+	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
+	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listEnterprises = document.querySelector('#list-enterprises-list');
+	var listEnterprisesBody = document.querySelector('#list-enterprises-body');
+	var listEnterprisesCard = document.querySelector('#list-enterprises-card');
+	var listEnterprisesCardReturnBtn = document.querySelector('#list-enterprises-card-return-btn');
+	
+	var listEnterprisesCardName = document.querySelector('#list-enterprises-card-name');
+	var listEnterprisesCardBalance = document.querySelector('#list-enterprises-card-balance');
+	var listEnterprisesCardDate = document.querySelector('#list-enterprises-card-date');
+	// const listEnterprisesCardNegativeTailings = document.querySelector('#list-enterprises-card-negative-tailings');
+	// const listEnterprisesCardNegativeBalance = document.querySelector('#list-enterprises-card-negative-balance');
+	
+	var listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-card-check-btn');
+	// const listEnterprisesCardEditBtn = document.querySelector('#list-enterprises-card-edit-btn');
+	// const listEnterprisesCardDeleteBtn = document.querySelector('#list-enterprises-card-delete-btn');
+	
+	var listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
+	
+	var loaderSpinnerId = 'loader-enterprises';
+	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
+	
+	var onSuccessEnterprisesLoad = function onSuccessEnterprisesLoad(loadedEnterprises) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  if (loadedEnterprises.status === 200) {
+	    _referenceEnterprises2.default.drawDataInContainer(loadedEnterprises.data);
+	  } else {
+	    _referenceEnterprises2.default.drawMarkupInContainer('<p>' + loadedEnterprises.message + '</p>');
+	  }
+	};
+	
+	var onErrorEnterprisesLoad = function onErrorEnterprisesLoad(error) {
+	  console.log(error);
+	};
+	
+	var getEnterprises = function getEnterprises() {
+	  _referenceEnterprises2.default.cleanContainer();
+	  _referenceEnterprises2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/1',
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessEnterprisesLoad,
+	    callbackError: onErrorEnterprisesLoad
+	  };
+	};
+	
+	var onSuccessEnterpriseCardLoad = function onSuccessEnterpriseCardLoad(loadedEnterpriseCard) {
+	  console.log(loadedEnterpriseCard);
+	
+	  if (_storage2.default.data.currentBusiness === loadedEnterpriseCard.data.id) {
+	    listEnterprisesCardCheckBtn.setAttribute('disabled', 'disabled');
+	  } else {
+	    listEnterprisesCardCheckBtn.removeAttribute('disabled');
+	  }
+	
+	  listEnterprisesCardCheckBtn.addEventListener('click', function () {
+	    _storage2.default.currentBusiness = loadedEnterpriseCard.data.id;
+	  });
+	
+	  listEnterprisesCardName.innerText = loadedEnterpriseCard.data.name;
+	  listEnterprisesCardDate.innerText = new Date(+(loadedEnterpriseCard.data.time_activity + '000')).toLocaleString();
+	  listEnterprisesCardBalance.innerText = loadedEnterpriseCard.data.balance;
+	  listEnterprisesCardEditName.value = loadedEnterpriseCard.data.name;
+	  _storage2.default.currentEnterpriseId = loadedEnterpriseCard.data.id;
+	  _storage2.default.currentEnterpriseName = loadedEnterpriseCard.data.name;
+	};
+	
+	var onErrorEnterpriseCardLoad = function onErrorEnterpriseCardLoad(error) {
+	  console.log(error);
+	};
+	
+	var onListEnterprisesBodyClick = function onListEnterprisesBodyClick(evt) {
+	  if (evt.target.tagName === 'BUTTON') {
+	    listEnterprisesBody.classList.add('d-none');
+	    listEnterprisesCard.classList.remove('d-none');
+	
+	    _xhr2.default.request = {
+	      metod: 'POST',
+	      url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + evt.target.dataset.enterpriseId + '/info',
+	      data: 'view_last=0&token=' + _storage2.default.data.token,
+	      callbackSuccess: onSuccessEnterpriseCardLoad,
+	      callbackError: onErrorEnterpriseCardLoad
+	    };
+	  }
+	};
+	
+	var onListEnterprisesCardReturnBtn = function onListEnterprisesCardReturnBtn() {
+	  listEnterprisesBody.classList.remove('d-none');
+	  listEnterprisesCard.classList.add('d-none');
+	  listEnterprisesCardName.innerText = '';
+	  listEnterprisesCardDate.innerText = '';
+	  listEnterprisesCardBalance.innerText = '';
+	  getEnterprises();
+	};
+	
+	listEnterprisesBody.addEventListener('click', onListEnterprisesBodyClick);
+	listEnterprisesCardReturnBtn.addEventListener('click', onListEnterprisesCardReturnBtn);
+	
+	exports.default = {
+	  start: function start() {
+	    listEnterprises.addEventListener('click', getEnterprises);
+	  },
+	
+	
+	  redraw: getEnterprises,
+	
+	  stop: function stop() {
+	    _referenceEnterprises2.default.cleanContainer();
+	    listEnterprises.removeEventListener('click', getEnterprises);
+	  }
+	};
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listEnterprisesBody = document.querySelector('#list-enterprises-body');
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listEnterprisesBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? 'V' : '';
+	
+	    return '\n    <div id="log-row" class="card mb-0 p-1 rounded-0" style="width: 100%">\n      <div class="media">\n        <div class="media-body">\n          <b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '\n          <div class="badge text-right float-right"><span class="badge badge-pill badge-success">' + currentEnterpriseFlag + '</span> <button type="button" class="btn btn-primary btn-sm" data-enterprise-id="' + item.b_id + '"> > </button> </div>\n        </div>\n      </div>';
+	  },
+	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
+	    var _this = this;
+	
+	    enterprisesData.forEach(function (item) {
+	      return listEnterprisesBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    });
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listEnterprisesBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  getWaitSpinner: function getWaitSpinner(id, message) {
+	    return "\n      <div id=\"loader\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	  },
+	  getLoadSpinner: function getLoadSpinner(id, message) {
+	    return "\n      <div id=\"" + id + "\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	  },
+	  getError: function getError(id, message) {
+	    return "\n      <div id=\"loader-fail\" class=\"container-fluid bg-danger text-white text-center mb-5\" style=\"height: 25;\">" + message + "</div>";
+	  }
+	};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceEnterprises = __webpack_require__(17);
+	
+	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var appUrl = window.appSettings.formAddEnterprise.UrlApi;
 	var validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
 	var validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
 	var validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
 	var validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
 	
-	var enterprisesAdd = document.querySelector('#enterprises-add');
+	var body = document.querySelector('body');
+	var enterprisesAdd = body.querySelector('#enterprises-add');
 	var form = enterprisesAdd.querySelector('#enterprises-add-form');
 	
 	var name = form.querySelector('#enterprise-name');
@@ -1754,17 +1897,13 @@
 	  switch (response.status) {
 	    case 200:
 	      formReset();
-	      enterprisesAdd.classList.remove('show');
-	      var el = document.querySelector('.modal-backdrop');
-	      if (el) {
-	        el.classList.remove('show');
-	      }
+	      $('#enterprises-add').modal('hide');
 	
 	      // Вывести response.message в зеленое сообщение
 	      alert(response.message);
 	
 	      // Сюда метод перезагрузки списка
-	
+	      _referenceEnterprises2.default.redraw();
 	      break;
 	    case 400:
 	
@@ -1848,6 +1987,526 @@
 	        evt.target.nextElementSibling.innerHTML = '';
 	      }
 	    });
+	  }
+	};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formEditEnterprise.UrlApi;
+	var validNamePattern = window.appSettings.formEditEnterprise.validPatterns.name;
+	var validNameMessage = window.appSettings.formEditEnterprise.validMessage.name;
+	
+	var body = document.querySelector('body');
+	var enterprisesCarEedit = body.querySelector('#enterprises-card-edit');
+	var form = enterprisesCarEedit.querySelector('#enterprises-card-edit-form');
+	
+	var name = form.querySelector('#enterprises-card-edit-name');
+	var nameValid = form.querySelector('#enterprises-card-edit-valid');
+	
+	var spinner = form.querySelector('#enterprises-card-edit-spinner');
+	
+	var buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
+	var buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
+	var buttonClose = enterprisesCarEedit.querySelector('#enterprises-card-edit-close');
+	
+	var stor = _storage2.default.data;
+	
+	var formReset = function formReset() {
+	  form.reset();
+	  nameValid.innerHTML = '';
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      $('#enterprises-card-edit').modal('hide');
+	
+	      // Вывести response.message в зеленое сообщение
+	      alert(response.message);
+	
+	      // Сюда метод перезагрузки списка
+	
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(response.message);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validNamePattern.test(name.value)) {
+	    console.log('!val');
+	    valid = false;
+	    nameValid.innerHTML = validNameMessage;
+	  }
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	  urlApp = urlApp.replace('{{id}}', _storage2.default.currentEnterpriseId);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'PUT',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	exports.default = {
+	  start: function start() {
+	
+	    buttonCancel.addEventListener('click', function () {
+	      formReset();
+	    });
+	    buttonClose.addEventListener('click', function () {
+	      formReset();
+	    });
+	    form.addEventListener('submit', formSubmitHandler);
+	    form.addEventListener('change', function (evt) {
+	      if (evt.target.nextElementSibling) {
+	        evt.target.nextElementSibling.innerHTML = '';
+	      }
+	    });
+	  }
+	};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referencePoints = __webpack_require__(23);
+	
+	var _referencePoints2 = _interopRequireDefault(_referencePoints);
+	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var loaderSpinnerId = 'loader-enterprises';
+	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
+	
+	var listPoints = document.querySelector('#list-points-list');
+	var listPointsBody = document.querySelector('#list-points-body');
+	var pointsCheckBtn = document.querySelector('#points-check');
+	var pointsEditBtn = document.querySelector('#points-edit-btn');
+	var pointsEditName = document.querySelector('#points-edit-name');
+	
+	var onSuccessPointsLoad = function onSuccessPointsLoad(loadedPoints) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  if (loadedPoints.status === 200) {
+	    console.log(loadedPoints);
+	    _referencePoints2.default.drawDataInContainer(loadedPoints.data);
+	  } else {
+	    _referencePoints2.default.drawMarkupInContainer('<p>' + loadedPoints.message + '</p>');
+	  }
+	};
+	
+	var selectedString = '';
+	pointsCheckBtn.setAttribute('disabled', 'disabled');
+	pointsEditBtn.setAttribute('disabled', 'disabled');
+	
+	var onErrorPointsLoad = function onErrorPointsLoad(error) {
+	  console.log(error);
+	};
+	
+	listPointsBody.addEventListener('change', function (evt) {
+	  console.log(evt);
+	  if (selectedString) {
+	    selectedString.classList.remove('bg-light');
+	  }
+	  selectedString = evt.target.labels[0];
+	  selectedString.classList.add('bg-light');
+	  pointsCheckBtn.removeAttribute('disabled');
+	  pointsEditBtn.removeAttribute('disabled');
+	});
+	
+	pointsCheckBtn.addEventListener('click', function () {
+	  if (!pointsCheckBtn.hasAttribute('disabled')) {
+	    console.dir(selectedString);
+	    console.log(selectedString.dataset);
+	    _storage2.default.currentStock = selectedString.dataset.stockId;
+	    pointsCheckBtn.setAttribute('disabled', 'disabled');
+	    pointsEditBtn.setAttribute('disabled', 'disabled');
+	    getPoints();
+	  }
+	});
+	
+	pointsEditBtn.addEventListener('click', function () {
+	  if (!pointsEditBtn.hasAttribute('disabled')) {
+	    console.dir(selectedString);
+	    console.log(selectedString.dataset);
+	    _storage2.default.currentStockId = selectedString.dataset.stockId;
+	    _storage2.default.currentStockName = selectedString.dataset.stockName;
+	    pointsEditName.value = selectedString.dataset.stockName;
+	  }
+	});
+	
+	var getPoints = function getPoints() {
+	  _referencePoints2.default.cleanContainer();
+	  _referencePoints2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	  pointsCheckBtn.setAttribute('disabled', 'disabled');
+	  pointsEditBtn.setAttribute('disabled', 'disabled');
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/stock',
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessPointsLoad,
+	    callbackError: onErrorPointsLoad
+	  };
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    listPoints.addEventListener('click', getPoints);
+	  },
+	
+	
+	  redraw: getPoints,
+	
+	  stop: function stop() {
+	    _referencePoints2.default.cleanContainer();
+	    listPoints.removeEventListener('click', getPoints);
+	  }
+	};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var listPointsBody = document.querySelector('#list-points-body');
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listPointsBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	    var currentStockFlag = item.id === _storage2.default.data['currentStock'] ? 'V' : '';
+	
+	    return '\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '" class="card mb-0 p-1 rounded-0" style="width: 100%" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n        <div>\n          <b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '\n          <div class="badge text-right float-right">\n            <span class="badge badge-pill badge-success">' + currentStockFlag + '</span>\n          </div>\n      </label>';
+	  },
+	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
+	    var _this = this;
+	
+	    enterprisesData.forEach(function (item) {
+	      return listPointsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    });
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listPointsBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceBuyers = __webpack_require__(25);
+	
+	var _referenceBuyers2 = _interopRequireDefault(_referenceBuyers);
+	
+	var _referenceBuyersCard = __webpack_require__(26);
+	
+	var _referenceBuyersCard2 = _interopRequireDefault(_referenceBuyersCard);
+	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var loaderSpinnerId = 'loader-enterprises';
+	var loaderSpinnerMessage = 'Ждем загрузки предприятий';
+	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
+	
+	var listBuyers = document.querySelector('#list-buyers-list');
+	var listSuppliers = document.querySelector('#list-suppliers-list');
+	var listBuyersHeaderType = document.querySelector('#list-buyers-header-type');
+	
+	var listBuyersAddBtn = document.querySelector('#buyers-add-btn');
+	var listBuyersAddForm = document.querySelector('#buyers-add-form');
+	var listBuyersBody = document.querySelector('#list-buyers-body');
+	var listBuyersCard = document.querySelector('#list-buyers-card');
+	var listBuyersCardReturnBtn = document.querySelector('#list-buyers-card-return-btn');
+	var listBuyersCardEditBtn = document.querySelector('#list-buyers-card-edit-btn');
+	
+	var listBuyersFormEditName = document.querySelector('#buyers-name');
+	var listBuyersFormEditDescribe = document.querySelector('#buyers-describe');
+	var listBuyersFormEditContact = document.querySelector('#buyers-contact');
+	var listBuyersFormEditEmail = document.querySelector('#buyers-email');
+	
+	listBuyersAddBtn.addEventListener('click', function () {
+	  listBuyersAddForm.reset();
+	});
+	
+	listBuyersCardReturnBtn.addEventListener('click', function () {
+	  listBuyersBody.classList.remove('d-none');
+	  listBuyersCard.classList.add('d-none');
+	  getBuyers(_storage2.default.currentKontragent);
+	});
+	
+	var onSuccessBuyersLoad = function onSuccessBuyersLoad(loadedBuyers) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  if (loadedBuyers.status === 200) {
+	    console.log(loadedBuyers);
+	    _referenceBuyersCard2.default.cleanContainer();
+	    _referenceBuyers2.default.drawDataInContainer(loadedBuyers.data);
+	  } else {
+	    _referenceBuyers2.default.drawMarkupInContainer('<p>' + loadedBuyers.message + '</p>');
+	  }
+	};
+	
+	var onErrorBuyersLoad = function onErrorBuyersLoad(error) {
+	  console.log(error);
+	};
+	
+	var onSuccessBuyerCardLoad = function onSuccessBuyerCardLoad(loadedBuyerCard) {
+	  document.querySelector('#' + loaderSpinnerId).remove();
+	  if (loadedBuyerCard.status === 200) {
+	    console.log(loadedBuyerCard);
+	    _referenceBuyersCard2.default.drawDataInContainer(loadedBuyerCard.data);
+	
+	    listBuyersCardEditBtn.addEventListener('click', function () {
+	      listBuyersFormEditName.value = loadedBuyerCard.data.name;
+	      listBuyersFormEditDescribe.value = loadedBuyerCard.data.description;
+	      listBuyersFormEditContact.value = loadedBuyerCard.data.contact;
+	      listBuyersFormEditEmail.value = loadedBuyerCard.data.email;
+	    });
+	  } else {
+	    _referenceBuyersCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
+	  }
+	};
+	
+	var onErrorBuyerCardLoad = function onErrorBuyerCardLoad(error) {
+	  console.log(error);
+	};
+	
+	var onListBuyersBodyClick = function onListBuyersBodyClick(evt) {
+	  if (evt.target.tagName === 'BUTTON') {
+	    listBuyersBody.classList.add('d-none');
+	    listBuyersCard.classList.remove('d-none');
+	    _referenceBuyersCard2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	
+	    _xhr2.default.request = {
+	      metod: 'POST',
+	      url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/kontr_agent/' + evt.target.dataset.buyerId,
+	      data: 'token=' + _storage2.default.data.token + '&count_doc=4&shift_doc=2',
+	      callbackSuccess: onSuccessBuyerCardLoad,
+	      callbackError: onErrorBuyerCardLoad
+	    };
+	  }
+	};
+	
+	listBuyersBody.addEventListener('click', onListBuyersBodyClick);
+	
+	var getBuyers = function getBuyers(type) {
+	  console.log(type);
+	  listBuyersBody.classList.remove('d-none');
+	  listBuyersCard.classList.add('d-none');
+	  listBuyersHeaderType.innerHTML = type === 1 ? 'Поставщики' : 'Покупатели';
+	  _referenceBuyers2.default.cleanContainer();
+	  _referenceBuyers2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	  _storage2.default.currentKontragent = type;
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/kontr_agent',
+	    data: 'view_last=0&token=' + _storage2.default.data.token + '&type=' + type,
+	    callbackSuccess: onSuccessBuyersLoad,
+	    callbackError: onErrorBuyersLoad
+	  };
+	};
+	
+	exports.default = {
+	  start: function start() {
+	    listBuyers.addEventListener('click', getBuyers.bind(null, 2));
+	    listSuppliers.addEventListener('click', getBuyers.bind(null, 1));
+	  },
+	
+	
+	  redraw: getBuyers,
+	
+	  stop: function stop() {
+	    _referenceBuyers2.default.cleanContainer();
+	    listBuyers.removeEventListener('click', getBuyers);
+	  }
+	};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var listBuyersBody = document.querySelector('#list-buyers-body');
+	// import auth from '../tools/storage.js';
+	
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listBuyersBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? 'V' : '';
+	
+	    return '\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '" class="card mb-0 p-1 rounded-0" style="width: 100%" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n        <div>\n          <b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '\n          <div class="badge text-right float-right">\n            <button type="button" class="btn btn-light" data-buyer-id="' + item.id + '"> &rarr; </button>\n          </div>\n      </label>';
+	  },
+	  drawDataInContainer: function drawDataInContainer(buyersBodyData) {
+	    var _this = this;
+	
+	    buyersBodyData.forEach(function (item) {
+	      return listBuyersBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    });
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listBuyersBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var listBuyersCardBody = document.querySelector('#list-buyers-card-body');
+	
+	// import auth from '../tools/storage.js';
+	
+	
+	var drawHeaderInContainer = function drawHeaderInContainer(data) {
+	  return '\n    <div class="d-flex justify-content-between">\n      <div class="border">' + data.name + '</div>\n      <div class="border">' + data.phone + '</div>\n      <div class="border">' + data.email + '</div>\n    </div>\n    <div class="d-flex border">' + data.description + '</div>\n  ';
+	};
+	exports.default = {
+	  cleanContainer: function cleanContainer() {
+	    listBuyersCardBody.innerHTML = '';
+	  },
+	  getElement: function getElement(item) {
+	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? 'V' : '';
+	
+	    return '\n        <div class="border">\n          <b>ID: </b>' + item.id + '\n          <b> \u0421\u0442\u0430\u0442\u0443\u0441: </b>' + item.status + '\n          <b> \u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.time_activity + '000')).toLocaleString() + '\n          <b> \u0412\u0441\u0435\u0433\u043E: </b>' + item.total + '\n          <b> \u0422\u0438\u043F: </b>' + item.type + '\n        </div>\n';
+	  },
+	  drawDataInContainer: function drawDataInContainer(buyersCardData) {
+	    var _this = this;
+	
+	    listBuyersCardBody.insertAdjacentHTML('beforeend', drawHeaderInContainer(buyersCardData));
+	    if (buyersCardData.naklads) {
+	      buyersCardData.naklads.forEach(function (item) {
+	        return listBuyersCardBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	      });
+	    } else {
+	      listBuyersCardBody.insertAdjacentHTML('beforeend', '<p class="border">Накладных нет</p>');
+	    }
+	  },
+	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
+	    listBuyersCardBody.insertAdjacentHTML('beforeend', markup);
 	  }
 	};
 
