@@ -48,6 +48,7 @@ listPointsBody.addEventListener('change', function (evt) {
   }
   selectedString = evt.target.labels[0];
   selectedString.classList.add('bg-light');
+  auth.currentStockId = selectedString.dataset.stockId;
   enableCheckEditButtons();
 });
 

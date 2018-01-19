@@ -89,14 +89,61 @@ window.appSettings = {
     }
   },
 
-  // Форма редактирования организации
+   // Форма редактирования организации
   'formEditEnterprise': {
-    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{id}}',
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
     validPatterns: {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
     },
     validMessage: {
       'name': 'минимум 1 буква'
     }
-  }
+  },
+
+  // Форма добавления точки продаж
+  'formAddPoint': {
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/stock',
+    validPatterns: {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    validMessage: {
+      'name': 'минимум 1 буква',
+    },
+    messages: {
+      'mes400': ''
+    }
+  },
+
+  // Форма редактирования точки продаж
+  'formEditPoint': {
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/stock/{{stId}}',
+    validPatterns: {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    validMessage: {
+      'name': 'минимум 1 буква',
+    },
+    messages: {
+      'mes400': ''
+    }
+  },
+
+  // Форма добавления контрагента
+  'formAddContractor': {
+    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/stock',
+    validPatterns: {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+      'describe': '',
+      'contact': '',
+      'phone': '',
+      'email': ''
+    },
+    validMessage: {
+      'name': 'минимум 1 буква',
+    },
+    messages: {
+      'mes400': ''
+    }
+  },
+
 };

@@ -78,11 +78,19 @@
 	
 	var _referencePoints2 = _interopRequireDefault(_referencePoints);
 	
-	var _referenceContractors = __webpack_require__(24);
+	var _referencePointsAdd = __webpack_require__(24);
+	
+	var _referencePointsAdd2 = _interopRequireDefault(_referencePointsAdd);
+	
+	var _referencePointsEdit = __webpack_require__(25);
+	
+	var _referencePointsEdit2 = _interopRequireDefault(_referencePointsEdit);
+	
+	var _referenceContractors = __webpack_require__(26);
 	
 	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
 	
-	var _referenceKeywords = __webpack_require__(27);
+	var _referenceKeywords = __webpack_require__(29);
 	
 	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
 	
@@ -145,6 +153,8 @@
 	    hashObserver();
 	    _referenceEnterprisesAdd2.default.start();
 	    _referenceEnterprisesEdit2.default.start();
+	    _referencePointsAdd2.default.start();
+	    _referencePointsEdit2.default.start();
 	  } else {
 	    showLoginHideApp();
 	    _main_login_window2.default.init();
@@ -1778,9 +1788,9 @@
 	    listEnterprisesBody.innerHTML = '';
 	  },
 	  getElement: function getElement(item) {
-	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? '<button type="button" class="btn p-0 bg-white reference-icon""><img src="img/icons8-checked-96.png" alt=""></button>' : '';
+	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? '<div class="p-0 bg-white icon icon__check"></div>' : '';
 	
-	    return '\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '</div>\n      <div>\n        ' + currentEnterpriseFlag + '\n\n        <button type="button" class="btn p-0 bg-white reference-icon" data-enterprise-id="' + item.b_id + '" style="background-image: url(img/arrow-right.png); background-size: cover;"></button>\n      </div>\n    </div>';
+	    return '\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '</div>\n      <div class="d-flex justify-content-between align-items-center">\n        ' + currentEnterpriseFlag + '\n\n        <button type="button" class="btn p-0 bg-white icon-btn icon-btn__go" data-enterprise-id="' + item.b_id + '"></button>\n      </div>\n    </div>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2180,6 +2190,7 @@
 	  }
 	  selectedString = evt.target.labels[0];
 	  selectedString.classList.add('bg-light');
+	  _storage2.default.currentStockId = selectedString.dataset.stockId;
 	  enableCheckEditButtons();
 	});
 	
@@ -2250,9 +2261,10 @@
 	    listPointsBody.innerHTML = '';
 	  },
 	  getElement: function getElement(item) {
-	    var currentStockFlag = item.id === _storage2.default.data['currentStock'] ? 'V' : '';
+	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? '<button type="button" class="btn p-0 bg-white icon-btn icon-btn__check--green"></button>' : '';
+	    var currentStockFlag = item.id === _storage2.default.data['currentStock'] ? '<div class="p-0 bg-white icon icon__check"></div>' : '';
 	
-	    return '\n\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '"  class="d-flex justify-content-between border rounded-0 m-0" style="min-height: 33px;" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        <span class="badge badge-pill badge-success">' + currentStockFlag + '</span>\n      </div>\n      </label>';
+	    return '\n\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '"  class="d-flex justify-content-between border rounded-0 m-0" style="min-height: 33px;" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        ' + currentStockFlag + '\n      </div>\n      </label>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2284,11 +2296,297 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _referenceContractors = __webpack_require__(25);
+	var _referencePoints = __webpack_require__(22);
+	
+	var _referencePoints2 = _interopRequireDefault(_referencePoints);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formAddPoint.UrlApi;
+	var validNamePattern = window.appSettings.formAddPoint.validPatterns.name;
+	var validNameMessage = window.appSettings.formAddPoint.validMessage.name;
+	var messages = window.appSettings.formAddPoint.messages;
+	
+	var body = document.querySelector('body');
+	var enterprisesAdd = body.querySelector('#points-add');
+	var form = enterprisesAdd.querySelector('#points-add-form');
+	
+	var name = form.querySelector('#points-add-name');
+	var nameValid = form.querySelector('#points-add-valid');
+	
+	var spinner = form.querySelector('#points-add-spinner');
+	
+	var buttonSubmit = form.querySelector('#points-add-submit');
+	var buttonCancel = form.querySelector('#points-add-cancel');
+	var buttonClose = enterprisesAdd.querySelector('#points-add-close');
+	
+	var stor = _storage2.default.data;
+	
+	var formReset = function formReset() {
+	  form.reset();
+	  nameValid.innerHTML = '';
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      $('#points-add').modal('hide');
+	
+	      // Сюда метод перезагрузки списка
+	      _referencePoints2.default.redraw();
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(messages.mes400);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validNamePattern.test(name.value)) {
+	    valid = false;
+	    nameValid.innerHTML = validNameMessage;
+	  }
+	
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	  urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'POST',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	exports.default = {
+	  start: function start() {
+	
+	    buttonCancel.addEventListener('click', function () {
+	      formReset();
+	    });
+	    buttonClose.addEventListener('click', function () {
+	      formReset();
+	    });
+	    form.addEventListener('submit', formSubmitHandler);
+	    form.addEventListener('change', function (evt) {
+	      if (evt.target.nextElementSibling) {
+	        evt.target.nextElementSibling.innerHTML = '';
+	      }
+	    });
+	  }
+	};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referencePoints = __webpack_require__(22);
+	
+	var _referencePoints2 = _interopRequireDefault(_referencePoints);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formEditPoint.UrlApi;
+	var validNamePattern = window.appSettings.formEditPoint.validPatterns.name;
+	var validNameMessage = window.appSettings.formEditPoint.validMessage.name;
+	var messages = window.appSettings.formEditPoint.messages;
+	
+	var body = document.querySelector('body');
+	var enterprisesAdd = body.querySelector('#points-edit');
+	var form = enterprisesAdd.querySelector('#points-edit-form');
+	
+	var name = form.querySelector('#points-edit-name');
+	var nameValid = form.querySelector('#points-edit-valid');
+	
+	var spinner = form.querySelector('#points-edit-spinner');
+	
+	var buttonSubmit = form.querySelector('#points-edit-submit');
+	var buttonCancel = form.querySelector('#points-edit-cancel');
+	var buttonClose = enterprisesAdd.querySelector('#points-edit-close');
+	
+	var stor = _storage2.default.data;
+	
+	var formReset = function formReset() {
+	  form.reset();
+	  nameValid.innerHTML = '';
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	  console.dir(response);
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      $('#points-edit').modal('hide');
+	
+	      // Сюда метод перезагрузки списка
+	      _referencePoints2.default.redraw();
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(messages.mes400);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validNamePattern.test(name.value)) {
+	    valid = false;
+	    nameValid.innerHTML = validNameMessage;
+	  }
+	
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	  urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
+	  urlApp = urlApp.replace('{{stId}}', _storage2.default.currentStockId);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'PUT',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	exports.default = {
+	  start: function start() {
+	
+	    buttonCancel.addEventListener('click', function () {
+	      formReset();
+	    });
+	    buttonClose.addEventListener('click', function () {
+	      formReset();
+	    });
+	    form.addEventListener('submit', formSubmitHandler);
+	    form.addEventListener('change', function (evt) {
+	      if (evt.target.nextElementSibling) {
+	        evt.target.nextElementSibling.innerHTML = '';
+	      }
+	    });
+	  }
+	};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceContractors = __webpack_require__(27);
 	
 	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
 	
-	var _referenceContractorsCard = __webpack_require__(26);
+	var _referenceContractorsCard = __webpack_require__(28);
 	
 	var _referenceContractorsCard2 = _interopRequireDefault(_referenceContractorsCard);
 	
@@ -2435,7 +2733,7 @@
 	};
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2466,7 +2764,7 @@
 	};
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2509,7 +2807,7 @@
 	};
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2526,7 +2824,7 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _referenceKeywords = __webpack_require__(28);
+	var _referenceKeywords = __webpack_require__(30);
 	
 	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
 	
@@ -2584,7 +2882,7 @@
 	};
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	'use strict';

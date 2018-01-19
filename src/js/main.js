@@ -6,10 +6,12 @@ import enterprisesButton from './buttons/reference-enterprises.js';
 import enterprisesButtonFormAdd from './buttons/reference-enterprises-add.js';
 import enterprisesButtonFormEdit from './buttons/reference-enterprises-edit.js';
 import pointsButton from './buttons/reference-points.js';
+import pointsButtonFormAdd from './buttons/reference-points-add.js';
+import pointsButtonFormEdit from './buttons/reference-points-edit.js';
 import contractorsButton from './buttons/reference-contractors.js';
 import keywordsButton from './buttons/reference-keywords.js';
 
-console.log('ver: 2D4');
+console.log('ver: 2D5');
 console.log('ver: 2A3');
 
 const exit = document.querySelector('#profile-exit');
@@ -58,6 +60,8 @@ const start = () => {
     hashObserver();
     enterprisesButtonFormAdd.start();
     enterprisesButtonFormEdit.start();
+    pointsButtonFormAdd.start();
+    pointsButtonFormEdit.start();
   } else {
     showLoginHideApp();
     mainWindow.init();
