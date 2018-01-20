@@ -90,9 +90,17 @@
 	
 	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
 	
-	var _referenceKeywords = __webpack_require__(29);
+	var _referenceContractorsAdd = __webpack_require__(29);
+	
+	var _referenceContractorsAdd2 = _interopRequireDefault(_referenceContractorsAdd);
+	
+	var _referenceKeywords = __webpack_require__(30);
 	
 	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
+	
+	var _referenceKeywordsAdd = __webpack_require__(32);
+	
+	var _referenceKeywordsAdd2 = _interopRequireDefault(_referenceKeywordsAdd);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -142,6 +150,11 @@
 	// ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 	var start = function start() {
 	  if (_storage2.default.isSetFlag) {
+	
+	    document.querySelector('#test').addEventListener('click', function () {
+	      console.dir(window.appFormCurrValue);
+	    });
+	
 	    showAppHideLogin();
 	    _onlineProfile2.default.start();
 	    _log2.default.start();
@@ -155,6 +168,8 @@
 	    _referenceEnterprisesEdit2.default.start();
 	    _referencePointsAdd2.default.start();
 	    _referencePointsEdit2.default.start();
+	    _referenceContractorsAdd2.default.start();
+	    _referenceKeywordsAdd2.default.start();
 	  } else {
 	    showLoginHideApp();
 	    _main_login_window2.default.init();
@@ -278,12 +293,44 @@
 	    return sessionStorage.getItem('currentStockName');
 	  },
 	
-	  set currentContractor(type) {
-	    sessionStorage.setItem('currentContractor', type);
+	  set currentContractorId(id) {
+	    sessionStorage.setItem('currentContractorId', id);
 	  },
 	
-	  get currentContractor() {
-	    return sessionStorage.getItem('currentContractor');
+	  get currentContractorId() {
+	    return sessionStorage.getItem('currentContractorId');
+	  },
+	
+	  set currentContractorType(type) {
+	    sessionStorage.setItem('currentContractorType', type);
+	  },
+	
+	  get currentContractorType() {
+	    return sessionStorage.getItem('currentContractorType');
+	  },
+	
+	  set currentContractorOperation(type) {
+	    sessionStorage.setItem('currentContractorOperation', type);
+	  },
+	
+	  get currentContractorOperation() {
+	    return sessionStorage.getItem('currentContractorOperation');
+	  },
+	
+	  set currentKeywordRgb(rgb) {
+	    sessionStorage.setItem('currentKeywordRgb', rgb);
+	  },
+	
+	  get currentKeywordRgb() {
+	    return sessionStorage.getItem('currentKeywordRgb');
+	  },
+	
+	  set currentKeywordId(id) {
+	    sessionStorage.setItem('currentKeywordId', id);
+	  },
+	
+	  get currentKeywordId() {
+	    return sessionStorage.getItem('currentKeywordId');
 	  }
 	
 	};
@@ -1656,14 +1703,12 @@
 	
 	var listEnterprisesCardName = document.querySelector('#list-enterprises-card-name');
 	var listEnterprisesCardBalance = document.querySelector('#list-enterprises-card-balance');
+	var listEnterprisesCardIsChecked = document.querySelector('#list-enterprises-card-is-checked');
 	var listEnterprisesCardDate = document.querySelector('#list-enterprises-card-date');
 	// const listEnterprisesCardNegativeTailings = document.querySelector('#list-enterprises-card-negative-tailings');
 	// const listEnterprisesCardNegativeBalance = document.querySelector('#list-enterprises-card-negative-balance');
 	
 	var listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-card-check-btn');
-	// const listEnterprisesCardEditBtn = document.querySelector('#list-enterprises-card-edit-btn');
-	// const listEnterprisesCardDeleteBtn = document.querySelector('#list-enterprises-card-delete-btn');
-	
 	var listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
 	
 	var loaderSpinnerId = 'loader-enterprises';
@@ -1671,6 +1716,7 @@
 	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 	
 	var onSuccessEnterprisesLoad = function onSuccessEnterprisesLoad(loadedEnterprises) {
+	  console.log(loadedEnterprises);
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  if (loadedEnterprises.status === 200) {
 	    _referenceEnterprises2.default.drawDataInContainer(loadedEnterprises.data);
@@ -1700,19 +1746,26 @@
 	  console.log(loadedEnterpriseCard);
 	
 	  if (_storage2.default.data.currentBusiness === loadedEnterpriseCard.data.id) {
-	    listEnterprisesCardCheckBtn.setAttribute('disabled', 'disabled');
+	    listEnterprisesCardCheckBtn.classList.add('d-none');
+	    listEnterprisesCardIsChecked.classList.remove('d-none');
 	  } else {
-	    listEnterprisesCardCheckBtn.removeAttribute('disabled');
+	    listEnterprisesCardCheckBtn.classList.remove('d-none');
+	    listEnterprisesCardIsChecked.classList.add('d-none');
 	  }
 	
 	  listEnterprisesCardCheckBtn.addEventListener('click', function () {
 	    _storage2.default.currentBusiness = loadedEnterpriseCard.data.id;
+	    listEnterprisesCardCheckBtn.classList.add('d-none');
+	    listEnterprisesCardIsChecked.classList.remove('d-none');
+	  });
+	
+	  $('#enterprises-card-edit').on('show.bs.modal', function (e) {
+	    listEnterprisesCardEditName.value = loadedEnterpriseCard.data.name;
 	  });
 	
 	  listEnterprisesCardName.innerText = loadedEnterpriseCard.data.name;
 	  listEnterprisesCardDate.innerText = new Date(+(loadedEnterpriseCard.data.time_activity + '000')).toLocaleString();
 	  listEnterprisesCardBalance.innerText = loadedEnterpriseCard.data.balance;
-	  listEnterprisesCardEditName.value = loadedEnterpriseCard.data.name;
 	  _storage2.default.currentEnterpriseId = loadedEnterpriseCard.data.id;
 	  _storage2.default.currentEnterpriseName = loadedEnterpriseCard.data.name;
 	};
@@ -1722,20 +1775,23 @@
 	};
 	
 	var onListEnterprisesBodyClick = function onListEnterprisesBodyClick(evt) {
-	  if (evt.target.tagName === 'BUTTON' || evt.target.tagName === 'IMG') {
-	    listEnterprisesHeader.classList.remove('d-flex');
-	    listEnterprisesHeader.classList.add('d-none');
-	    listEnterprisesBody.classList.add('d-none');
-	    listEnterprisesCard.classList.remove('d-none');
-	
-	    _xhr2.default.request = {
-	      metod: 'POST',
-	      url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + evt.target.dataset.enterpriseId + '/info',
-	      data: 'view_last=0&token=' + _storage2.default.data.token,
-	      callbackSuccess: onSuccessEnterpriseCardLoad,
-	      callbackError: onErrorEnterpriseCardLoad
-	    };
+	  var currentStringElement = evt.target;
+	  while (!currentStringElement.dataset.enterpriseId) {
+	    currentStringElement = currentStringElement.parentNode;
 	  }
+	
+	  listEnterprisesHeader.classList.remove('d-flex');
+	  listEnterprisesHeader.classList.add('d-none');
+	  listEnterprisesBody.classList.add('d-none');
+	  listEnterprisesCard.classList.remove('d-none');
+	
+	  _xhr2.default.request = {
+	    metod: 'POST',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + currentStringElement.dataset.enterpriseId + '/info',
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessEnterpriseCardLoad,
+	    callbackError: onErrorEnterpriseCardLoad
+	  };
 	};
 	
 	var onListEnterprisesCardReturnBtn = function onListEnterprisesCardReturnBtn() {
@@ -1790,7 +1846,7 @@
 	  getElement: function getElement(item) {
 	    var currentEnterpriseFlag = item.b_id === _storage2.default.data['currentBusiness'] ? '<div class="p-0 bg-white icon icon__check"></div>' : '';
 	
-	    return '\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '</div>\n      <div class="d-flex justify-content-between align-items-center">\n        ' + currentEnterpriseFlag + '\n\n        <button type="button" class="btn p-0 bg-white icon-btn icon-btn__go" data-enterprise-id="' + item.b_id + '"></button>\n      </div>\n    </div>';
+	    return '\n    <div class="d-flex justify-content-between align-items-center reference-string" data-enterprise-id="' + item.b_id + '">\n      <div><b>ID: </b>' + item.b_id + ' <b>\u0418\u043C\u044F: </b>' + item.b_name + ' <b>\u041F\u043E\u0447\u0442\u0430: </b>' + item.b_owner_email + ' <b>\u0412\u0440\u0435\u043C\u044F: </b>' + new Date(+(item.b_time_activity + '000')).toLocaleString() + '</div>\n      <div class="d-flex justify-content-between align-items-center">\n        ' + currentEnterpriseFlag + '\n\n        <button type="button" class="btn p-0 bg-white icon-btn icon-btn__go"></button>\n      </div>\n    </div>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2264,7 +2320,7 @@
 	    // const currentStockFlag = (item.id === auth.data['currentStock']) ? '<button type="button" class="btn p-0 bg-white icon-btn icon-btn__check--green"></button>' : '';
 	    var currentStockFlag = item.id === _storage2.default.data['currentStock'] ? '<div class="p-0 bg-white icon icon__check"></div>' : '';
 	
-	    return '\n\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label id="log-row" for="' + item.id + '"  class="d-flex justify-content-between border rounded-0 m-0" style="min-height: 33px;" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        ' + currentStockFlag + '\n      </div>\n      </label>';
+	    return '\n\n    <input type="radio" id="' + item.id + '" name="contact" value="email" class="d-none">\n    <label for="' + item.id + '"  class="d-flex justify-content-between align-items-center reference-string" data-stock-id="' + item.id + '" data-stock-name="' + item.name + '">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div class="d-flex justify-content-between align-items-center">\n        ' + currentStockFlag + '\n      </div>\n      </label>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(enterprisesData) {
 	    var _this = this;
@@ -2534,6 +2590,8 @@
 	    callbackError: callbackXhrError
 	  };
 	
+	  console.dir(response);
+	
 	  _xhr2.default.request = response;
 	};
 	
@@ -2610,13 +2668,17 @@
 	var listContractorsBody = document.querySelector('#list-contractors-body');
 	var listContractorsCard = document.querySelector('#list-contractors-card');
 	var listContractorsCardReturnBtn = document.querySelector('#list-contractors-card-return-btn');
-	var listContractorsCardEditBtn = document.querySelector('#list-contractors-card-edit-btn');
+	// const listContractorsCardEditBtn = document.querySelector('#list-contractors-card-edit-btn');
 	
 	var listContractorsFormEditLabel = document.querySelector('#contractors-add-label');
 	var listContractorsFormEditName = document.querySelector('#contractors-name');
 	var listContractorsFormEditDescribe = document.querySelector('#contractors-describe');
 	var listContractorsFormEditContact = document.querySelector('#contractors-contact');
 	var listContractorsFormEditEmail = document.querySelector('#contractors-email');
+	var listContractorsFormSubmit = document.querySelector('#contractors-add-submit');
+	var listContractorsFormBill = document.querySelector('#contractors-add-bill');
+	
+	var contractorsData = [];
 	
 	var ContractorType = {
 	  SUPPLIER: 1,
@@ -2626,6 +2688,8 @@
 	var showBodyHideCard = function showBodyHideCard() {
 	  listContractorsBody.classList.remove('d-none');
 	  listContractorsCard.classList.add('d-none');
+	  listContractorsHeader.classList.add('d-flex');
+	  listContractorsHeader.classList.remove('d-none');
 	};
 	
 	var hideBodyShowCard = function hideBodyShowCard() {
@@ -2637,18 +2701,26 @@
 	  listContractorsAddForm.reset();
 	});
 	
+	/*
+	listContractorsCardEditBtn.addEventListener('click', function () {
+	  listContractorsFormSubmit.innerHTML = 'Изменить';
+	});
+	*/
+	
 	listContractorsCardReturnBtn.addEventListener('click', function () {
 	  showBodyHideCard();
-	  listContractorsHeader.classList.add('d-flex');
-	  listContractorsHeader.classList.remove('d-none');
-	  getContractors(_storage2.default.currentContractor);
+	  getContractors(_storage2.default.currentContractorType);
 	});
 	
 	var onSuccessContractorsLoad = function onSuccessContractorsLoad(loadedContractors) {
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  if (loadedContractors.status === 200) {
+	    console.log(loadedContractors);
+	    contractorsData = loadedContractors.data.slice(0);
 	    _referenceContractorsCard2.default.cleanContainer();
 	    _referenceContractors2.default.drawDataInContainer(loadedContractors.data);
+	    listContractorsFormSubmit.innerHTML = 'Создать';
+	    _storage2.default.currentContractorOperation = 'add';
 	  } else {
 	    _referenceContractors2.default.drawMarkupInContainer('<p>' + loadedContractors.message + '</p>');
 	  }
@@ -2662,14 +2734,11 @@
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  if (loadedBuyerCard.status === 200) {
 	    console.log(loadedBuyerCard);
+	    _referenceContractorsCard2.default.cleanContainer();
 	    _referenceContractorsCard2.default.drawDataInContainer(loadedBuyerCard.data);
-	
-	    listContractorsCardEditBtn.addEventListener('click', function () {
-	      listContractorsFormEditName.value = loadedBuyerCard.data.name;
-	      listContractorsFormEditDescribe.value = loadedBuyerCard.data.description;
-	      listContractorsFormEditContact.value = loadedBuyerCard.data.contact;
-	      listContractorsFormEditEmail.value = loadedBuyerCard.data.email;
-	    });
+	    listContractorsFormSubmit.innerHTML = 'Изменить';
+	    _storage2.default.currentContractorId = loadedBuyerCard.id;
+	    _storage2.default.currentContractorOperation = 'edit';
 	  } else {
 	    _referenceContractorsCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
 	  }
@@ -2680,29 +2749,55 @@
 	};
 	
 	var onListContractorsBodyClick = function onListContractorsBodyClick(evt) {
-	  if (evt.target.tagName === 'BUTTON') {
+	  var currentStringElement = evt.target;
+	
+	  while (!currentStringElement.dataset.buyerId) {
+	    currentStringElement = currentStringElement.parentNode;
+	  }
+	
+	  var _contractorsData$curr = contractorsData[currentStringElement.dataset.index],
+	      name = _contractorsData$curr.name,
+	      description = _contractorsData$curr.description,
+	      contact = _contractorsData$curr.contact,
+	      email = _contractorsData$curr.email;
+	
+	
+	  $('#contractors-add').modal('show');
+	
+	  console.log(contractorsData);
+	
+	  listContractorsFormEditName.value = name ? name : '';
+	  listContractorsFormEditDescribe.value = description ? description : '';
+	  listContractorsFormEditContact.value = contact ? contact : '';
+	  listContractorsFormEditEmail.value = email ? email : '';
+	
+	  listContractorsFormBill.classList.remove('d-none');
+	
+	  listContractorsFormBill.addEventListener('click', function () {
 	    hideBodyShowCard();
 	    listContractorsHeader.classList.remove('d-flex');
 	    listContractorsHeader.classList.add('d-none');
+	
 	    _referenceContractorsCard2.default.drawMarkupInContainer(loaderSpinnerMarkup);
 	
 	    _xhr2.default.request = {
 	      metod: 'POST',
-	      url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/kontr_agent/' + evt.target.dataset.buyerId,
-	      data: 'token=' + _storage2.default.data.token + '&count_doc=4&shift_doc=2',
+	      url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/kontr_agent/' + currentStringElement.dataset.buyerId,
+	      data: 'token=' + _storage2.default.data.token + '&count_doc=4&shift_doc=0',
 	      callbackSuccess: onSuccessBuyerCardLoad,
 	      callbackError: onErrorBuyerCardLoad
 	    };
-	  }
+	  });
 	};
 	
 	listContractorsBody.addEventListener('click', onListContractorsBodyClick);
 	
 	var getContractors = function getContractors(type) {
 	  showBodyHideCard();
-	  listContractorsHeaderType.innerHTML = type === ContractorType.SUPPLIER ? 'ПОСТАВЩИКИ' : 'ПОКУПАТЕЛИ';
+	
+	  listContractorsHeaderType.innerHTML = type === ContractorType.SUPPLIER ? _referenceContractors2.default.getSuppliersHeader() : _referenceContractors2.default.getBuyersHeader();
 	  listContractorsFormEditLabel.innerHTML = type === ContractorType.SUPPLIER ? 'Поставщики' : 'Покупатели';
-	  _storage2.default.currentContractor = type;
+	  _storage2.default.currentContractorType = type;
 	
 	  _referenceContractors2.default.cleanContainer();
 	  _referenceContractors2.default.drawMarkupInContainer(loaderSpinnerMarkup);
@@ -2715,6 +2810,10 @@
 	    callbackError: onErrorContractorsLoad
 	  };
 	};
+	
+	$('#contractors-add').on('hidden.bs.modal', function (e) {
+	  listContractorsFormBill.classList.add('d-none');
+	});
 	
 	exports.default = {
 	  start: function start() {
@@ -2747,19 +2846,25 @@
 	  cleanContainer: function cleanContainer() {
 	    listContractorsBody.innerHTML = '';
 	  },
-	  getElement: function getElement(item) {
+	  getElement: function getElement(item, index) {
 	
-	    return '\n\n    <div class="d-flex justify-content-between border rounded-0">\n      <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n      <div>\n        <button type="button" class="btn btn-primary btn-sm" data-buyer-id="' + item.id + '"> &rarr; </button>\n      </div>\n    </div>';
+	    return '\n\n      <div class="d-flex justify-content-between align-items-center reference-string"  data-buyer-id="' + item.id + '"  data-index="' + index + '">\n        <div><b>ID: </b>' + item.id + ' <b>\u0418\u043C\u044F: </b>' + item.name + '</div>\n        <div class="d-flex justify-content-between align-items-center">\n\n          <button type="button" class="btn p-0 bg-white icon-btn icon-btn__go"></button>\n        </div>\n    </div>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(buyersBodyData) {
 	    var _this = this;
 	
-	    buyersBodyData.forEach(function (item) {
-	      return listContractorsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	    buyersBodyData.forEach(function (item, index) {
+	      return listContractorsBody.insertAdjacentHTML('beforeend', _this.getElement(item, index));
 	    });
 	  },
 	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
 	    listContractorsBody.insertAdjacentHTML('beforeend', markup);
+	  },
+	  getBuyersHeader: function getBuyersHeader() {
+	    return '\n        <img src="img/buyers.png" alt="">\n        <h2>\u041F\u041E\u041A\u0423\u041F\u0410\u0422\u0415\u041B\u0418</h2>';
+	  },
+	  getSuppliersHeader: function getSuppliersHeader() {
+	    return '\n        <img src="img/suppliers.png" alt="">\n        <h2>\u041F\u041E\u0421\u0422\u0410\u0412\u0429\u0418\u041A\u0418</h2>';
 	  }
 	};
 
@@ -2824,7 +2929,228 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _referenceKeywords = __webpack_require__(30);
+	var _referenceContractors = __webpack_require__(26);
+	
+	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formAddContractor.UrlApi;
+	var validPattern = window.appSettings.formAddContractor.validPatterns;
+	var validMessage = window.appSettings.formAddContractor.validMessage;
+	var messages = window.appSettings.formAddContractor.messages;
+	
+	var body = document.querySelector('body');
+	var contractorsAdd = body.querySelector('#contractors-add');
+	var form = contractorsAdd.querySelector('#contractors-add-form');
+	
+	var name = form.querySelector('#contractors-name');
+	var describe = form.querySelector('#contractors-describe');
+	var contact = form.querySelector('#contractors-contact');
+	var phone = form.querySelector('#contractors-phone');
+	var email = form.querySelector('#contractors-email');
+	
+	// const nameValid = form.querySelector('#contractors-name-valid');
+	// const describeValid = form.querySelector('#contractors-describe-valid');
+	// const contactValid = form.querySelector('#contractors-contact-valid');
+	// const phoneValid = form.querySelector('#contractors-phone-valid');
+	// const emailValid = form.querySelector('#contractors-email-valid');
+	
+	var spinner = form.querySelector('#contractors-add-spinner');
+	
+	var buttonSubmit = form.querySelector('#contractors-add-submit');
+	var buttonCancel = form.querySelector('#contractors-add-cancel');
+	
+	var stor = _storage2.default.data;
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var showAlert = function showAlert(input) {
+	  input.classList.add('border');
+	  input.classList.add('border-danger');
+	  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  input.classList.remove('border');
+	  input.classList.remove('border-danger');
+	  input.nextElementSibling.innerHTML = '';
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	  hideAlert(describe);
+	  hideAlert(contact);
+	  hideAlert(phone);
+	  hideAlert(email);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	  console.dir(response);
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      $('#contractors-add').modal('hide');
+	      _referenceContractors2.default.redraw();
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(messages.mes400);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validPattern.name.test(name.value)) {
+	    valid = false;
+	    showAlert(name);
+	  }
+	  if (!validPattern.describe.test(describe.value)) {
+	    valid = false;
+	    showAlert(describe);
+	  }
+	  if (!validPattern.contact.test(contact.value)) {
+	    valid = false;
+	    showAlert(contact);
+	  }
+	  if (!validPattern.phone.test(phone.value)) {
+	    valid = false;
+	    showAlert(phone);
+	  }
+	  if (!validPattern.email.test(email.value)) {
+	    valid = false;
+	    showAlert(email);
+	  }
+	
+	  return valid;
+	};
+	
+	var getUrl = function getUrl() {
+	  var url = '';
+	
+	  switch (_storage2.default.currentContractorOperation) {
+	    case 'add':
+	      url = appUrl.add.replace('{{dir}}', stor.directory);
+	      url = url.replace('{{oper}}', stor.operatorId);
+	      url = url.replace('{{busId}}', stor.currentBusiness);
+	      break;
+	    case 'edit':
+	      url = appUrl.add.replace('{{dir}}', stor.directory);
+	      url = url.replace('{{oper}}', stor.operatorId);
+	      url = url.replace('{{busId}}', stor.currentBusiness);
+	      url = url.replace('{{agentId}}', _storage2.default.currentContractorId);
+	      break;
+	  }
+	  return url;
+	};
+	
+	var submitForm = function submitForm() {
+	  var appLink = getUrl();
+	
+	  var postData = 'token=' + stor.token + '&type=' + _storage2.default.currentContractorType + '&name=' + name.value + '&email=' + email.value + '&description=' + describe.value + '&phone=' + phone.value + '&FIO=' + contact.value;
+	
+	  var response = {
+	    url: appLink,
+	    metod: _storage2.default.currentContractorOperation === 'add' ? 'POST' : 'PUT',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  console.log('response:');
+	  console.dir(response);
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	var addHandlers = function addHandlers() {
+	
+	  $('#contractors-add').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#contractors-add').on('shown.bs.modal', function () {
+	
+	    if (_storage2.default.currentContractorOperation === 'edit') {
+	      window.appFormCurrValue = {
+	        'name': name.value,
+	        'describe': describe.value,
+	        'contact': contact.value,
+	        'phone': phone.value,
+	        'email': email.value
+	      };
+	    }
+	  });
+	
+	  form.addEventListener('change', function (evt) {
+	    hideAlert(evt.target);
+	    buttonSubmit.disabled = false;
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
+	};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceKeywords = __webpack_require__(31);
 	
 	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
 	
@@ -2839,12 +3165,39 @@
 	var loaderSpinnerMarkup = _tools2.default.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 	
 	var listKeywords = document.querySelector('#list-keywords-list');
+	var listKeywordsCard = document.querySelector('#list-keywords-card');
+	var listKeywordsReturnBtn = document.querySelector('#list-keywords-card-return-btn');
+	var listKeywordsHeader = document.querySelector('#list-keywords-header');
+	var listKeywordsBody = document.querySelector('#list-keywords-body');
+	var listKeywordsCardEditRGBForm = document.querySelector('#keywords-card-edit-rgb-form');
+	
+	var onListKeywordsReturnBtnClick = function onListKeywordsReturnBtnClick() {
+	  listKeywordsCard.classList.add('d-none');
+	  listKeywordsHeader.classList.remove('d-none');
+	  listKeywordsHeader.classList.add('d-flex');
+	  listKeywordsBody.classList.remove('d-none');
+	};
+	
+	listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
+	
+	var onListKeywordsCardEditRGBFormSubmit = function onListKeywordsCardEditRGBFormSubmit(evt) {
+	  evt.preventDefault();
+	  var newRGB = listKeywordsCardEditRGBForm.querySelector('input:checked').value;
+	  _storage2.default.currentKeywordRgb = newRGB;
+	  console.log(document.querySelector('#list-keywords-card-edit > div > button'));
+	  document.querySelector('#list-keywords-card-edit > div > button').style.backgroundColor = '#' + _storage2.default.currentKeywordRgb;
+	  $('#keywords-card-edit-rgb').modal('hide');
+	};
+	
+	listKeywordsCardEditRGBForm.addEventListener('submit', onListKeywordsCardEditRGBFormSubmit);
 	
 	var onSuccessKeywordsLoad = function onSuccessKeywordsLoad(loadedKeywords) {
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  console.log(loadedKeywords);
-	  if (loadedKeywords.status === 200) {
+	  if (loadedKeywords.status === 200 && loadedKeywords.data) {
 	    _referenceKeywords2.default.drawDataInContainer(loadedKeywords.data);
+	  } else if (loadedKeywords.status === 200 && !loadedKeywords.data) {
+	    _referenceKeywords2.default.drawMarkupInContainer('<p>' + (loadedKeywords.message || 'Что-то в поле message пусто и в data лежит false') + '</p>');
 	  } else {
 	    _referenceKeywords2.default.drawMarkupInContainer('<p>' + loadedKeywords.message + '</p>');
 	  }
@@ -2857,6 +3210,7 @@
 	var getKeywords = function getKeywords() {
 	  _referenceKeywords2.default.cleanContainer();
 	  _referenceKeywords2.default.drawMarkupInContainer(loaderSpinnerMarkup);
+	  onListKeywordsReturnBtnClick();
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
@@ -2882,7 +3236,7 @@
 	};
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2890,7 +3244,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var listKeywordsHeader = document.querySelector('#list-keywords-header');
 	var listKeywordsBody = document.querySelector('#list-keywords-body');
+	var listKeywordsCard = document.querySelector('#list-keywords-card');
+	var listKeywordsCardEdit = document.querySelector('#list-keywords-card-edit');
 	
 	exports.default = {
 	  cleanContainer: function cleanContainer() {
@@ -2898,17 +3255,167 @@
 	  },
 	  getElement: function getElement(item) {
 	
-	    return '\n      <span class="badge" style="background-color: #' + item.hex_color + '">#' + item.name + '</span>';
+	    return '\n      <span class="badge" style="background-color: #' + item.hex_color + '; cursor: pointer;">#' + item.name + '</span>';
 	  },
 	  drawDataInContainer: function drawDataInContainer(keywordsData) {
 	    var _this = this;
 	
 	    keywordsData.forEach(function (item) {
-	      return listKeywordsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	      listKeywordsBody.insertAdjacentHTML('beforeend', _this.getElement(item));
+	
+	      listKeywordsBody.lastChild.addEventListener('click', function () {
+	        listKeywordsHeader.classList.add('d-none');
+	        listKeywordsHeader.classList.remove('d-flex');
+	        listKeywordsBody.classList.add('d-none');
+	        listKeywordsCard.classList.remove('d-none');
+	        listKeywordsCardEdit.innerHTML = '<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #' + item.hex_color + '">#' + item.name + '</button></div>';
+	      });
 	    });
 	  },
 	  drawMarkupInContainer: function drawMarkupInContainer(markup) {
 	    listKeywordsBody.insertAdjacentHTML('beforeend', markup);
+	  }
+	};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _referenceKeywords = __webpack_require__(30);
+	
+	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formAddKeywords.UrlApi;
+	var validNamePattern = window.appSettings.formAddKeywords.validPatterns.name;
+	var validNameMessage = window.appSettings.formAddKeywords.validMessage.name;
+	var messages = window.appSettings.formAddKeywords.messages;
+	
+	var body = document.querySelector('body');
+	var enterprisesAdd = body.querySelector('#keywords-add');
+	var form = enterprisesAdd.querySelector('#keywords-add-form');
+	
+	var name = form.querySelector('#keywords-add-name');
+	var nameValid = form.querySelector('#keywords-add-valid');
+	
+	var spinner = form.querySelector('#keywords-add-spinner');
+	
+	var buttonSubmit = form.querySelector('#keywords-add-submit');
+	var buttonCancel = form.querySelector('#keywords-add-cancel');
+	var buttonClose = enterprisesAdd.querySelector('#keywords-add-close');
+	
+	var stor = _storage2.default.data;
+	
+	var formReset = function formReset() {
+	  form.reset();
+	  nameValid.innerHTML = '';
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  switch (response.status) {
+	    case 200:
+	      formReset();
+	      $('#keywords-add').modal('hide');
+	
+	      // Сюда метод перезагрузки списка
+	      _referenceKeywords2.default.redraw();
+	      break;
+	    case 400:
+	
+	      // Вывести response.message в красную ошибку
+	      alert(messages.mes400);
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  // Вывести window.appSettings.messages.xhrError в красную ошибку
+	  alert(window.appSettings.messages.xhrError);
+	};
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validNamePattern.test(name.value)) {
+	    valid = false;
+	    nameValid.innerHTML = validNameMessage;
+	  }
+	
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	  urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'POST',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	exports.default = {
+	  start: function start() {
+	
+	    buttonCancel.addEventListener('click', function () {
+	      formReset();
+	    });
+	    buttonClose.addEventListener('click', function () {
+	      formReset();
+	    });
+	    form.addEventListener('submit', formSubmitHandler);
+	    form.addEventListener('change', function (evt) {
+	      if (evt.target.nextElementSibling) {
+	        evt.target.nextElementSibling.innerHTML = '';
+	      }
+	    });
 	  }
 	};
 

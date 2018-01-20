@@ -18,11 +18,11 @@ const contact = form.querySelector('#contractors-contact');
 const phone = form.querySelector('#contractors-phone');
 const email = form.querySelector('#contractors-email');
 
-const nameValid = form.querySelector('#contractors-name-valid');
-const describeValid = form.querySelector('#contractors-describe-valid');
-const contactValid = form.querySelector('#contractors-contact-valid');
-const phoneValid = form.querySelector('#contractors-phone-valid');
-const emailValid = form.querySelector('#contractors-email-valid');
+// const nameValid = form.querySelector('#contractors-name-valid');
+// const describeValid = form.querySelector('#contractors-describe-valid');
+// const contactValid = form.querySelector('#contractors-contact-valid');
+// const phoneValid = form.querySelector('#contractors-phone-valid');
+// const emailValid = form.querySelector('#contractors-email-valid');
 
 const spinner = form.querySelector('#contractors-add-spinner');
 
@@ -43,16 +43,31 @@ const hideSpinner = () => {
   buttonCancel.disabled = false;
 };
 
+const showAlert = (input) => {
+  input.classList.add('border');
+  input.classList.add('border-danger');
+  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+};
+
+const hideAlert = (input) => {
+  input.classList.remove('border');
+  input.classList.remove('border-danger');
+  input.nextElementSibling.innerHTML = '';
+};
+
 const formReset = () => {
   form.reset();
-  nameValid.innerHTML = '';
-  describeValid.innerHTML = '';
-  contactValid.innerHTML = '';
-  phoneValid.innerHTML = '';
-  emailValid.innerHTML = '';
-  buttonCancel.disabled = false;
-  buttonSubmit.disabled = true;
+
+  hideAlert(name);
+  hideAlert(describe);
+  hideAlert(contact);
+  hideAlert(phone);
+  hideAlert(email);
+
   hideSpinner();
+
+  buttonSubmit.disabled = true;
+  buttonCancel.disabled = false;
 };
 
 const callbackXhrSuccess = (response) => {
@@ -80,61 +95,31 @@ const callbackXhrError = () => {
   alert(window.appSettings.messages.xhrError);
 };
 
-const hideAlert = (el) => {
-  el.classList.remove('border');
-  el.classList.remove('border-danger');
-  el.classList.remove('border-primary');
-  el.nextElementSibling.innerHTML = '';
-};
-
-const showAert = (el, mess) => {
-  el.classList.add('border');
-  el.classList.add('border-danger');
-  el.nextElementSibling.innerHTML = mess;
-};
-
-const showBorder = (el) => {
-  el.classList.add('border');
-  el.classList.add('border-primary');
-};
-
 const validateForm = () => {
-  let val = true;
+  let valid = true;
+
   if (!validPattern.name.test(name.value)) {
-    val = false;
-    showBorder(name);
+    valid = false;
+    showAlert(name);
   }
   if (!validPattern.describe.test(describe.value)) {
-    val = false;
-    showBorder(describe);
+    valid = false;
+    showAlert(describe);
   }
   if (!validPattern.contact.test(contact.value)) {
-    val = false;
-    showBorder(contact);
+    valid = false;
+    showAlert(contact);
   }
   if (!validPattern.phone.test(phone.value)) {
-    val = false;
-    showBorder(phone);
+    valid = false;
+    showAlert(phone);
   }
   if (!validPattern.email.test(email.value)) {
-    val = false;
-    showBorder(email);
+    valid = false;
+    showAlert(email);
   }
-  return val;
-};
 
-const validateInput = (el) => {
-  let index = el.id.match(/[\w]+$/);
-  if (validPattern[index].test(el.value)) {
-    hideAlert(el);
-    if (validateForm()) {
-      buttonSubmit.disabled = false;
-    }
-    return true;
-  }
-  buttonSubmit.disabled = true;
-  showAert(el, validMessage[index]);
-  return false;
+  return valid;
 };
 
 const getUrl = () => {
@@ -177,8 +162,11 @@ const submitForm = () => {
 
 const formSubmitHandler = (evt) => {
   evt.preventDefault();
-  showSpinner();
-  submitForm();
+
+  if (validateForm()) {
+    showSpinner();
+    submitForm();
+  }
 };
 
 const addHandlers = () => {
@@ -201,20 +189,12 @@ const addHandlers = () => {
 
   });
 
-  form.addEventListener('submit', formSubmitHandler);
-  form.addEventListener('focusout', (evt) => {
-
-    validateInput(evt.target);
-  });
-
-  form.addEventListener('focusin', (evt) => {
-    console.log('!!^^');
+  form.addEventListener('change', (evt) => {
     hideAlert(evt.target);
+    buttonSubmit.disabled = false;
   });
 
-  buttonSubmit.addEventListener('mouseover', () => {
-
-  });
+  form.addEventListener('submit', formSubmitHandler);
 };
 
 export default {
