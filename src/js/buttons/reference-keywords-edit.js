@@ -61,7 +61,7 @@ const formReset = () => {
 const callbackXhrSuccess = (response) => {
 
   console.dir(response);
-
+  dataStorage.currentKeywordName = name.value;
   hideSpinner();
   formReset();
   $('#keywords-card-edit').modal('hide');
@@ -119,7 +119,7 @@ const submitForm = () => {
   let postData = `name=${name.value}&token=${stor.token}`;
   let urlApp = appUrl.replace('{{dir}}', stor.directory);
   urlApp = urlApp.replace('{{oper}}', stor.operatorId);
-  urlApp = urlApp.replace('{{busId}}', dataStorage.currentEnterpriseId);
+  urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
   urlApp = urlApp.replace('{{tagId}}', dataStorage.currentKeywordId);
 
   let response = {

@@ -108,7 +108,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D9');
+	console.log('ver: 2D10');
 	console.log('ver: 2A5');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -3928,7 +3928,7 @@
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	
 	  console.dir(response);
-	
+	  _storage2.default.currentKeywordName = name.value;
 	  hideSpinner();
 	  formReset();
 	  $('#keywords-card-edit').modal('hide');
@@ -3986,7 +3986,7 @@
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
-	  urlApp = urlApp.replace('{{busId}}', _storage2.default.currentEnterpriseId);
+	  urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
 	  urlApp = urlApp.replace('{{tagId}}', _storage2.default.currentKeywordId);
 	
 	  var response = {
