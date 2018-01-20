@@ -2193,6 +2193,8 @@
 	var buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
 	var buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
 	
+	var stor = _storage2.default.data;
+	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -2284,7 +2286,6 @@
 	};
 	
 	var submitForm = function submitForm() {
-	  var stor = _storage2.default.data;
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -3273,7 +3274,6 @@
 	};
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	  console.dir(response);
 	
 	  hideSpinner();
 	  formReset();
@@ -3351,6 +3351,7 @@
 	};
 	
 	var getUrl = function getUrl(stor) {
+	
 	  var url = '';
 	
 	  switch (_storage2.default.currentContractorOperation) {
@@ -3371,7 +3372,6 @@
 	
 	var submitForm = function submitForm() {
 	  var stor = _storage2.default.data;
-	
 	  var appLink = getUrl(stor);
 	
 	  var postData = 'token=' + stor.token + '&type=' + _storage2.default.currentContractorType + '&name=' + name.value + '&email=' + email.value + '&description=' + describe.value + '&phone=' + phone.value + '&FIO=' + contact.value;
@@ -3796,7 +3796,6 @@
 	
 	var submitForm = function submitForm() {
 	  var stor = _storage2.default.data;
-	
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -3987,7 +3986,6 @@
 	
 	var submitForm = function submitForm() {
 	  var stor = _storage2.default.data;
-	
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
