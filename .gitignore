@@ -10,7 +10,7 @@ lopos-id.sublime-project
 lopos-id.sublime-workspace
 login.txt
 src/passwd
-
+passwd
 # Runtime data
 pids
 *.pid

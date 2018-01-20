@@ -4,15 +4,15 @@ window.appSettings = {
 
   'xhrSettings': {
   // Адрес ApiDesigber, интервал ожидания ответа, кодировка
-    urlApi: 'https://lopos.bidone.ru/api/v1/',
-    timeout: 10000,
-    contentType: 'application/x-www-form-urlencoded',
+    'urlApi': 'https://lopos.bidone.ru/api/v1/',
+    'timeout': 10000,
+    'contentType': 'application/x-www-form-urlencoded',
   },
   // Шаборны валидации формы входа
   'loginValid': {
-    email: /@/,
-    id: /^[0-9a-z]{8,}\d{1,2}$/,
-    password: /.{3,}/
+    'email': /@/,
+    'id': /^[0-9a-z]{8,}\d{1,2}$/,
+    'password': /.{3,}/
   },
   // Ссылки на апи для формы входа
   'loginUrlApi': {
@@ -21,9 +21,9 @@ window.appSettings = {
   },
   // Шаборны валидации формы регистрации
   'registerValid': {
-    email: /@/,
-    password: /.{3,}/,
-    name: /^[а-яёА-ЯЁA-Za-z\s]+$/
+    'email': /@/,
+    'password': /.{3,}/,
+    'name': /^[а-яёА-ЯЁA-Za-z\s]+$/
   },
   // Ссылки на апи для формы регистрации
   'registerUrlApi': 'user_boss/registration',
@@ -53,12 +53,12 @@ window.appSettings = {
     // Сообщения валидации формы входа
     'formValidation': {
 
-      login: {
+      'login': {
         login: 'Неверный формат логина',
         password: 'Пароль должен быть длиннее 3-х символов'
       },
 
-      registration: {
+      'registration': {
         name: 'Имя!',
         email: 'Почта!',
         password: 'Пароль!',
@@ -66,11 +66,11 @@ window.appSettings = {
         UserAgreement: 'Соглашение'
       },
 
-      emailConfirm: {
+      'emailConfirm': {
         key: 'Неверный формат кода!'
       },
 
-      forgot: {
+      'forgot': {
         email: 'Введите корректный email'
       }
     }
@@ -78,12 +78,12 @@ window.appSettings = {
 
     // Форма добавления организации
   'formAddEnterprise': {
-    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business',
-    validPatterns: {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business',
+    'validPatterns': {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
       'balance': /(^\d+$)|(^\d+\.\d{2}$)/
     },
-    validMessage: {
+    'validMessage': {
       'name': 'минимум 1 буква',
       'balance': 'формат: 0.00 или 0'
     }
@@ -91,12 +91,80 @@ window.appSettings = {
 
    // Форма редактирования организации
   'formEditEnterprise': {
-    UrlApi: 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
-    validPatterns: {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
+    'validPatterns': {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
     },
-    validMessage: {
+    'validMessage': {
       'name': 'минимум 1 буква'
     }
-  }
+  },
+
+  // Форма добавления точки продаж
+  'formAddPoint': {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/stock',
+    'validPatterns': {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    'validMessage': {
+      'name': 'минимум 1 буква',
+    },
+    'messages': {
+      'mes400': ''
+    }
+  },
+
+  // Форма редактирования точки продаж
+  'formEditPoint': {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/stock/{{stId}}',
+    'validPatterns': {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    'validMessage': {
+      'name': 'минимум 1 буква',
+    },
+    'messages': {
+      'mes400': ''
+    }
+  },
+
+  // Форма добавления контрагента
+  'formAddContractor': {
+    'UrlApi': {
+      'add': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/kontr_agent',
+      'edit': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/kontr_agent/{{agentId}}'
+    },
+    'validPatterns': {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+      'describe': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+      'contact': /^[а-яёА-ЯЁA-Za-z\s]+$/,
+      'phone': /^[\d\s+-/(/)]+$/,
+      'email': /@/
+    },
+    'validMessage': {
+      'name': 'name',
+      'describe': 'describe',
+      'contact': 'contact',
+      'phone': 'phone',
+      'email': 'email'
+    },
+    'messages': {
+      'mes400': ''
+    }
+  },
+
+  // Форма добавления точки продаж
+  'formAddKeywords': {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/tag',
+    'validPatterns': {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    'validMessage': {
+      'name': 'минимум 1 буква',
+    },
+    'messages': {
+      'mes400': ''
+    }
+  },
+
 };
