@@ -30,11 +30,9 @@ const formReset = () => {
 
 const callbackXhrSuccess = (response) => {
   console.dir(response);
-
-  hideSpinner();
+  formReset();
   switch (response.status) {
   case 200:
-    formReset();
     $('#points-edit').modal('hide');
 
     // Сюда метод перезагрузки списка

@@ -13,7 +13,7 @@ import contractorsButtonFormAdd from './buttons/reference-contractors-add.js';
 import keywordsButton from './buttons/reference-keywords.js';
 import keywordsButtonAdd from './buttons/reference-keywords-add.js';
 
-console.log('ver: 2D5');
+console.log('ver: 2D6');
 console.log('ver: 2A3');
 
 const exit = document.querySelector('#profile-exit');

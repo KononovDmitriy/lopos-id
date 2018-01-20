@@ -104,7 +104,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D5');
+	console.log('ver: 2D6');
 	console.log('ver: 2A3');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -2590,11 +2590,9 @@
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	  console.dir(response);
-	
-	  hideSpinner();
+	  formReset();
 	  switch (response.status) {
 	    case 200:
-	      formReset();
 	      $('#points-edit').modal('hide');
 	
 	      // Сюда метод перезагрузки списка
