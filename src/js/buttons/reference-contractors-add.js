@@ -18,12 +18,6 @@ const contact = form.querySelector('#contractors-contact');
 const phone = form.querySelector('#contractors-phone');
 const email = form.querySelector('#contractors-email');
 
-// const nameValid = form.querySelector('#contractors-name-valid');
-// const describeValid = form.querySelector('#contractors-describe-valid');
-// const contactValid = form.querySelector('#contractors-contact-valid');
-// const phoneValid = form.querySelector('#contractors-phone-valid');
-// const emailValid = form.querySelector('#contractors-email-valid');
-
 const spinner = form.querySelector('#contractors-add-spinner');
 
 const buttonSubmit = form.querySelector('#contractors-add-submit');
@@ -68,6 +62,8 @@ const formReset = () => {
 
   buttonSubmit.disabled = true;
   buttonCancel.disabled = false;
+
+  // dataStorage.currentContractorOperation = 'add';
 };
 
 const callbackXhrSuccess = (response) => {
@@ -122,6 +118,25 @@ const validateForm = () => {
   return valid;
 };
 
+const formIsChange = () => {
+  if (name.value !== window.appFormCurrValue.name) {
+    return true;
+  }
+  if (describe.value !== window.appFormCurrValue.describe) {
+    return true;
+  }
+  if (contact.value !== window.appFormCurrValue.contact) {
+    return true;
+  }
+  if (phone.value !== window.appFormCurrValue.phone) {
+    return true;
+  }
+  if (email.value !== window.appFormCurrValue.email) {
+    return true;
+  }
+  return false;
+};
+
 const getUrl = () => {
   let url = '';
 
@@ -132,7 +147,7 @@ const getUrl = () => {
     url = url.replace('{{busId}}', stor.currentBusiness);
     break;
   case 'edit':
-    url = appUrl.add.replace('{{dir}}', stor.directory);
+    url = appUrl.edit.replace('{{dir}}', stor.directory);
     url = url.replace('{{oper}}', stor.operatorId);
     url = url.replace('{{busId}}', stor.currentBusiness);
     url = url.replace('{{agentId}}', dataStorage.currentContractorId);
@@ -189,9 +204,19 @@ const addHandlers = () => {
 
   });
 
-  form.addEventListener('change', (evt) => {
+  form.addEventListener('input', (evt) => {
     hideAlert(evt.target);
-    buttonSubmit.disabled = false;
+
+    if (dataStorage.currentContractorOperation === 'edit') {
+      if (formIsChange()) {
+        buttonSubmit.disabled = false;
+      } else {
+        buttonSubmit.disabled = true;
+      }
+    } else {
+      buttonSubmit.disabled = false;
+    }
+
   });
 
   form.addEventListener('submit', formSubmitHandler);

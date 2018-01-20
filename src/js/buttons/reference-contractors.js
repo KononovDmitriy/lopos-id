@@ -50,10 +50,14 @@ const hideBodyShowCard = () => {
 
 listContractorsAddBtn.addEventListener('click', function () {
   listContractorsAddForm.reset();
+  auth.currentContractorOperation = 'add';
+  listContractorsFormSubmit.innerHTML = 'Создать';
+
 });
 
 /*
 listContractorsCardEditBtn.addEventListener('click', function () {
+  auth.currentContractorOperation = 'edit';
   listContractorsFormSubmit.innerHTML = 'Изменить';
 });
 */
@@ -68,11 +72,13 @@ const onSuccessContractorsLoad = (loadedContractors) => {
   document.querySelector(`#${loaderSpinnerId}`).remove();
   if (loadedContractors.status === 200) {
     console.log(loadedContractors);
-    contractorsData = loadedContractors.data.slice(0);
+    if (loadedContractors.data.length) {
+      contractorsData = loadedContractors.data.slice(0);
+    }
     contractorsCardMarkup.cleanContainer();
     contractorsMarkup.drawDataInContainer(loadedContractors.data);
-    listContractorsFormSubmit.innerHTML = 'Создать';
-    auth.currentContractorOperation = 'add';
+    // listContractorsFormSubmit.innerHTML = 'Создать';
+    // auth.currentContractorOperation = 'add';
 
   } else {
     contractorsMarkup.drawMarkupInContainer(`<p>${loadedContractors.message}</p>`);
@@ -91,6 +97,7 @@ const onSuccessBuyerCardLoad = (loadedBuyerCard) => {
     console.log(loadedBuyerCard);
     contractorsCardMarkup.cleanContainer();
     contractorsCardMarkup.drawDataInContainer(loadedBuyerCard.data);
+    // auth.currentContractorOperation = 'edit';
     // listContractorsFormSubmit.innerHTML = 'Изменить';
 
   } else {
@@ -175,6 +182,7 @@ $('#contractors-add').on('hidden.bs.modal', function (e) {
 
 });
 $('#contractors-add').on('show.bs.modal', function (e) {
+  listContractorsFormSubmit.innerHTML = (auth.currentContractorOperation === 'edit') ? 'Изменить' : 'Создать';
   console.log(auth.currentContractorId);
   console.log(auth.currentContractorOperation);
 

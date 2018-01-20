@@ -36,7 +36,7 @@ const onErrorKeywordDelete = (error) => {
 const setRequestToDeleteKeyword = () => {
   xhr.request = {
     metod: 'DELETE',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.currentEnterpriseId}/tag/${auth.currentKeywordId}`,
+    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.data.currentBusiness}/tag/${auth.currentKeywordId}`,
     data: `view_last=0&token=${auth.data.token}`,
     callbackSuccess: onSuccessKeywordDelete,
     callbackError: onErrorKeywordDelete
@@ -84,7 +84,7 @@ const onListKeywordsCardEditRGBFormSubmit = (evt) => {
 
   xhr.request = {
     metod: 'PUT',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.currentEnterpriseId}/tag/${auth.currentKeywordId}`,
+    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.data.currentBusiness}/tag/${auth.currentKeywordId}`,
     data: `color=${auth.currentKeywordRgb}&token=${auth.data.token}`,
     callbackSuccess: onSuccessKeywordColorUpdate,
     callbackError: onErrorKeywordColorUpdate

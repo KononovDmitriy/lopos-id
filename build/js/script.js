@@ -104,8 +104,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D6');
-	console.log('ver: 2A3');
+	console.log('ver: 2D7');
+	console.log('ver: 2A5');
 	
 	var exit = document.querySelector('#profile-exit');
 	var app = document.querySelector('#app');
@@ -2761,10 +2761,13 @@
 	
 	listContractorsAddBtn.addEventListener('click', function () {
 	  listContractorsAddForm.reset();
+	  _storage2.default.currentContractorOperation = 'add';
+	  listContractorsFormSubmit.innerHTML = 'Создать';
 	});
 	
 	/*
 	listContractorsCardEditBtn.addEventListener('click', function () {
+	  auth.currentContractorOperation = 'edit';
 	  listContractorsFormSubmit.innerHTML = 'Изменить';
 	});
 	*/
@@ -2778,11 +2781,13 @@
 	  document.querySelector('#' + loaderSpinnerId).remove();
 	  if (loadedContractors.status === 200) {
 	    console.log(loadedContractors);
-	    contractorsData = loadedContractors.data.slice(0);
+	    if (loadedContractors.data.length) {
+	      contractorsData = loadedContractors.data.slice(0);
+	    }
 	    _referenceContractorsCard2.default.cleanContainer();
 	    _referenceContractors2.default.drawDataInContainer(loadedContractors.data);
-	    listContractorsFormSubmit.innerHTML = 'Создать';
-	    _storage2.default.currentContractorOperation = 'add';
+	    // listContractorsFormSubmit.innerHTML = 'Создать';
+	    // auth.currentContractorOperation = 'add';
 	  } else {
 	    _referenceContractors2.default.drawMarkupInContainer('<p>' + loadedContractors.message + '</p>');
 	  }
@@ -2798,6 +2803,7 @@
 	    console.log(loadedBuyerCard);
 	    _referenceContractorsCard2.default.cleanContainer();
 	    _referenceContractorsCard2.default.drawDataInContainer(loadedBuyerCard.data);
+	    // auth.currentContractorOperation = 'edit';
 	    // listContractorsFormSubmit.innerHTML = 'Изменить';
 	  } else {
 	    _referenceContractorsCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
@@ -2884,6 +2890,7 @@
 	  listContractorsFormBill.classList.add('d-none');
 	});
 	$('#contractors-add').on('show.bs.modal', function (e) {
+	  listContractorsFormSubmit.innerHTML = _storage2.default.currentContractorOperation === 'edit' ? 'Изменить' : 'Создать';
 	  console.log(_storage2.default.currentContractorId);
 	  console.log(_storage2.default.currentContractorOperation);
 	});
@@ -3023,12 +3030,6 @@
 	var phone = form.querySelector('#contractors-phone');
 	var email = form.querySelector('#contractors-email');
 	
-	// const nameValid = form.querySelector('#contractors-name-valid');
-	// const describeValid = form.querySelector('#contractors-describe-valid');
-	// const contactValid = form.querySelector('#contractors-contact-valid');
-	// const phoneValid = form.querySelector('#contractors-phone-valid');
-	// const emailValid = form.querySelector('#contractors-email-valid');
-	
 	var spinner = form.querySelector('#contractors-add-spinner');
 	
 	var buttonSubmit = form.querySelector('#contractors-add-submit');
@@ -3073,6 +3074,8 @@
 	
 	  buttonSubmit.disabled = true;
 	  buttonCancel.disabled = false;
+	
+	  // dataStorage.currentContractorOperation = 'add';
 	};
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
@@ -3127,6 +3130,25 @@
 	  return valid;
 	};
 	
+	var formIsChange = function formIsChange() {
+	  if (name.value !== window.appFormCurrValue.name) {
+	    return true;
+	  }
+	  if (describe.value !== window.appFormCurrValue.describe) {
+	    return true;
+	  }
+	  if (contact.value !== window.appFormCurrValue.contact) {
+	    return true;
+	  }
+	  if (phone.value !== window.appFormCurrValue.phone) {
+	    return true;
+	  }
+	  if (email.value !== window.appFormCurrValue.email) {
+	    return true;
+	  }
+	  return false;
+	};
+	
 	var getUrl = function getUrl() {
 	  var url = '';
 	
@@ -3137,7 +3159,7 @@
 	      url = url.replace('{{busId}}', stor.currentBusiness);
 	      break;
 	    case 'edit':
-	      url = appUrl.add.replace('{{dir}}', stor.directory);
+	      url = appUrl.edit.replace('{{dir}}', stor.directory);
 	      url = url.replace('{{oper}}', stor.operatorId);
 	      url = url.replace('{{busId}}', stor.currentBusiness);
 	      url = url.replace('{{agentId}}', _storage2.default.currentContractorId);
@@ -3193,9 +3215,18 @@
 	    }
 	  });
 	
-	  form.addEventListener('change', function (evt) {
+	  form.addEventListener('input', function (evt) {
 	    hideAlert(evt.target);
-	    buttonSubmit.disabled = false;
+	
+	    if (_storage2.default.currentContractorOperation === 'edit') {
+	      if (formIsChange()) {
+	        buttonSubmit.disabled = false;
+	      } else {
+	        buttonSubmit.disabled = true;
+	      }
+	    } else {
+	      buttonSubmit.disabled = false;
+	    }
 	  });
 	
 	  form.addEventListener('submit', formSubmitHandler);
@@ -3263,7 +3294,7 @@
 	var setRequestToDeleteKeyword = function setRequestToDeleteKeyword() {
 	  _xhr2.default.request = {
 	    metod: 'DELETE',
-	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.currentEnterpriseId + '/tag/' + _storage2.default.currentKeywordId,
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/tag/' + _storage2.default.currentKeywordId,
 	    data: 'view_last=0&token=' + _storage2.default.data.token,
 	    callbackSuccess: onSuccessKeywordDelete,
 	    callbackError: onErrorKeywordDelete
@@ -3308,7 +3339,7 @@
 	
 	  _xhr2.default.request = {
 	    metod: 'PUT',
-	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.currentEnterpriseId + '/tag/' + _storage2.default.currentKeywordId,
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.data.currentBusiness + '/tag/' + _storage2.default.currentKeywordId,
 	    data: 'color=' + _storage2.default.currentKeywordRgb + '&token=' + _storage2.default.data.token,
 	    callbackSuccess: onSuccessKeywordColorUpdate,
 	    callbackError: onErrorKeywordColorUpdate
