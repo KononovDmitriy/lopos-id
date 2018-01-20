@@ -52,9 +52,11 @@ const hashObserver = () => {
 const start = () => {
   if (auth.isSetFlag) {
 
+
     document.querySelector('#test').addEventListener('click', () => {
       console.dir(window.appFormCurrValue);
     });
+
 
     showAppHideLogin();
     profileButton.start();
