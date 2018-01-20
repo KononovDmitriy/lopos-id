@@ -24,6 +24,8 @@ const spinner = form.querySelector('#contractors-add-spinner');
 const buttonSubmit = form.querySelector('#contractors-add-submit');
 const buttonCancel = form.querySelector('#contractors-add-cancel');
 
+const stor = dataStorage.data;
+
 const showSpinner = () => {
   spinner.classList.remove('invisible');
   buttonSubmit.disabled = true;
@@ -141,7 +143,7 @@ const formIsChange = () => {
   return false;
 };
 
-const getUrl = (stor) => {
+const getUrl = () => {
   let url = '';
 
   switch (dataStorage.currentContractorOperation) {
@@ -161,9 +163,7 @@ const getUrl = (stor) => {
 };
 
 const submitForm = () => {
-  const stor = dataStorage.data;
-
-  let appLink = getUrl(stor);
+  let appLink = getUrl();
 
   let postData = `token=${stor.token}&type=${dataStorage.currentContractorType}&name=${name.value}&email=${email.value}&description=${describe.value}&phone=${phone.value}&FIO=${contact.value}`;
 
