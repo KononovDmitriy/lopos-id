@@ -102,9 +102,13 @@
 	
 	var _referenceKeywordsAdd2 = _interopRequireDefault(_referenceKeywordsAdd);
 	
+	var _referenceKeywordsEdit = __webpack_require__(33);
+	
+	var _referenceKeywordsEdit2 = _interopRequireDefault(_referenceKeywordsEdit);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D8');
+	console.log('ver: 2D9');
 	console.log('ver: 2A5');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -165,6 +169,7 @@
 	    _referencePointsEdit2.default.start();
 	    _referenceContractorsAdd2.default.start();
 	    _referenceKeywordsAdd2.default.start();
+	    _referenceKeywordsEdit2.default.start();
 	  } else {
 	    showLoginHideApp();
 	    _main_login_window2.default.init();
@@ -1812,12 +1817,8 @@
 	  console.log(error);
 	};
 	
-	var onListEnterprisesBodyClick = function onListEnterprisesBodyClick(evt) {
-	  var currentStringElement = evt.target;
-	  while (!currentStringElement.dataset.enterpriseId) {
-	    currentStringElement = currentStringElement.parentNode;
-	  }
-	
+	var drawEnterpriseCard = function drawEnterpriseCard(enterpriseId) {
+	  enterpriseId = enterpriseId || _storage2.default.currentEnterpriseId;
 	  listEnterprisesHeader.classList.remove('d-flex');
 	  listEnterprisesHeader.classList.add('d-none');
 	  listEnterprisesBody.classList.add('d-none');
@@ -1825,11 +1826,20 @@
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
-	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + currentStringElement.dataset.enterpriseId + '/info',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + enterpriseId + '/info',
 	    data: 'view_last=0&token=' + _storage2.default.data.token,
 	    callbackSuccess: onSuccessEnterpriseCardLoad,
 	    callbackError: onErrorEnterpriseCardLoad
 	  };
+	};
+	
+	var onListEnterprisesBodyClick = function onListEnterprisesBodyClick(evt) {
+	  var currentStringElement = evt.target;
+	  while (!currentStringElement.dataset.enterpriseId) {
+	    currentStringElement = currentStringElement.parentNode;
+	  }
+	
+	  drawEnterpriseCard(currentStringElement.dataset.enterpriseId);
 	};
 	
 	var onListEnterprisesCardReturnBtn = function onListEnterprisesCardReturnBtn() {
@@ -1853,7 +1863,7 @@
 	
 	
 	  redraw: getEnterprises,
-	  updateCard: onSuccessEnterpriseCardLoad,
+	  updateCard: drawEnterpriseCard,
 	
 	  stop: function stop() {
 	    _referenceEnterprises2.default.cleanContainer();
@@ -1974,69 +1984,25 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formAddEnterprise.UrlApi;
-	var message = window.appSettings.formAddEnterprise.message;
-	var validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
-	var validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
-	var validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
-	var validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
+	var messages = window.appSettings.formAddEnterprise.message;
+	
+	var validPattern = window.appSettings.formAddEnterprise.validPatterns;
+	var validMessage = window.appSettings.formAddEnterprise.validMessage;
 	
 	var body = document.querySelector('body');
 	var enterprisesAdd = body.querySelector('#enterprises-add');
 	var form = enterprisesAdd.querySelector('#enterprises-add-form');
 	
 	var name = form.querySelector('#enterprise-name');
-	var nameValid = form.querySelector('#enterprises-name-valid');
 	var balance = form.querySelector('#enterprise-balance');
-	var balanceValid = form.querySelector('#enterprise-balance-valid');
 	var currency = form.querySelector('#enterprise-money');
 	
 	var spinner = form.querySelector('#enterprises-add-spinner');
 	
 	var buttonSubmit = form.querySelector('#enterprises-add-submit');
 	var buttonCancel = form.querySelector('#enterprises-add-cancel');
-	var buttonClose = enterprisesAdd.querySelector('#enterprises-add-close');
 	
 	var stor = _storage2.default.data;
-	
-	var formReset = function formReset() {
-	  form.reset();
-	  nameValid.innerHTML = '';
-	  balanceValid.innerHTML = '';
-	};
-	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	
-	  hideSpinner();
-	  switch (response.status) {
-	    case 200:
-	      formReset();
-	      $('#enterprises-add').modal('hide');
-	
-	      _tools2.default.informationtModal = {
-	        'title': 'Error',
-	        'message': message.mes400
-	      };
-	
-	      _referenceEnterprises2.default.redraw();
-	      break;
-	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      _tools2.default.informationtModal = {
-	        'title': 'Error',
-	        'message': response.message
-	      };
-	
-	      break;
-	  }
-	};
-	
-	var callbackXhrError = function callbackXhrError() {
-	
-	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
-	};
 	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
@@ -2050,16 +2016,79 @@
 	  buttonCancel.disabled = false;
 	};
 	
+	var showAlert = function showAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.add('border');
+	    input.classList.add('border-danger');
+	    input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	  }
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.remove('border');
+	    input.classList.remove('border-danger');
+	    input.nextElementSibling.innerHTML = '';
+	  }
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#enterprises-add').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referenceEnterprises2.default.redraw();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	  hideSpinner();
+	  formReset();
+	  $('#enterprises-card-edit').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
 	var validateForm = function validateForm() {
 	  var valid = true;
 	
-	  if (!validNamePattern.test(name.value)) {
+	  if (!validPattern.name.test(name.value)) {
 	    valid = false;
-	    nameValid.innerHTML = validNameMessage;
+	    showAlert(name);
 	  }
-	  if (!validBalancePattern.test(balance.value)) {
+	  if (!validPattern.balance.test(balance.value)) {
 	    valid = false;
-	    balanceValid.innerHTML = validBalanceMessage;
+	    showAlert(balance);
 	  }
 	
 	  return valid;
@@ -2090,22 +2119,28 @@
 	  }
 	};
 	
-	exports.default = {
-	  start: function start() {
+	var addHandlers = function addHandlers() {
 	
-	    buttonCancel.addEventListener('click', function () {
-	      formReset();
-	    });
-	    buttonClose.addEventListener('click', function () {
-	      formReset();
-	    });
-	    form.addEventListener('submit', formSubmitHandler);
-	    form.addEventListener('change', function (evt) {
-	      if (evt.target.nextElementSibling) {
-	        evt.target.nextElementSibling.innerHTML = '';
-	      }
-	    });
-	  }
+	  $('#enterprises-add').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#enterprises-add').on('shown.bs.modal', function () {
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	    buttonSubmit.disabled = false;
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
 	};
 
 /***/ }),
@@ -2260,8 +2295,6 @@
 	    callbackError: callbackXhrError
 	  };
 	
-	  console.dir(response);
-	
 	  _xhr2.default.request = response;
 	};
 	
@@ -2281,25 +2314,18 @@
 	  });
 	
 	  $('#enterprises-card-edit').on('shown.bs.modal', function () {
-	
-	    if (_storage2.default.currentContractorOperation === 'edit') {
-	      window.appFormCurrValue = {
-	        'name': name.value
-	      };
-	    }
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
 	  });
 	
 	  form.addEventListener('input', function (evt) {
 	    hideAlert(evt.target);
 	
-	    if (_storage2.default.currentContractorOperation === 'edit') {
-	      if (formIsChange()) {
-	        buttonSubmit.disabled = false;
-	      } else {
-	        buttonSubmit.disabled = true;
-	      }
-	    } else {
+	    if (formIsChange()) {
 	      buttonSubmit.disabled = false;
+	    } else {
+	      buttonSubmit.disabled = true;
 	    }
 	  });
 	
@@ -2488,6 +2514,10 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
 	var _referencePoints = __webpack_require__(22);
 	
 	var _referencePoints2 = _interopRequireDefault(_referencePoints);
@@ -2495,8 +2525,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formAddPoint.UrlApi;
-	var validNamePattern = window.appSettings.formAddPoint.validPatterns.name;
-	var validNameMessage = window.appSettings.formAddPoint.validMessage.name;
+	
+	var validPattern = window.appSettings.formAddPoint.validPatterns;
+	var validMessage = window.appSettings.formAddPoint.validMessage;
+	
 	var messages = window.appSettings.formAddPoint.messages;
 	
 	var body = document.querySelector('body');
@@ -2504,46 +2536,13 @@
 	var form = enterprisesAdd.querySelector('#points-add-form');
 	
 	var name = form.querySelector('#points-add-name');
-	var nameValid = form.querySelector('#points-add-valid');
 	
 	var spinner = form.querySelector('#points-add-spinner');
 	
 	var buttonSubmit = form.querySelector('#points-add-submit');
 	var buttonCancel = form.querySelector('#points-add-cancel');
-	var buttonClose = enterprisesAdd.querySelector('#points-add-close');
 	
 	var stor = _storage2.default.data;
-	
-	var formReset = function formReset() {
-	  form.reset();
-	  nameValid.innerHTML = '';
-	};
-	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	
-	  hideSpinner();
-	  switch (response.status) {
-	    case 200:
-	      formReset();
-	      $('#points-add').modal('hide');
-	
-	      // Сюда метод перезагрузки списка
-	      _referencePoints2.default.redraw();
-	      break;
-	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      alert(messages.mes400);
-	      break;
-	  }
-	};
-	
-	var callbackXhrError = function callbackXhrError() {
-	
-	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
-	};
 	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
@@ -2557,12 +2556,75 @@
 	  buttonCancel.disabled = false;
 	};
 	
+	var showAlert = function showAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.add('border');
+	    input.classList.add('border-danger');
+	    input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	  }
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.remove('border');
+	    input.classList.remove('border-danger');
+	    input.nextElementSibling.innerHTML = '';
+	  }
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#points-add').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referencePoints2.default.redraw();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	  hideSpinner();
+	  formReset();
+	  $('#points-add').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
 	var validateForm = function validateForm() {
 	  var valid = true;
 	
-	  if (!validNamePattern.test(name.value)) {
+	  if (!validPattern.name.test(name.value)) {
 	    valid = false;
-	    nameValid.innerHTML = validNameMessage;
+	    showAlert(name);
 	  }
 	
 	  return valid;
@@ -2594,22 +2656,28 @@
 	  }
 	};
 	
-	exports.default = {
-	  start: function start() {
+	var addHandlers = function addHandlers() {
 	
-	    buttonCancel.addEventListener('click', function () {
-	      formReset();
-	    });
-	    buttonClose.addEventListener('click', function () {
-	      formReset();
-	    });
-	    form.addEventListener('submit', formSubmitHandler);
-	    form.addEventListener('change', function (evt) {
-	      if (evt.target.nextElementSibling) {
-	        evt.target.nextElementSibling.innerHTML = '';
-	      }
-	    });
-	  }
+	  $('#points-add').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#points-add').on('shown.bs.modal', function () {
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	    buttonSubmit.disabled = false;
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
 	};
 
 /***/ }),
@@ -2630,6 +2698,10 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
 	var _referencePoints = __webpack_require__(22);
 	
 	var _referencePoints2 = _interopRequireDefault(_referencePoints);
@@ -2637,8 +2709,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formEditPoint.UrlApi;
-	var validNamePattern = window.appSettings.formEditPoint.validPatterns.name;
-	var validNameMessage = window.appSettings.formEditPoint.validMessage.name;
+	
+	var validPattern = window.appSettings.formEditPoint.validPatterns;
+	var validMessage = window.appSettings.formEditPoint.validMessage;
+	
 	var messages = window.appSettings.formEditPoint.messages;
 	
 	var body = document.querySelector('body');
@@ -2646,45 +2720,13 @@
 	var form = enterprisesAdd.querySelector('#points-edit-form');
 	
 	var name = form.querySelector('#points-edit-name');
-	var nameValid = form.querySelector('#points-edit-valid');
 	
 	var spinner = form.querySelector('#points-edit-spinner');
 	
 	var buttonSubmit = form.querySelector('#points-edit-submit');
 	var buttonCancel = form.querySelector('#points-edit-cancel');
-	var buttonClose = enterprisesAdd.querySelector('#points-edit-close');
 	
 	var stor = _storage2.default.data;
-	
-	var formReset = function formReset() {
-	  form.reset();
-	  nameValid.innerHTML = '';
-	};
-	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	  console.dir(response);
-	  formReset();
-	  switch (response.status) {
-	    case 200:
-	      $('#points-edit').modal('hide');
-	
-	      // Сюда метод перезагрузки списка
-	      _referencePoints2.default.redraw();
-	      break;
-	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      alert(messages.mes400);
-	      break;
-	  }
-	};
-	
-	var callbackXhrError = function callbackXhrError() {
-	
-	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
-	};
 	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
@@ -2698,12 +2740,79 @@
 	  buttonCancel.disabled = false;
 	};
 	
+	var showAlert = function showAlert(input) {
+	  input.classList.add('border');
+	  input.classList.add('border-danger');
+	  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  input.classList.remove('border');
+	  input.classList.remove('border-danger');
+	  input.nextElementSibling.innerHTML = '';
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#points-edit').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referencePoints2.default.redraw();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#points-edit').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
+	var formIsChange = function formIsChange() {
+	  if (name.value !== window.appFormCurrValue.name) {
+	    return true;
+	  }
+	  return false;
+	};
+	
 	var validateForm = function validateForm() {
 	  var valid = true;
 	
-	  if (!validNamePattern.test(name.value)) {
+	  if (!validPattern.name.test(name.value)) {
 	    valid = false;
-	    nameValid.innerHTML = validNameMessage;
+	    showAlert(name);
 	  }
 	
 	  return valid;
@@ -2738,22 +2847,33 @@
 	  }
 	};
 	
-	exports.default = {
-	  start: function start() {
+	var addHandlers = function addHandlers() {
 	
-	    buttonCancel.addEventListener('click', function () {
-	      formReset();
-	    });
-	    buttonClose.addEventListener('click', function () {
-	      formReset();
-	    });
-	    form.addEventListener('submit', formSubmitHandler);
-	    form.addEventListener('change', function (evt) {
-	      if (evt.target.nextElementSibling) {
-	        evt.target.nextElementSibling.innerHTML = '';
-	      }
-	    });
-	  }
+	  $('#points-edit').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#points-edit').on('shown.bs.modal', function () {
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	
+	    if (formIsChange()) {
+	      buttonSubmit.disabled = false;
+	    } else {
+	      buttonSubmit.disabled = true;
+	    }
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
 	};
 
 /***/ }),
@@ -3357,6 +3477,9 @@
 	var listKeywordsBody = document.querySelector('#list-keywords-body');
 	var listKeywordsCardEditRGBForm = document.querySelector('#keywords-card-edit-rgb-form');
 	var listKeywordsCardDeleteBtn = document.querySelector('#list-keywords-card-delete-btn');
+	var listKeywordsCardEditBtn = document.querySelector('#list-keywords-card-edit-btn');
+	var listKeywordsCardEditName = document.querySelector('#keywords-card-edit-name');
+	var listKeywordsCardEdit = document.querySelector('#list-keywords-card-edit');
 	
 	var onSuccessKeywordDelete = function onSuccessKeywordDelete(answer) {
 	  console.log(answer);
@@ -3368,6 +3491,12 @@
 	    message: '\u041A\u043B\u044E\u0447\u0435\u0432\u043E\u0435 \u0441\u043B\u043E\u0432\u043E <b>' + _storage2.default.currentKeywordName + '</b> \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u0443\u0434\u0430\u043B\u0435\u043D\u043E'
 	  };
 	};
+	
+	listKeywordsCardEditBtn.addEventListener('click', function () {
+	  console.log(listKeywordsCardEditName);
+	  console.log(_storage2.default.currentKeywordName);
+	  listKeywordsCardEditName.value = _storage2.default.currentKeywordName;
+	});
 	
 	var onErrorKeywordDelete = function onErrorKeywordDelete(error) {
 	  console.log(error);
@@ -3392,19 +3521,13 @@
 	  };
 	});
 	
-	var onListKeywordsReturnBtnClick = function onListKeywordsReturnBtnClick() {
-	  listKeywordsCard.classList.add('d-none');
-	  listKeywordsHeader.classList.remove('d-none');
-	  listKeywordsHeader.classList.add('d-flex');
-	  listKeywordsBody.classList.remove('d-none');
-	};
-	
-	listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
+	// listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
+	listKeywordsReturnBtn.addEventListener('click', getKeywords);
 	
 	var onSuccessKeywordColorUpdate = function onSuccessKeywordColorUpdate(answer) {
 	  console.log(answer);
 	
-	  getKeywords();
+	  redrawCard();
 	};
 	
 	var onErrorKeywordColorUpdate = function onErrorKeywordColorUpdate(error) {
@@ -3449,7 +3572,12 @@
 	var getKeywords = function getKeywords() {
 	  _referenceKeywords2.default.cleanContainer();
 	  _referenceKeywords2.default.drawMarkupInContainer(loaderSpinnerMarkup);
-	  onListKeywordsReturnBtnClick();
+	  // onListKeywordsReturnBtnClick();
+	  listKeywordsCard.classList.add('d-none');
+	  listKeywordsHeader.classList.remove('d-none');
+	  listKeywordsHeader.classList.add('d-flex');
+	  listKeywordsBody.classList.remove('d-none');
+	  listKeywordsReturnBtn.addEventListener('click', getKeywords);
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
@@ -3460,13 +3588,17 @@
 	  };
 	};
 	
+	var redrawCard = function redrawCard() {
+	  listKeywordsCardEdit.innerHTML = '<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #' + _storage2.default.currentKeywordRgb + '">#' + _storage2.default.currentKeywordName + '</button></div>';
+	};
+	
 	exports.default = {
 	  start: function start() {
 	    listKeywords.addEventListener('click', getKeywords);
 	  },
 	
 	
-	  redraw: getKeywords,
+	  redraw: redrawCard,
 	
 	  stop: function stop() {
 	    _referenceKeywords2.default.cleanContainer();
@@ -3544,6 +3676,10 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
 	var _referenceKeywords = __webpack_require__(30);
 	
 	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
@@ -3551,8 +3687,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formAddKeywords.UrlApi;
-	var validNamePattern = window.appSettings.formAddKeywords.validPatterns.name;
-	var validNameMessage = window.appSettings.formAddKeywords.validMessage.name;
+	var validPattern = window.appSettings.formAddKeywords.validPatterns;
+	var validMessage = window.appSettings.formAddKeywords.validMessage;
 	var messages = window.appSettings.formAddKeywords.messages;
 	
 	var body = document.querySelector('body');
@@ -3560,46 +3696,13 @@
 	var form = enterprisesAdd.querySelector('#keywords-add-form');
 	
 	var name = form.querySelector('#keywords-add-name');
-	var nameValid = form.querySelector('#keywords-add-valid');
 	
 	var spinner = form.querySelector('#keywords-add-spinner');
 	
 	var buttonSubmit = form.querySelector('#keywords-add-submit');
 	var buttonCancel = form.querySelector('#keywords-add-cancel');
-	var buttonClose = enterprisesAdd.querySelector('#keywords-add-close');
 	
 	var stor = _storage2.default.data;
-	
-	var formReset = function formReset() {
-	  form.reset();
-	  nameValid.innerHTML = '';
-	};
-	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	
-	  hideSpinner();
-	  switch (response.status) {
-	    case 200:
-	      formReset();
-	      $('#keywords-add').modal('hide');
-	
-	      // Сюда метод перезагрузки списка
-	      _referenceKeywords2.default.redraw();
-	      break;
-	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      alert(messages.mes400);
-	      break;
-	  }
-	};
-	
-	var callbackXhrError = function callbackXhrError() {
-	
-	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
-	};
 	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
@@ -3613,12 +3716,76 @@
 	  buttonCancel.disabled = false;
 	};
 	
+	var showAlert = function showAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.add('border');
+	    input.classList.add('border-danger');
+	    input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	  }
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  if (input.type === 'text') {
+	    input.classList.remove('border');
+	    input.classList.remove('border-danger');
+	    input.nextElementSibling.innerHTML = '';
+	  }
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#keywords-add').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referenceKeywords2.default.redraw();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#keywords-add').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
 	var validateForm = function validateForm() {
 	  var valid = true;
 	
-	  if (!validNamePattern.test(name.value)) {
+	  if (!validPattern.name.test(name.value)) {
 	    valid = false;
-	    nameValid.innerHTML = validNameMessage;
+	    showAlert(name);
 	  }
 	
 	  return valid;
@@ -3650,22 +3817,227 @@
 	  }
 	};
 	
-	exports.default = {
-	  start: function start() {
+	var addHandlers = function addHandlers() {
 	
-	    buttonCancel.addEventListener('click', function () {
-	      formReset();
-	    });
-	    buttonClose.addEventListener('click', function () {
-	      formReset();
-	    });
-	    form.addEventListener('submit', formSubmitHandler);
-	    form.addEventListener('change', function (evt) {
-	      if (evt.target.nextElementSibling) {
-	        evt.target.nextElementSibling.innerHTML = '';
-	      }
-	    });
+	  $('#keywords-add').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#keywords-add').on('shown.bs.modal', function () {
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	    buttonSubmit.disabled = false;
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
+	
+	};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xhr = __webpack_require__(5);
+	
+	var _xhr2 = _interopRequireDefault(_xhr);
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	var _referenceKeywords = __webpack_require__(30);
+	
+	var _referenceKeywords2 = _interopRequireDefault(_referenceKeywords);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var appUrl = window.appSettings.formEditKeywords.UrlApi;
+	
+	var messages = window.appSettings.formEditKeywords.messages;
+	
+	var validPattern = window.appSettings.formEditKeywords.validPatterns;
+	var validMessage = window.appSettings.formEditKeywords.validMessage;
+	
+	var body = document.querySelector('body');
+	var enterprisesCarEedit = body.querySelector('#keywords-card-edit');
+	var form = enterprisesCarEedit.querySelector('#keywords-card-edit-form');
+	
+	var name = form.querySelector('#keywords-card-edit-name');
+	
+	var spinner = form.querySelector('#keywords-card-edit-spinner');
+	
+	var buttonSubmit = form.querySelector('#keywords-card-edit-submit');
+	var buttonCancel = form.querySelector('#keywords-card-edit-cancel');
+	
+	var stor = _storage2.default.data;
+	
+	var showSpinner = function showSpinner() {
+	  spinner.classList.remove('invisible');
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = true;
+	};
+	
+	var hideSpinner = function hideSpinner() {
+	  spinner.classList.add('invisible');
+	  buttonSubmit.disabled = false;
+	  buttonCancel.disabled = false;
+	};
+	
+	var showAlert = function showAlert(input) {
+	  input.classList.add('border');
+	  input.classList.add('border-danger');
+	  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  input.classList.remove('border');
+	  input.classList.remove('border-danger');
+	  input.nextElementSibling.innerHTML = '';
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  console.dir(response);
+	
+	  hideSpinner();
+	  formReset();
+	  $('#keywords-card-edit').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referenceKeywords2.default.redraw();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
 	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#keywords-card-edit').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
+	var formIsChange = function formIsChange() {
+	  if (name.value !== window.appFormCurrValue.name) {
+	    return true;
+	  }
+	  return false;
+	};
+	
+	var validateForm = function validateForm() {
+	  var valid = true;
+	
+	  if (!validPattern.name.test(name.value)) {
+	    valid = false;
+	    showAlert(name);
+	  }
+	
+	  return valid;
+	};
+	
+	var submitForm = function submitForm() {
+	  var postData = 'name=' + name.value + '&token=' + stor.token;
+	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
+	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
+	  urlApp = urlApp.replace('{{busId}}', _storage2.default.currentEnterpriseId);
+	  urlApp = urlApp.replace('{{tagId}}', _storage2.default.currentKeywordId);
+	
+	  var response = {
+	    url: urlApp,
+	    metod: 'PUT',
+	    data: postData,
+	    callbackSuccess: callbackXhrSuccess,
+	    callbackError: callbackXhrError
+	  };
+	
+	  console.dir(response);
+	
+	  _xhr2.default.request = response;
+	};
+	
+	var formSubmitHandler = function formSubmitHandler(evt) {
+	  evt.preventDefault();
+	
+	  if (validateForm()) {
+	    showSpinner();
+	    submitForm();
+	  }
+	};
+	
+	var addHandlers = function addHandlers() {
+	
+	  $('#keywords-card-edit').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#keywords-card-edit').on('shown.bs.modal', function () {
+	    window.appFormCurrValue = {
+	      'name': name.value
+	    };
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	
+	    if (formIsChange()) {
+	      buttonSubmit.disabled = false;
+	    } else {
+	      buttonSubmit.disabled = true;
+	    }
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
 	};
 
 /***/ })

@@ -14,7 +14,9 @@ const listKeywordsHeader = document.querySelector('#list-keywords-header');
 const listKeywordsBody = document.querySelector('#list-keywords-body');
 const listKeywordsCardEditRGBForm = document.querySelector('#keywords-card-edit-rgb-form');
 const listKeywordsCardDeleteBtn = document.querySelector('#list-keywords-card-delete-btn');
-
+const listKeywordsCardEditBtn = document.querySelector('#list-keywords-card-edit-btn');
+const listKeywordsCardEditName = document.querySelector('#keywords-card-edit-name');
+const listKeywordsCardEdit = document.querySelector('#list-keywords-card-edit');
 
 const onSuccessKeywordDelete = (answer) => {
   console.log(answer);
@@ -27,6 +29,13 @@ const onSuccessKeywordDelete = (answer) => {
   };
 
 };
+
+
+listKeywordsCardEditBtn.addEventListener('click', function () {
+  console.log(listKeywordsCardEditName);
+  console.log(auth.currentKeywordName);
+  listKeywordsCardEditName.value = auth.currentKeywordName;
+});
 
 const onErrorKeywordDelete = (error) => {
   console.log(error);
@@ -53,19 +62,14 @@ listKeywordsCardDeleteBtn.addEventListener('click', function () {
 
 });
 
-const onListKeywordsReturnBtnClick = () => {
-  listKeywordsCard.classList.add('d-none');
-  listKeywordsHeader.classList.remove('d-none');
-  listKeywordsHeader.classList.add('d-flex');
-  listKeywordsBody.classList.remove('d-none');
-};
 
-listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
+// listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
+listKeywordsReturnBtn.addEventListener('click', getKeywords);
 
 const onSuccessKeywordColorUpdate = (answer) => {
   console.log(answer);
 
-  getKeywords();
+  redrawCard();
 
 };
 
@@ -113,7 +117,12 @@ const onErrorKeywordsLoad = (error) => {
 const getKeywords = () => {
   keywordsMarkup.cleanContainer();
   keywordsMarkup.drawMarkupInContainer(loaderSpinnerMarkup);
-  onListKeywordsReturnBtnClick();
+  // onListKeywordsReturnBtnClick();
+  listKeywordsCard.classList.add('d-none');
+  listKeywordsHeader.classList.remove('d-none');
+  listKeywordsHeader.classList.add('d-flex');
+  listKeywordsBody.classList.remove('d-none');
+  listKeywordsReturnBtn.addEventListener('click', getKeywords);
 
   xhr.request = {
     metod: 'POST',
@@ -124,13 +133,17 @@ const getKeywords = () => {
   };
 };
 
+const redrawCard = () => {
+  listKeywordsCardEdit.innerHTML = `<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #${auth.currentKeywordRgb}">#${auth.currentKeywordName}</button></div>`;
+};
+
 export default {
 
   start() {
     listKeywords.addEventListener('click', getKeywords);
   },
 
-  redraw: getKeywords,
+  redraw: redrawCard,
 
   stop() {
     keywordsMarkup.cleanContainer();

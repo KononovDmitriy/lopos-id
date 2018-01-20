@@ -124,12 +124,8 @@ const onErrorEnterpriseCardLoad = (error) => {
   console.log(error);
 };
 
-const onListEnterprisesBodyClick = (evt) => {
-  let currentStringElement = evt.target;
-  while (!currentStringElement.dataset.enterpriseId) {
-    currentStringElement = currentStringElement.parentNode;
-  }
-
+const drawEnterpriseCard = (enterpriseId) => {
+  enterpriseId = enterpriseId || auth.currentEnterpriseId;
   listEnterprisesHeader.classList.remove('d-flex');
   listEnterprisesHeader.classList.add('d-none');
   listEnterprisesBody.classList.add('d-none');
@@ -137,11 +133,21 @@ const onListEnterprisesBodyClick = (evt) => {
 
   xhr.request = {
     metod: 'POST',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${currentStringElement.dataset.enterpriseId}/info`,
+    url: `lopos_directory/${auth.data.directory}/operator/1/business/${enterpriseId}/info`,
     data: `view_last=0&token=${auth.data.token}`,
     callbackSuccess: onSuccessEnterpriseCardLoad,
     callbackError: onErrorEnterpriseCardLoad
   };
+};
+
+const onListEnterprisesBodyClick = (evt) => {
+  let currentStringElement = evt.target;
+  while (!currentStringElement.dataset.enterpriseId) {
+    currentStringElement = currentStringElement.parentNode;
+  }
+
+  drawEnterpriseCard(currentStringElement.dataset.enterpriseId);
+
 };
 
 const onListEnterprisesCardReturnBtn = () => {
@@ -165,7 +171,7 @@ export default {
   },
 
   redraw: getEnterprises,
-  updateCard: onSuccessEnterpriseCardLoad,
+  updateCard: drawEnterpriseCard,
 
   stop() {
     enterprisesMarkup.cleanContainer();

@@ -159,9 +159,23 @@ window.appSettings = {
     }
   },
 
-  // Форма добавления точки продаж
+  // Форма добавления ключевого слова
   'formAddKeywords': {
     'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/tag',
+    'validPatterns': {
+      'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
+    },
+    'validMessage': {
+      'name': 'минимум 1 буква',
+    },
+    'messages': {
+      'mes400': 'Некорректный запрос'
+    }
+  },
+
+  // Форма изменения ключевого слова
+  'formEditKeywords': {
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}/tag/{{tagId}}',
     'validPatterns': {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
     },

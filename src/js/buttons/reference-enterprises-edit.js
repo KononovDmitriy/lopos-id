@@ -127,8 +127,6 @@ const submitForm = () => {
     callbackError: callbackXhrError
   };
 
-  console.dir(response);
-
   xhr.request = response;
 };
 
@@ -148,26 +146,18 @@ const addHandlers = () => {
   });
 
   $('#enterprises-card-edit').on('shown.bs.modal', () => {
-
-    if (dataStorage.currentContractorOperation === 'edit') {
-      window.appFormCurrValue = {
-        'name': name.value,
-      };
-    }
-
+    window.appFormCurrValue = {
+      'name': name.value,
+    };
   });
 
   form.addEventListener('input', (evt) => {
     hideAlert(evt.target);
 
-    if (dataStorage.currentContractorOperation === 'edit') {
-      if (formIsChange()) {
-        buttonSubmit.disabled = false;
-      } else {
-        buttonSubmit.disabled = true;
-      }
-    } else {
+    if (formIsChange()) {
       buttonSubmit.disabled = false;
+    } else {
+      buttonSubmit.disabled = true;
     }
 
   });

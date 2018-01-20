@@ -12,8 +12,9 @@ import contractorsButton from './buttons/reference-contractors.js';
 import contractorsButtonFormAdd from './buttons/reference-contractors-add.js';
 import keywordsButton from './buttons/reference-keywords.js';
 import keywordsButtonAdd from './buttons/reference-keywords-add.js';
+import keywordsButtonEdit from './buttons/reference-keywords-edit.js';
 
-console.log('ver: 2D8');
+console.log('ver: 2D9');
 console.log('ver: 2A5');
 
 const exit = document.querySelector('#profile-exit');
@@ -66,6 +67,7 @@ const start = () => {
     pointsButtonFormEdit.start();
     contractorsButtonFormAdd.start();
     keywordsButtonAdd.start();
+    keywordsButtonEdit.start();
   } else {
     showLoginHideApp();
     mainWindow.init();

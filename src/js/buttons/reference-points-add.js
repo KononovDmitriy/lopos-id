@@ -1,10 +1,13 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
+import markup from './../markup/tools.js';
 import pointButton from './reference-points.js';
 
 const appUrl = window.appSettings.formAddPoint.UrlApi;
-const validNamePattern = window.appSettings.formAddPoint.validPatterns.name;
-const validNameMessage = window.appSettings.formAddPoint.validMessage.name;
+
+const validPattern = window.appSettings.formAddPoint.validPatterns;
+const validMessage = window.appSettings.formAddPoint.validMessage;
+
 const messages = window.appSettings.formAddPoint.messages;
 
 
@@ -13,46 +16,13 @@ const enterprisesAdd = body.querySelector('#points-add');
 const form = enterprisesAdd.querySelector('#points-add-form');
 
 const name = form.querySelector('#points-add-name');
-const nameValid = form.querySelector('#points-add-valid');
 
 const spinner = form.querySelector('#points-add-spinner');
 
 const buttonSubmit = form.querySelector('#points-add-submit');
 const buttonCancel = form.querySelector('#points-add-cancel');
-const buttonClose = enterprisesAdd.querySelector('#points-add-close');
 
 const stor = dataStorage.data;
-
-const formReset = () => {
-  form.reset();
-  nameValid.innerHTML = '';
-};
-
-const callbackXhrSuccess = (response) => {
-
-  hideSpinner();
-  switch (response.status) {
-  case 200:
-    formReset();
-    $('#points-add').modal('hide');
-
-    // Сюда метод перезагрузки списка
-    pointButton.redraw();
-    break;
-  case 400:
-
-    // Вывести response.message в красную ошибку
-    alert(messages.mes400);
-    break;
-  }
-};
-
-const callbackXhrError = () => {
-
-  hideSpinner();
-  // Вывести window.appSettings.messages.xhrError в красную ошибку
-  alert(window.appSettings.messages.xhrError);
-};
 
 const showSpinner = () => {
   spinner.classList.remove('invisible');
@@ -66,12 +36,75 @@ const hideSpinner = () => {
   buttonCancel.disabled = false;
 };
 
+const showAlert = (input) => {
+  if (input.type === 'text') {
+    input.classList.add('border');
+    input.classList.add('border-danger');
+    input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+  }
+};
+
+const hideAlert = (input) => {
+  if (input.type === 'text') {
+    input.classList.remove('border');
+    input.classList.remove('border-danger');
+    input.nextElementSibling.innerHTML = '';
+  }
+};
+
+const formReset = () => {
+  form.reset();
+
+  hideAlert(name);
+
+  hideSpinner();
+
+  buttonSubmit.disabled = true;
+  buttonCancel.disabled = false;
+};
+
+const callbackXhrSuccess = (response) => {
+
+  hideSpinner();
+  formReset();
+  $('#points-add').modal('hide');
+
+  switch (response.status) {
+  case 200:
+    pointButton.redraw();
+    break;
+  case 400:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': messages.mes400
+    };
+    break;
+  case 271:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': response.messages
+    };
+    break;
+  }
+};
+
+const callbackXhrError = () => {
+  hideSpinner();
+  formReset();
+  $('#points-add').modal('hide');
+
+  markup.informationtModal = {
+    'title': 'Error',
+    'messages': window.appSettings.messagess.xhrError
+  };
+};
+
 const validateForm = () => {
   let valid = true;
 
-  if (!validNamePattern.test(name.value)) {
+  if (!validPattern.name.test(name.value)) {
     valid = false;
-    nameValid.innerHTML = validNameMessage;
+    showAlert(name);
   }
 
   return valid;
@@ -103,20 +136,26 @@ const formSubmitHandler = (evt) => {
   }
 };
 
-export default {
-  start() {
+const addHandlers = () => {
 
-    buttonCancel.addEventListener('click', () => {
-      formReset();
-    });
-    buttonClose.addEventListener('click', () => {
-      formReset();
-    });
-    form.addEventListener('submit', formSubmitHandler);
-    form.addEventListener('change', (evt) => {
-      if (evt.target.nextElementSibling) {
-        evt.target.nextElementSibling.innerHTML = '';
-      }
-    });
-  }
+  $('#points-add').on('hidden.bs.modal', () => {
+    formReset();
+  });
+
+  $('#points-add').on('shown.bs.modal', () => {
+    window.appFormCurrValue = {
+      'name': name.value,
+    };
+  });
+
+  form.addEventListener('input', (evt) => {
+    hideAlert(evt.target);
+    buttonSubmit.disabled = false;
+  });
+
+  form.addEventListener('submit', formSubmitHandler);
+};
+
+export default {
+  start: addHandlers
 };

@@ -4,69 +4,26 @@ import markup from './../markup/tools.js';
 import enterprisesButton from './reference-enterprises.js';
 
 const appUrl = window.appSettings.formAddEnterprise.UrlApi;
-const message = window.appSettings.formAddEnterprise.message;
-const validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
-const validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
-const validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
-const validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
+const messages = window.appSettings.formAddEnterprise.message;
+
+const validPattern = window.appSettings.formAddEnterprise.validPatterns;
+const validMessage = window.appSettings.formAddEnterprise.validMessage;
+
 
 const body = document.querySelector('body');
 const enterprisesAdd = body.querySelector('#enterprises-add');
 const form = enterprisesAdd.querySelector('#enterprises-add-form');
 
 const name = form.querySelector('#enterprise-name');
-const nameValid = form.querySelector('#enterprises-name-valid');
 const balance = form.querySelector('#enterprise-balance');
-const balanceValid = form.querySelector('#enterprise-balance-valid');
 const currency = form.querySelector('#enterprise-money');
 
 const spinner = form.querySelector('#enterprises-add-spinner');
 
 const buttonSubmit = form.querySelector('#enterprises-add-submit');
 const buttonCancel = form.querySelector('#enterprises-add-cancel');
-const buttonClose = enterprisesAdd.querySelector('#enterprises-add-close');
 
 const stor = dataStorage.data;
-
-const formReset = () => {
-  form.reset();
-  nameValid.innerHTML = '';
-  balanceValid.innerHTML = '';
-};
-
-const callbackXhrSuccess = (response) => {
-
-  hideSpinner();
-  switch (response.status) {
-  case 200:
-    formReset();
-    $('#enterprises-add').modal('hide');
-
-    markup.informationtModal = {
-      'title': 'Error',
-      'message': message.mes400
-    };
-
-    enterprisesButton.redraw();
-    break;
-  case 400:
-
-    // Вывести response.message в красную ошибку
-    markup.informationtModal = {
-      'title': 'Error',
-      'message': response.message
-    };
-
-    break;
-  }
-};
-
-const callbackXhrError = () => {
-
-  hideSpinner();
-  // Вывести window.appSettings.messages.xhrError в красную ошибку
-  alert(window.appSettings.messages.xhrError);
-};
 
 const showSpinner = () => {
   spinner.classList.remove('invisible');
@@ -80,16 +37,79 @@ const hideSpinner = () => {
   buttonCancel.disabled = false;
 };
 
+const showAlert = (input) => {
+  if (input.type === 'text') {
+    input.classList.add('border');
+    input.classList.add('border-danger');
+    input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+  }
+};
+
+const hideAlert = (input) => {
+  if (input.type === 'text') {
+    input.classList.remove('border');
+    input.classList.remove('border-danger');
+    input.nextElementSibling.innerHTML = '';
+  }
+};
+
+const formReset = () => {
+  form.reset();
+
+  hideAlert(name);
+
+  hideSpinner();
+
+  buttonSubmit.disabled = true;
+  buttonCancel.disabled = false;
+};
+
+const callbackXhrSuccess = (response) => {
+
+  hideSpinner();
+  formReset();
+  $('#enterprises-add').modal('hide');
+
+  switch (response.status) {
+  case 200:
+    enterprisesButton.redraw();
+    break;
+  case 400:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': messages.mes400
+    };
+    break;
+  case 271:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': response.messages
+    };
+    break;
+  }
+};
+
+const callbackXhrError = () => {
+  hideSpinner();
+  formReset();
+  $('#enterprises-card-edit').modal('hide');
+
+  markup.informationtModal = {
+    'title': 'Error',
+    'messages': window.appSettings.messagess.xhrError
+  };
+};
+
 const validateForm = () => {
   let valid = true;
 
-  if (!validNamePattern.test(name.value)) {
+  if (!validPattern.name.test(name.value)) {
     valid = false;
-    nameValid.innerHTML = validNameMessage;
+    showAlert(name);
   }
-  if (!validBalancePattern.test(balance.value)) {
+  if (!validPattern.balance.test(balance.value)) {
     valid = false;
-    balanceValid.innerHTML = validBalanceMessage;
+    showAlert(balance);
   }
 
   return valid;
@@ -120,20 +140,26 @@ const formSubmitHandler = (evt) => {
   }
 };
 
-export default {
-  start() {
+const addHandlers = () => {
 
-    buttonCancel.addEventListener('click', () => {
-      formReset();
-    });
-    buttonClose.addEventListener('click', () => {
-      formReset();
-    });
-    form.addEventListener('submit', formSubmitHandler);
-    form.addEventListener('change', (evt) => {
-      if (evt.target.nextElementSibling) {
-        evt.target.nextElementSibling.innerHTML = '';
-      }
-    });
-  }
+  $('#enterprises-add').on('hidden.bs.modal', () => {
+    formReset();
+  });
+
+  $('#enterprises-add').on('shown.bs.modal', () => {
+    window.appFormCurrValue = {
+      'name': name.value,
+    };
+  });
+
+  form.addEventListener('input', (evt) => {
+    hideAlert(evt.target);
+    buttonSubmit.disabled = false;
+  });
+
+  form.addEventListener('submit', formSubmitHandler);
+};
+
+export default {
+  start: addHandlers
 };

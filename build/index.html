@@ -353,7 +353,7 @@
                 <h2 id="list-keywords-card-name"></h2>
               </div>
               <button id="list-keywords-card-check-btn" type="button" class="btn btn-link p-0 icon-btn icon-btn__rgb" data-toggle="modal" data-target="#keywords-card-edit-rgb"></button>
-              <button id="list-keywords-card-edit-btn" type="button" class="btn btn-warning p-0 icon-btn icon-btn__edit" data-toggle="modal" data-target="#keywords-card-edit-name"></button>
+              <button id="list-keywords-card-edit-btn" type="button" class="btn btn-warning p-0 icon-btn icon-btn__edit" data-toggle="modal" data-target="#keywords-card-edit"></button>
               <button id="list-keywords-card-delete-btn" type="button" class="btn btn-danger p-0 icon-btn icon-btn__delete"></button>
             </div>
             <div id="list-keywords-card-edit"></div>
@@ -539,7 +539,7 @@
               <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-            <button id="points-add-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+            <button id="points-add-submit" type="submit" class="btn btn-primary w-100" disabled>Создать</button>
 
             <button id="points-add-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
           </form>
@@ -570,7 +570,7 @@
               <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-            <button id="points-edit-submit" type="submit" class="btn btn-primary w-100">Изменить</button>
+            <button id="points-edit-submit" type="submit" class="btn btn-primary w-100" disabled>Изменить</button>
 
             <button id="points-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
           </form>
@@ -668,30 +668,30 @@
     </div>
   </div>
 
-  <div class="modal fade" id="keywords-card-edit-name" tabindex="-1" role="dialog" aria-labelledby="keywords-card-edit-name" aria-hidden="true" backdrop="static">
+  <div class="modal fade" id="keywords-card-edit" tabindex="-1" role="dialog" aria-labelledby="keywords-card-edit-name" aria-hidden="true" backdrop="static">
     <div class="modal-dialog" style="width: 300px;" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="keywords-card-edit-name-label">Создать ключевое слово</h5>
-          <button id="keywords-card-edit-name-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="keywords-card-edit-label">Создать ключевое слово</h5>
+          <button id="keywords-card-edit-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-          <form id="keywords-card-edit-name-form" name="keywords-card-edit-name">
+          <form id="keywords-card-edit-form" name="keywords-card-edit-name">
             <div class="form-group">
               <label for="keywords-card-edit-name">Новое название</label>
               <input type="text" class="form-control" id="keywords-card-edit-name" aria-describedby="keywords-card-edit-name" placeholder="Название">
-              <span id="keywords-card-edit-name-valid" class="badge badge-danger w-100"></span>
+              <span id="keywords-card-edit-valid" class="badge badge-danger w-100"></span>
             </div>
 
-            <div id="keywords-card-edit-name-spinner" class="progress text-white mb-3 invisible">
+            <div id="keywords-card-edit-spinner" class="progress text-white mb-3 invisible">
               <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-            <button id="keywords-card-edit-name-submit" type="submit" class="btn btn-primary w-100">Создать</button>
+            <button id="keywords-card-edit-submit" type="submit" class="btn btn-primary w-100" disabled>Создать</button>
 
-            <button id="keywords-card-edit-name-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
+            <button id="keywords-card-edit-cancel" type="button" class="btn btn-danger w-100 mt-3" data-dismiss="modal">Отменить</button>
           </form>
         </div>
       </div>
@@ -704,7 +704,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="keywords-card-edit-rgb-label">Изменить цвет</h5>
-          <button id="keywords-card-edit-rgb-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id="keywords-card-edit-rgb-close" type="button" class="close" data-dismiss="modal" aria-label="Close`">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
