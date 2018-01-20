@@ -1,58 +1,27 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
+import markup from './../markup/tools.js';
+import enterprisesButton from './reference-enterprises.js';
 
 const appUrl = window.appSettings.formEditEnterprise.UrlApi;
-const validNamePattern = window.appSettings.formEditEnterprise.validPatterns.name;
-const validNameMessage = window.appSettings.formEditEnterprise.validMessage.name;
+
+const messages = window.appSettings.formEditEnterprise.messages;
+
+const validPattern = window.appSettings.formEditEnterprise.validPatterns;
+const validMessage = window.appSettings.formEditEnterprise.validMessage;
 
 const body = document.querySelector('body');
 const enterprisesCarEedit = body.querySelector('#enterprises-card-edit');
 const form = enterprisesCarEedit.querySelector('#enterprises-card-edit-form');
 
 const name = form.querySelector('#enterprises-card-edit-name');
-const nameValid = form.querySelector('#enterprises-card-edit-valid');
 
 const spinner = form.querySelector('#enterprises-card-edit-spinner');
 
 const buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
 const buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
-const buttonClose = enterprisesCarEedit.querySelector('#enterprises-card-edit-close');
 
 const stor = dataStorage.data;
-
-const formReset = () => {
-  form.reset();
-  nameValid.innerHTML = '';
-};
-
-const callbackXhrSuccess = (response) => {
-
-  hideSpinner();
-  switch (response.status) {
-  case 200:
-    formReset();
-    $('#enterprises-card-edit').modal('hide');
-
-    // Вывести response.message в зеленое сообщение
-    alert(response.message);
-
-    // Сюда метод перезагрузки списка
-
-    break;
-  case 400:
-
-    // Вывести response.message в красную ошибку
-    alert(response.message);
-    break;
-  }
-};
-
-const callbackXhrError = () => {
-
-  hideSpinner();
-  // Вывести window.appSettings.messages.xhrError в красную ошибку
-  alert(window.appSettings.messages.xhrError);
-};
 
 const showSpinner = () => {
   spinner.classList.remove('invisible');
@@ -66,14 +35,81 @@ const hideSpinner = () => {
   buttonCancel.disabled = false;
 };
 
+const showAlert = (input) => {
+  input.classList.add('border');
+  input.classList.add('border-danger');
+  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+};
+
+const hideAlert = (input) => {
+  input.classList.remove('border');
+  input.classList.remove('border-danger');
+  input.nextElementSibling.innerHTML = '';
+};
+
+const formReset = () => {
+  form.reset();
+
+  hideAlert(name);
+
+  hideSpinner();
+
+  buttonSubmit.disabled = true;
+  buttonCancel.disabled = false;
+};
+
+const callbackXhrSuccess = (response) => {
+
+  hideSpinner();
+  formReset();
+  $('#enterprises-card-edit').modal('hide');
+
+  switch (response.status) {
+  case 200:
+    enterprisesButton.updateCard();
+    break;
+  case 400:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': messages.mes400
+    };
+    break;
+  case 271:
+    markup.informationtModal = {
+      'title': 'Error',
+      'messages': response.messages
+    };
+    break;
+  }
+};
+
+const callbackXhrError = () => {
+
+  hideSpinner();
+  formReset();
+  $('#enterprises-card-edit').modal('hide');
+
+  markup.informationtModal = {
+    'title': 'Error',
+    'messages': window.appSettings.messagess.xhrError
+  };
+};
+
+const formIsChange = () => {
+  if (name.value !== window.appFormCurrValue.name) {
+    return true;
+  }
+  return false;
+};
+
 const validateForm = () => {
   let valid = true;
 
-  if (!validNamePattern.test(name.value)) {
-    console.log('!val');
+  if (!validPattern.name.test(name.value)) {
     valid = false;
-    nameValid.innerHTML = validNameMessage;
+    showAlert(name);
   }
+
   return valid;
 };
 
@@ -81,7 +117,7 @@ const submitForm = () => {
   let postData = `name=${name.value}&token=${stor.token}`;
   let urlApp = appUrl.replace('{{dir}}', stor.directory);
   urlApp = urlApp.replace('{{oper}}', stor.operatorId);
-  urlApp = urlApp.replace('{{id}}', dataStorage.currentEnterpriseId);
+  urlApp = urlApp.replace('{{busId}}', dataStorage.currentEnterpriseId);
 
   let response = {
     url: urlApp,
@@ -90,6 +126,8 @@ const submitForm = () => {
     callbackSuccess: callbackXhrSuccess,
     callbackError: callbackXhrError
   };
+
+  console.dir(response);
 
   xhr.request = response;
 };
@@ -103,20 +141,40 @@ const formSubmitHandler = (evt) => {
   }
 };
 
-export default {
-  start() {
+const addHandlers = () => {
 
-    buttonCancel.addEventListener('click', () => {
-      formReset();
-    });
-    buttonClose.addEventListener('click', () => {
-      formReset();
-    });
-    form.addEventListener('submit', formSubmitHandler);
-    form.addEventListener('change', (evt) => {
-      if (evt.target.nextElementSibling) {
-        evt.target.nextElementSibling.innerHTML = '';
+  $('#enterprises-card-edit').on('hidden.bs.modal', () => {
+    formReset();
+  });
+
+  $('#enterprises-card-edit').on('shown.bs.modal', () => {
+
+    if (dataStorage.currentContractorOperation === 'edit') {
+      window.appFormCurrValue = {
+        'name': name.value,
+      };
+    }
+
+  });
+
+  form.addEventListener('input', (evt) => {
+    hideAlert(evt.target);
+
+    if (dataStorage.currentContractorOperation === 'edit') {
+      if (formIsChange()) {
+        buttonSubmit.disabled = false;
+      } else {
+        buttonSubmit.disabled = true;
       }
-    });
-  }
+    } else {
+      buttonSubmit.disabled = false;
+    }
+
+  });
+
+  form.addEventListener('submit', formSubmitHandler);
+};
+
+export default {
+  start: addHandlers
 };

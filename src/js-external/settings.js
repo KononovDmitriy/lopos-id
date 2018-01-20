@@ -86,17 +86,23 @@ window.appSettings = {
     'validMessage': {
       'name': 'минимум 1 буква',
       'balance': 'формат: 0.00 или 0'
+    },
+    'messages': {
+      'mes400': 'Некорректный запрос'
     }
   },
 
    // Форма редактирования организации
   'formEditEnterprise': {
-    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{}}',
+    'UrlApi': 'lopos_directory/{{dir}}/operator/{{oper}}/business/{{busId}}',
     'validPatterns': {
       'name': /^[а-яёА-ЯЁA-Za-z\s\d]+$/,
     },
     'validMessage': {
       'name': 'минимум 1 буква'
+    },
+    'messages': {
+      'mes400': 'Некорректный запрос'
     }
   },
 
@@ -110,7 +116,7 @@ window.appSettings = {
       'name': 'минимум 1 буква',
     },
     'messages': {
-      'mes400': ''
+      'mes400': 'Некорректный запрос'
     }
   },
 
@@ -124,7 +130,7 @@ window.appSettings = {
       'name': 'минимум 1 буква',
     },
     'messages': {
-      'mes400': ''
+      'mes400': 'Некорректный запрос'
     }
   },
 
@@ -149,7 +155,7 @@ window.appSettings = {
       'email': 'email'
     },
     'messages': {
-      'mes400': ''
+      'mes400': 'Некорректный запрос'
     }
   },
 
@@ -163,7 +169,7 @@ window.appSettings = {
       'name': 'минимум 1 буква',
     },
     'messages': {
-      'mes400': ''
+      'mes400': 'Некорректный запрос'
     }
   },
 

@@ -165,6 +165,7 @@ export default {
   },
 
   redraw: getEnterprises,
+  updateCard: onSuccessEnterpriseCardLoad,
 
   stop() {
     enterprisesMarkup.cleanContainer();

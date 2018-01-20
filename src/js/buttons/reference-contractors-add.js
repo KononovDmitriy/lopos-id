@@ -1,6 +1,7 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
 import referenceContractors from './reference-contractors.js';
+import markup from './../markup/tools.js';
 
 const appUrl = window.appSettings.formAddContractor.UrlApi;
 const validPattern = window.appSettings.formAddContractor.validPatterns;
@@ -62,24 +63,24 @@ const formReset = () => {
 
   buttonSubmit.disabled = true;
   buttonCancel.disabled = false;
-
-  // dataStorage.currentContractorOperation = 'add';
 };
 
 const callbackXhrSuccess = (response) => {
   console.dir(response);
 
   hideSpinner();
+  formReset();
+  $('#contractors-add').modal('hide');
+
   switch (response.status) {
   case 200:
-    formReset();
-    $('#contractors-add').modal('hide');
     referenceContractors.redraw();
     break;
   case 400:
-
-    // Вывести response.message в красную ошибку
-    alert(messages.mes400);
+    markup.informationtModal = {
+      'title': 'Error',
+      'message': messages.mes400
+    };
     break;
   }
 };
@@ -87,8 +88,13 @@ const callbackXhrSuccess = (response) => {
 const callbackXhrError = () => {
 
   hideSpinner();
-  // Вывести window.appSettings.messages.xhrError в красную ошибку
-  alert(window.appSettings.messages.xhrError);
+  formReset();
+  $('#enterprises-card-edit').modal('hide');
+
+  markup.informationtModal = {
+    'title': 'Error',
+    'messages': window.appSettings.messagess.xhrError
+  };
 };
 
 const validateForm = () => {

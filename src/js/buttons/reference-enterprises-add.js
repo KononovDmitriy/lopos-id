@@ -1,13 +1,14 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
+import markup from './../markup/tools.js';
 import enterprisesButton from './reference-enterprises.js';
 
 const appUrl = window.appSettings.formAddEnterprise.UrlApi;
+const message = window.appSettings.formAddEnterprise.message;
 const validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
 const validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
 const validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
 const validBalanceMessage = window.appSettings.formAddEnterprise.validMessage.balance;
-
 
 const body = document.querySelector('body');
 const enterprisesAdd = body.querySelector('#enterprises-add');
@@ -41,16 +42,21 @@ const callbackXhrSuccess = (response) => {
     formReset();
     $('#enterprises-add').modal('hide');
 
-    // Вывести response.message в зеленое сообщение
-    alert(response.message);
+    markup.informationtModal = {
+      'title': 'Error',
+      'message': message.mes400
+    };
 
-    // Сюда метод перезагрузки списка
     enterprisesButton.redraw();
     break;
   case 400:
 
     // Вывести response.message в красную ошибку
-    alert(response.message);
+    markup.informationtModal = {
+      'title': 'Error',
+      'message': response.message
+    };
+
     break;
   }
 };

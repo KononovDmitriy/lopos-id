@@ -104,7 +104,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D7');
+	console.log('ver: 2D8');
 	console.log('ver: 2A5');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -1853,6 +1853,7 @@
 	
 	
 	  redraw: getEnterprises,
+	  updateCard: onSuccessEnterpriseCardLoad,
 	
 	  stop: function stop() {
 	    _referenceEnterprises2.default.cleanContainer();
@@ -1962,6 +1963,10 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
 	var _referenceEnterprises = __webpack_require__(17);
 	
 	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
@@ -1969,6 +1974,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formAddEnterprise.UrlApi;
+	var message = window.appSettings.formAddEnterprise.message;
 	var validNamePattern = window.appSettings.formAddEnterprise.validPatterns.name;
 	var validBalancePattern = window.appSettings.formAddEnterprise.validPatterns.balance;
 	var validNameMessage = window.appSettings.formAddEnterprise.validMessage.name;
@@ -2006,16 +2012,21 @@
 	      formReset();
 	      $('#enterprises-add').modal('hide');
 	
-	      // Вывести response.message в зеленое сообщение
-	      alert(response.message);
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'message': message.mes400
+	      };
 	
-	      // Сюда метод перезагрузки списка
 	      _referenceEnterprises2.default.redraw();
 	      break;
 	    case 400:
 	
 	      // Вывести response.message в красную ошибку
-	      alert(response.message);
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'message': response.message
+	      };
+	
 	      break;
 	  }
 	};
@@ -2115,60 +2126,35 @@
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
+	var _referenceEnterprises = __webpack_require__(17);
+	
+	var _referenceEnterprises2 = _interopRequireDefault(_referenceEnterprises);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formEditEnterprise.UrlApi;
-	var validNamePattern = window.appSettings.formEditEnterprise.validPatterns.name;
-	var validNameMessage = window.appSettings.formEditEnterprise.validMessage.name;
+	
+	var messages = window.appSettings.formEditEnterprise.messages;
+	
+	var validPattern = window.appSettings.formEditEnterprise.validPatterns;
+	var validMessage = window.appSettings.formEditEnterprise.validMessage;
 	
 	var body = document.querySelector('body');
 	var enterprisesCarEedit = body.querySelector('#enterprises-card-edit');
 	var form = enterprisesCarEedit.querySelector('#enterprises-card-edit-form');
 	
 	var name = form.querySelector('#enterprises-card-edit-name');
-	var nameValid = form.querySelector('#enterprises-card-edit-valid');
 	
 	var spinner = form.querySelector('#enterprises-card-edit-spinner');
 	
 	var buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
 	var buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
-	var buttonClose = enterprisesCarEedit.querySelector('#enterprises-card-edit-close');
 	
 	var stor = _storage2.default.data;
-	
-	var formReset = function formReset() {
-	  form.reset();
-	  nameValid.innerHTML = '';
-	};
-	
-	var callbackXhrSuccess = function callbackXhrSuccess(response) {
-	
-	  hideSpinner();
-	  switch (response.status) {
-	    case 200:
-	      formReset();
-	      $('#enterprises-card-edit').modal('hide');
-	
-	      // Вывести response.message в зеленое сообщение
-	      alert(response.message);
-	
-	      // Сюда метод перезагрузки списка
-	
-	      break;
-	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      alert(response.message);
-	      break;
-	  }
-	};
-	
-	var callbackXhrError = function callbackXhrError() {
-	
-	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
-	};
 	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
@@ -2182,14 +2168,81 @@
 	  buttonCancel.disabled = false;
 	};
 	
+	var showAlert = function showAlert(input) {
+	  input.classList.add('border');
+	  input.classList.add('border-danger');
+	  input.nextElementSibling.innerHTML = validMessage[input.id.match(/[\w]+$/)];
+	};
+	
+	var hideAlert = function hideAlert(input) {
+	  input.classList.remove('border');
+	  input.classList.remove('border-danger');
+	  input.nextElementSibling.innerHTML = '';
+	};
+	
+	var formReset = function formReset() {
+	  form.reset();
+	
+	  hideAlert(name);
+	
+	  hideSpinner();
+	
+	  buttonSubmit.disabled = true;
+	  buttonCancel.disabled = false;
+	};
+	
+	var callbackXhrSuccess = function callbackXhrSuccess(response) {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#enterprises-card-edit').modal('hide');
+	
+	  switch (response.status) {
+	    case 200:
+	      _referenceEnterprises2.default.updateCard();
+	      break;
+	    case 400:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': messages.mes400
+	      };
+	      break;
+	    case 271:
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'messages': response.messages
+	      };
+	      break;
+	  }
+	};
+	
+	var callbackXhrError = function callbackXhrError() {
+	
+	  hideSpinner();
+	  formReset();
+	  $('#enterprises-card-edit').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
+	};
+	
+	var formIsChange = function formIsChange() {
+	  if (name.value !== window.appFormCurrValue.name) {
+	    return true;
+	  }
+	  return false;
+	};
+	
 	var validateForm = function validateForm() {
 	  var valid = true;
 	
-	  if (!validNamePattern.test(name.value)) {
-	    console.log('!val');
+	  if (!validPattern.name.test(name.value)) {
 	    valid = false;
-	    nameValid.innerHTML = validNameMessage;
+	    showAlert(name);
 	  }
+	
 	  return valid;
 	};
 	
@@ -2197,7 +2250,7 @@
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
-	  urlApp = urlApp.replace('{{id}}', _storage2.default.currentEnterpriseId);
+	  urlApp = urlApp.replace('{{busId}}', _storage2.default.currentEnterpriseId);
 	
 	  var response = {
 	    url: urlApp,
@@ -2206,6 +2259,8 @@
 	    callbackSuccess: callbackXhrSuccess,
 	    callbackError: callbackXhrError
 	  };
+	
+	  console.dir(response);
 	
 	  _xhr2.default.request = response;
 	};
@@ -2219,22 +2274,40 @@
 	  }
 	};
 	
-	exports.default = {
-	  start: function start() {
+	var addHandlers = function addHandlers() {
 	
-	    buttonCancel.addEventListener('click', function () {
-	      formReset();
-	    });
-	    buttonClose.addEventListener('click', function () {
-	      formReset();
-	    });
-	    form.addEventListener('submit', formSubmitHandler);
-	    form.addEventListener('change', function (evt) {
-	      if (evt.target.nextElementSibling) {
-	        evt.target.nextElementSibling.innerHTML = '';
+	  $('#enterprises-card-edit').on('hidden.bs.modal', function () {
+	    formReset();
+	  });
+	
+	  $('#enterprises-card-edit').on('shown.bs.modal', function () {
+	
+	    if (_storage2.default.currentContractorOperation === 'edit') {
+	      window.appFormCurrValue = {
+	        'name': name.value
+	      };
+	    }
+	  });
+	
+	  form.addEventListener('input', function (evt) {
+	    hideAlert(evt.target);
+	
+	    if (_storage2.default.currentContractorOperation === 'edit') {
+	      if (formIsChange()) {
+	        buttonSubmit.disabled = false;
+	      } else {
+	        buttonSubmit.disabled = true;
 	      }
-	    });
-	  }
+	    } else {
+	      buttonSubmit.disabled = false;
+	    }
+	  });
+	
+	  form.addEventListener('submit', formSubmitHandler);
+	};
+	
+	exports.default = {
+	  start: addHandlers
 	};
 
 /***/ }),
@@ -3013,6 +3086,10 @@
 	
 	var _referenceContractors2 = _interopRequireDefault(_referenceContractors);
 	
+	var _tools = __webpack_require__(19);
+	
+	var _tools2 = _interopRequireDefault(_tools);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var appUrl = window.appSettings.formAddContractor.UrlApi;
@@ -3074,24 +3151,24 @@
 	
 	  buttonSubmit.disabled = true;
 	  buttonCancel.disabled = false;
-	
-	  // dataStorage.currentContractorOperation = 'add';
 	};
 	
 	var callbackXhrSuccess = function callbackXhrSuccess(response) {
 	  console.dir(response);
 	
 	  hideSpinner();
+	  formReset();
+	  $('#contractors-add').modal('hide');
+	
 	  switch (response.status) {
 	    case 200:
-	      formReset();
-	      $('#contractors-add').modal('hide');
 	      _referenceContractors2.default.redraw();
 	      break;
 	    case 400:
-	
-	      // Вывести response.message в красную ошибку
-	      alert(messages.mes400);
+	      _tools2.default.informationtModal = {
+	        'title': 'Error',
+	        'message': messages.mes400
+	      };
 	      break;
 	  }
 	};
@@ -3099,8 +3176,13 @@
 	var callbackXhrError = function callbackXhrError() {
 	
 	  hideSpinner();
-	  // Вывести window.appSettings.messages.xhrError в красную ошибку
-	  alert(window.appSettings.messages.xhrError);
+	  formReset();
+	  $('#enterprises-card-edit').modal('hide');
+	
+	  _tools2.default.informationtModal = {
+	    'title': 'Error',
+	    'messages': window.appSettings.messagess.xhrError
+	  };
 	};
 	
 	var validateForm = function validateForm() {
