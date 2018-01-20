@@ -91,14 +91,8 @@ const onSuccessBuyerCardLoad = (loadedBuyerCard) => {
     console.log(loadedBuyerCard);
     contractorsCardMarkup.cleanContainer();
     contractorsCardMarkup.drawDataInContainer(loadedBuyerCard.data);
-<<<<<<< HEAD
     // listContractorsFormSubmit.innerHTML = 'Изменить';
 
-=======
-    listContractorsFormSubmit.innerHTML = 'Изменить';
-    auth.currentContractorId = loadedBuyerCard.id;
-    auth.currentContractorOperation = 'edit';
->>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
   } else {
     contractorsCardMarkup.drawMarkupInContainer(`<p>${loadedBuyerCard.message}</p>`);
 
@@ -116,24 +110,15 @@ const onListContractorsBodyClick = (evt) => {
     currentStringElement = currentStringElement.parentNode;
   }
 
-<<<<<<< HEAD
   let {id, name, description, phone, contact, email} = contractorsData[currentStringElement.dataset.index];
 
   $('#contractors-add').modal('show');
 
   auth.currentContractorId = id;
-=======
-  let {name, description, contact, email} = contractorsData[currentStringElement.dataset.index];
-
-  $('#contractors-add').modal('show');
-
-  console.log(contractorsData);
->>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
 
   listContractorsFormEditName.value = name ? name : '';
   listContractorsFormEditDescribe.value = description ? description : '';
   listContractorsFormEditContact.value = contact ? contact : '';
-<<<<<<< HEAD
   listContractorsFormEditPhone.value = phone ? phone : '';
   listContractorsFormEditEmail.value = email ? email : '';
   listContractorsFormSubmit.innerHTML = 'Изменить';
@@ -145,12 +130,6 @@ const onListContractorsBodyClick = (evt) => {
   console.log(auth.currentContractorOperation);
   console.log(contractorsData);
 
-=======
-  listContractorsFormEditEmail.value = email ? email : '';
-
-  listContractorsFormBill.classList.remove('d-none');
-
->>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
   listContractorsFormBill.addEventListener('click', function () {
     hideBodyShowCard();
     listContractorsHeader.classList.remove('d-flex');
@@ -195,14 +174,11 @@ $('#contractors-add').on('hidden.bs.modal', function (e) {
   listContractorsFormBill.classList.add('d-none');
 
 });
-<<<<<<< HEAD
 $('#contractors-add').on('show.bs.modal', function (e) {
   console.log(auth.currentContractorId);
   console.log(auth.currentContractorOperation);
 
 });
-=======
->>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
 
 export default {
 
