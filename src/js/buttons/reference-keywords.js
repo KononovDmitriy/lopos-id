@@ -123,6 +123,7 @@ const getKeywords = () => {
   listKeywordsHeader.classList.add('d-flex');
   listKeywordsBody.classList.remove('d-none');
   listKeywordsReturnBtn.addEventListener('click', getKeywords);
+  console.log(auth.data.currentBusiness);
 
   xhr.request = {
     metod: 'POST',
@@ -134,6 +135,8 @@ const getKeywords = () => {
 };
 
 const redrawCard = () => {
+  console.log('hi');
+  console.log(listKeywordsCardEdit);
   listKeywordsCardEdit.innerHTML = `<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #${auth.currentKeywordRgb}">#${auth.currentKeywordName}</button></div>`;
 };
 
@@ -144,6 +147,7 @@ export default {
   },
 
   redraw: redrawCard,
+  update: getKeywords,
 
   stop() {
     keywordsMarkup.cleanContainer();

@@ -14,7 +14,7 @@ import keywordsButton from './buttons/reference-keywords.js';
 import keywordsButtonAdd from './buttons/reference-keywords-add.js';
 import keywordsButtonEdit from './buttons/reference-keywords-edit.js';
 
-console.log('ver: 2D10');
+console.log('ver: 2D11');
 console.log('ver: 2A5');
 
 const exit = document.querySelector('#profile-exit');

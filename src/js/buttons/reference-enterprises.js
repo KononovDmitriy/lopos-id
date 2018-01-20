@@ -103,8 +103,14 @@ const onSuccessEnterpriseCardLoad = (loadedEnterpriseCard) => {
     listEnterprisesCardIsChecked.classList.add('d-none');
   }
 
+  console.log(loadedEnterpriseCard.data.id);
+  auth.currentEnterpriseId = loadedEnterpriseCard.data.id;
+  auth.currentEnterpriseName = loadedEnterpriseCard.data.name;
   listEnterprisesCardCheckBtn.addEventListener('click', function () {
+    console.log(auth.currentEnterpriseId);
+    console.log(loadedEnterpriseCard.data.id);
     auth.currentBusiness = loadedEnterpriseCard.data.id;
+    console.log(auth.data.currentBusiness);
     listEnterprisesCardCheckBtn.classList.add('d-none');
     listEnterprisesCardIsChecked.classList.remove('d-none');
   });
@@ -116,8 +122,7 @@ const onSuccessEnterpriseCardLoad = (loadedEnterpriseCard) => {
   listEnterprisesCardName.innerText = loadedEnterpriseCard.data.name;
   listEnterprisesCardDate.innerText = new Date(+(loadedEnterpriseCard.data.time_activity + '000')).toLocaleString();
   listEnterprisesCardBalance.innerText = loadedEnterpriseCard.data.balance;
-  auth.currentEnterpriseId = loadedEnterpriseCard.data.id;
-  auth.currentEnterpriseName = loadedEnterpriseCard.data.name;
+  // auth.currentEnterpriseId = loadedEnterpriseCard.data.id;
 };
 
 const onErrorEnterpriseCardLoad = (error) => {

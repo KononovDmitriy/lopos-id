@@ -108,7 +108,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D10');
+	console.log('ver: 2D11');
 	console.log('ver: 2A5');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -1796,8 +1796,14 @@
 	    listEnterprisesCardIsChecked.classList.add('d-none');
 	  }
 	
+	  console.log(loadedEnterpriseCard.data.id);
+	  _storage2.default.currentEnterpriseId = loadedEnterpriseCard.data.id;
+	  _storage2.default.currentEnterpriseName = loadedEnterpriseCard.data.name;
 	  listEnterprisesCardCheckBtn.addEventListener('click', function () {
+	    console.log(_storage2.default.currentEnterpriseId);
+	    console.log(loadedEnterpriseCard.data.id);
 	    _storage2.default.currentBusiness = loadedEnterpriseCard.data.id;
+	    console.log(_storage2.default.data.currentBusiness);
 	    listEnterprisesCardCheckBtn.classList.add('d-none');
 	    listEnterprisesCardIsChecked.classList.remove('d-none');
 	  });
@@ -1809,8 +1815,7 @@
 	  listEnterprisesCardName.innerText = loadedEnterpriseCard.data.name;
 	  listEnterprisesCardDate.innerText = new Date(+(loadedEnterpriseCard.data.time_activity + '000')).toLocaleString();
 	  listEnterprisesCardBalance.innerText = loadedEnterpriseCard.data.balance;
-	  _storage2.default.currentEnterpriseId = loadedEnterpriseCard.data.id;
-	  _storage2.default.currentEnterpriseName = loadedEnterpriseCard.data.name;
+	  // auth.currentEnterpriseId = loadedEnterpriseCard.data.id;
 	};
 	
 	var onErrorEnterpriseCardLoad = function onErrorEnterpriseCardLoad(error) {
@@ -2002,8 +2007,6 @@
 	var buttonSubmit = form.querySelector('#enterprises-add-submit');
 	var buttonCancel = form.querySelector('#enterprises-add-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -2095,6 +2098,7 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
 	  var postData = 'name=' + name.value + '&balance=' + balance.value + '&currency=' + currency.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -2189,8 +2193,6 @@
 	var buttonSubmit = form.querySelector('#enterprises-card-edit-submit');
 	var buttonCancel = form.querySelector('#enterprises-card-edit-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -2282,6 +2284,7 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -2542,8 +2545,6 @@
 	var buttonSubmit = form.querySelector('#points-add-submit');
 	var buttonCancel = form.querySelector('#points-add-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -2631,6 +2632,7 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -2726,8 +2728,6 @@
 	var buttonSubmit = form.querySelector('#points-edit-submit');
 	var buttonCancel = form.querySelector('#points-edit-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -2819,6 +2819,7 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -3232,8 +3233,6 @@
 	var buttonSubmit = form.querySelector('#contractors-add-submit');
 	var buttonCancel = form.querySelector('#contractors-add-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -3351,7 +3350,7 @@
 	  return false;
 	};
 	
-	var getUrl = function getUrl() {
+	var getUrl = function getUrl(stor) {
 	  var url = '';
 	
 	  switch (_storage2.default.currentContractorOperation) {
@@ -3371,7 +3370,9 @@
 	};
 	
 	var submitForm = function submitForm() {
-	  var appLink = getUrl();
+	  var stor = _storage2.default.data;
+	
+	  var appLink = getUrl(stor);
 	
 	  var postData = 'token=' + stor.token + '&type=' + _storage2.default.currentContractorType + '&name=' + name.value + '&email=' + email.value + '&description=' + describe.value + '&phone=' + phone.value + '&FIO=' + contact.value;
 	
@@ -3578,6 +3579,7 @@
 	  listKeywordsHeader.classList.add('d-flex');
 	  listKeywordsBody.classList.remove('d-none');
 	  listKeywordsReturnBtn.addEventListener('click', getKeywords);
+	  console.log(_storage2.default.data.currentBusiness);
 	
 	  _xhr2.default.request = {
 	    metod: 'POST',
@@ -3589,6 +3591,8 @@
 	};
 	
 	var redrawCard = function redrawCard() {
+	  console.log('hi');
+	  console.log(listKeywordsCardEdit);
 	  listKeywordsCardEdit.innerHTML = '<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #' + _storage2.default.currentKeywordRgb + '">#' + _storage2.default.currentKeywordName + '</button></div>';
 	};
 	
@@ -3599,6 +3603,7 @@
 	
 	
 	  redraw: redrawCard,
+	  update: getKeywords,
 	
 	  stop: function stop() {
 	    _referenceKeywords2.default.cleanContainer();
@@ -3702,8 +3707,6 @@
 	var buttonSubmit = form.querySelector('#keywords-add-submit');
 	var buttonCancel = form.querySelector('#keywords-add-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -3751,7 +3754,7 @@
 	
 	  switch (response.status) {
 	    case 200:
-	      _referenceKeywords2.default.redraw();
+	      _referenceKeywords2.default.update();
 	      break;
 	    case 400:
 	      _tools2.default.informationtModal = {
@@ -3792,6 +3795,8 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
+	
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);
@@ -3888,8 +3893,6 @@
 	var buttonSubmit = form.querySelector('#keywords-card-edit-submit');
 	var buttonCancel = form.querySelector('#keywords-card-edit-cancel');
 	
-	var stor = _storage2.default.data;
-	
 	var showSpinner = function showSpinner() {
 	  spinner.classList.remove('invisible');
 	  buttonSubmit.disabled = true;
@@ -3983,6 +3986,8 @@
 	};
 	
 	var submitForm = function submitForm() {
+	  var stor = _storage2.default.data;
+	
 	  var postData = 'name=' + name.value + '&token=' + stor.token;
 	  var urlApp = appUrl.replace('{{dir}}', stor.directory);
 	  urlApp = urlApp.replace('{{oper}}', stor.operatorId);

@@ -20,8 +20,6 @@ const spinner = form.querySelector('#keywords-add-spinner');
 const buttonSubmit = form.querySelector('#keywords-add-submit');
 const buttonCancel = form.querySelector('#keywords-add-cancel');
 
-const stor = dataStorage.data;
-
 const showSpinner = () => {
   spinner.classList.remove('invisible');
   buttonSubmit.disabled = true;
@@ -69,7 +67,7 @@ const callbackXhrSuccess = (response) => {
 
   switch (response.status) {
   case 200:
-    keywordsButton.redraw();
+    keywordsButton.update();
     break;
   case 400:
     markup.informationtModal = {
@@ -111,6 +109,8 @@ const validateForm = () => {
 };
 
 const submitForm = () => {
+  const stor = dataStorage.data;
+
   let postData = `name=${name.value}&token=${stor.token}`;
   let urlApp = appUrl.replace('{{dir}}', stor.directory);
   urlApp = urlApp.replace('{{oper}}', stor.operatorId);
