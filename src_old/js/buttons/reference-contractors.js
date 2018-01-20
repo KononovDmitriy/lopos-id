@@ -24,7 +24,6 @@ const listContractorsFormEditLabel = document.querySelector('#contractors-add-la
 const listContractorsFormEditName = document.querySelector('#contractors-name');
 const listContractorsFormEditDescribe = document.querySelector('#contractors-describe');
 const listContractorsFormEditContact = document.querySelector('#contractors-contact');
-const listContractorsFormEditPhone = document.querySelector('#contractors-phone');
 const listContractorsFormEditEmail = document.querySelector('#contractors-email');
 const listContractorsFormSubmit = document.querySelector('#contractors-add-submit');
 const listContractorsFormBill = document.querySelector('#contractors-add-bill');
@@ -91,8 +90,9 @@ const onSuccessBuyerCardLoad = (loadedBuyerCard) => {
     console.log(loadedBuyerCard);
     contractorsCardMarkup.cleanContainer();
     contractorsCardMarkup.drawDataInContainer(loadedBuyerCard.data);
-    // listContractorsFormSubmit.innerHTML = 'Изменить';
-
+    listContractorsFormSubmit.innerHTML = 'Изменить';
+    auth.currentContractorId = loadedBuyerCard.id;
+    auth.currentContractorOperation = 'edit';
   } else {
     contractorsCardMarkup.drawMarkupInContainer(`<p>${loadedBuyerCard.message}</p>`);
 
@@ -110,25 +110,18 @@ const onListContractorsBodyClick = (evt) => {
     currentStringElement = currentStringElement.parentNode;
   }
 
-  let {id, name, description, phone, contact, email} = contractorsData[currentStringElement.dataset.index];
+  let {name, description, contact, email} = contractorsData[currentStringElement.dataset.index];
 
   $('#contractors-add').modal('show');
 
-  auth.currentContractorId = id;
+  console.log(contractorsData);
 
   listContractorsFormEditName.value = name ? name : '';
   listContractorsFormEditDescribe.value = description ? description : '';
   listContractorsFormEditContact.value = contact ? contact : '';
-  listContractorsFormEditPhone.value = phone ? phone : '';
   listContractorsFormEditEmail.value = email ? email : '';
-  listContractorsFormSubmit.innerHTML = 'Изменить';
-  auth.currentContractorOperation = 'edit';
 
   listContractorsFormBill.classList.remove('d-none');
-
-  console.log(auth.currentContractorId);
-  console.log(auth.currentContractorOperation);
-  console.log(contractorsData);
 
   listContractorsFormBill.addEventListener('click', function () {
     hideBodyShowCard();
@@ -172,11 +165,6 @@ const getContractors = (type) => {
 
 $('#contractors-add').on('hidden.bs.modal', function (e) {
   listContractorsFormBill.classList.add('d-none');
-
-});
-$('#contractors-add').on('show.bs.modal', function (e) {
-  console.log(auth.currentContractorId);
-  console.log(auth.currentContractorOperation);
 
 });
 

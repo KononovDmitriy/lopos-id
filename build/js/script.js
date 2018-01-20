@@ -104,7 +104,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log('ver: 2D4');
+	console.log('ver: 2D5');
 	console.log('ver: 2A3');
 	
 	var exit = document.querySelector('#profile-exit');
@@ -150,11 +150,6 @@
 	// ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 	var start = function start() {
 	  if (_storage2.default.isSetFlag) {
-	
-	    document.querySelector('#test').addEventListener('click', function () {
-	      console.dir(window.appFormCurrValue);
-	    });
-	
 	    showAppHideLogin();
 	    _onlineProfile2.default.start();
 	    _log2.default.start();
@@ -331,6 +326,14 @@
 	
 	  get currentKeywordId() {
 	    return sessionStorage.getItem('currentKeywordId');
+	  },
+	
+	  set currentKeywordName(name) {
+	    sessionStorage.setItem('currentKeywordName', name);
+	  },
+	
+	  get currentKeywordName() {
+	    return sessionStorage.getItem('currentKeywordName');
 	  }
 	
 	};
@@ -1709,7 +1712,42 @@
 	// const listEnterprisesCardNegativeBalance = document.querySelector('#list-enterprises-card-negative-balance');
 	
 	var listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-card-check-btn');
+	var listEnterprisesCardDeleteBtn = document.querySelector('#list-enterprises-card-delete-btn');
 	var listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
+	
+	var onSuccessEnterprisesDelete = function onSuccessEnterprisesDelete(answer) {
+	  console.log(answer);
+	
+	  onListEnterprisesCardReturnBtn();
+	
+	  _tools2.default.informationtModal = {
+	    title: 'Уведомление',
+	    message: '\u041F\u0440\u0435\u0434\u043F\u0440\u0438\u044F\u0442\u0438\u0435 <b>' + _storage2.default.currentEnterpriseName + '</b> \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u0443\u0434\u0430\u043B\u0435\u043D\u043E'
+	  };
+	};
+	
+	var onErrorEnterprisesDelete = function onErrorEnterprisesDelete(error) {
+	  console.log(error);
+	};
+	
+	var setRequestToDeleteEnterprise = function setRequestToDeleteEnterprise() {
+	  _xhr2.default.request = {
+	    metod: 'DELETE',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.currentEnterpriseId,
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessEnterprisesDelete,
+	    callbackError: onErrorEnterprisesDelete
+	  };
+	};
+	
+	listEnterprisesCardDeleteBtn.addEventListener('click', function () {
+	
+	  _tools2.default.actionRequestModal = {
+	    title: 'Удаление',
+	    message: '\u0412\u044B \u0442\u043E\u0447\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u0440\u0435\u0434\u043F\u0440\u0438\u044F\u0442\u0438\u0435 <b>' + _storage2.default.currentEnterpriseName + '</b>?',
+	    submitCallback: setRequestToDeleteEnterprise
+	  };
+	});
 	
 	var loaderSpinnerId = 'loader-enterprises';
 	var loaderSpinnerMessage = 'Загрузка';
@@ -1795,10 +1833,10 @@
 	};
 	
 	var onListEnterprisesCardReturnBtn = function onListEnterprisesCardReturnBtn() {
-	  listEnterprisesBody.classList.remove('d-none');
-	  listEnterprisesCard.classList.add('d-none');
 	  listEnterprisesHeader.classList.add('d-flex');
 	  listEnterprisesHeader.classList.remove('d-none');
+	  listEnterprisesBody.classList.remove('d-none');
+	  listEnterprisesCard.classList.add('d-none');
 	  listEnterprisesCardName.innerText = '';
 	  listEnterprisesCardDate.innerText = '';
 	  listEnterprisesCardBalance.innerText = '';
@@ -1864,21 +1902,46 @@
 /* 19 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var modalActionRequest = document.querySelector('#modal-action-request');
+	var modalActionRequestTitle = modalActionRequest.querySelector('#modal-action-request-title');
+	var modalActionRequestMessage = modalActionRequest.querySelector('#modal-action-request-message');
+	var modalActionRequestSubmit = modalActionRequest.querySelector('#modal-action-request-submit');
+	
+	var modalInformation = document.querySelector('#modal-information');
+	var modalInformationTitle = modalInformation.querySelector('#modal-information-title');
+	var modalInformationMessage = modalInformation.querySelector('#modal-information-message');
+	
 	exports.default = {
 	  getWaitSpinner: function getWaitSpinner(id, message) {
-	    return "\n      <div id=\"loader\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	    return '\n      <div id="loader" class="progress text-white" style="height: 25px;">\n        <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase bg-success" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">' + message + '</div>\n      </div>';
 	  },
 	  getLoadSpinner: function getLoadSpinner(id, message) {
-	    return "\n      <div id=\"" + id + "\" class=\"progress text-white\" style=\"height: 25px;\">\n        <div class=\"progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase\" style=\"width: 100%\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + message + "</div>\n      </div>";
+	    return '\n      <div id="' + id + '" class="progress text-white" style="height: 25px;">\n        <div class="progress-bar progress-bar-striped progress-bar-animated text-white font-weight-bold text-uppercase" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">' + message + '</div>\n      </div>';
 	  },
 	  getError: function getError(id, message) {
-	    return "\n      <div id=\"loader-fail\" class=\"container-fluid bg-danger text-white text-center mb-5\" style=\"height: 25;\">" + message + "</div>";
+	    return '\n      <div id="loader-fail" class="container-fluid bg-danger text-white text-center mb-5" style="height: 25;">' + message + '</div>';
+	  },
+	
+	
+	  set actionRequestModal(setup) {
+	
+	    $(modalActionRequest).modal('show');
+	    modalActionRequestTitle.innerHTML = setup.title;
+	    modalActionRequestMessage.innerHTML = setup.message;
+	    modalActionRequestSubmit.addEventListener('click', setup.submitCallback);
+	  },
+	
+	  set informationtModal(setup) {
+	    $(modalInformation).modal('show');
+	    modalInformationTitle.innerHTML = setup.title;
+	    modalInformationMessage.innerHTML = setup.message;
 	  }
+	
 	};
 
 /***/ }),
@@ -2674,6 +2737,7 @@
 	var listContractorsFormEditName = document.querySelector('#contractors-name');
 	var listContractorsFormEditDescribe = document.querySelector('#contractors-describe');
 	var listContractorsFormEditContact = document.querySelector('#contractors-contact');
+	var listContractorsFormEditPhone = document.querySelector('#contractors-phone');
 	var listContractorsFormEditEmail = document.querySelector('#contractors-email');
 	var listContractorsFormSubmit = document.querySelector('#contractors-add-submit');
 	var listContractorsFormBill = document.querySelector('#contractors-add-bill');
@@ -2736,9 +2800,7 @@
 	    console.log(loadedBuyerCard);
 	    _referenceContractorsCard2.default.cleanContainer();
 	    _referenceContractorsCard2.default.drawDataInContainer(loadedBuyerCard.data);
-	    listContractorsFormSubmit.innerHTML = 'Изменить';
-	    _storage2.default.currentContractorId = loadedBuyerCard.id;
-	    _storage2.default.currentContractorOperation = 'edit';
+	    // listContractorsFormSubmit.innerHTML = 'Изменить';
 	  } else {
 	    _referenceContractorsCard2.default.drawMarkupInContainer('<p>' + loadedBuyerCard.message + '</p>');
 	  }
@@ -2756,22 +2818,31 @@
 	  }
 	
 	  var _contractorsData$curr = contractorsData[currentStringElement.dataset.index],
+	      id = _contractorsData$curr.id,
 	      name = _contractorsData$curr.name,
 	      description = _contractorsData$curr.description,
+	      phone = _contractorsData$curr.phone,
 	      contact = _contractorsData$curr.contact,
 	      email = _contractorsData$curr.email;
 	
 	
 	  $('#contractors-add').modal('show');
 	
-	  console.log(contractorsData);
+	  _storage2.default.currentContractorId = id;
 	
 	  listContractorsFormEditName.value = name ? name : '';
 	  listContractorsFormEditDescribe.value = description ? description : '';
 	  listContractorsFormEditContact.value = contact ? contact : '';
+	  listContractorsFormEditPhone.value = phone ? phone : '';
 	  listContractorsFormEditEmail.value = email ? email : '';
+	  listContractorsFormSubmit.innerHTML = 'Изменить';
+	  _storage2.default.currentContractorOperation = 'edit';
 	
 	  listContractorsFormBill.classList.remove('d-none');
+	
+	  console.log(_storage2.default.currentContractorId);
+	  console.log(_storage2.default.currentContractorOperation);
+	  console.log(contractorsData);
 	
 	  listContractorsFormBill.addEventListener('click', function () {
 	    hideBodyShowCard();
@@ -2813,6 +2884,10 @@
 	
 	$('#contractors-add').on('hidden.bs.modal', function (e) {
 	  listContractorsFormBill.classList.add('d-none');
+	});
+	$('#contractors-add').on('show.bs.modal', function (e) {
+	  console.log(_storage2.default.currentContractorId);
+	  console.log(_storage2.default.currentContractorOperation);
 	});
 	
 	exports.default = {
@@ -3170,6 +3245,41 @@
 	var listKeywordsHeader = document.querySelector('#list-keywords-header');
 	var listKeywordsBody = document.querySelector('#list-keywords-body');
 	var listKeywordsCardEditRGBForm = document.querySelector('#keywords-card-edit-rgb-form');
+	var listKeywordsCardDeleteBtn = document.querySelector('#list-keywords-card-delete-btn');
+	
+	var onSuccessKeywordDelete = function onSuccessKeywordDelete(answer) {
+	  console.log(answer);
+	
+	  getKeywords();
+	
+	  _tools2.default.informationtModal = {
+	    title: 'Уведомление',
+	    message: '\u041A\u043B\u044E\u0447\u0435\u0432\u043E\u0435 \u0441\u043B\u043E\u0432\u043E <b>' + _storage2.default.currentKeywordName + '</b> \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u0443\u0434\u0430\u043B\u0435\u043D\u043E'
+	  };
+	};
+	
+	var onErrorKeywordDelete = function onErrorKeywordDelete(error) {
+	  console.log(error);
+	};
+	
+	var setRequestToDeleteKeyword = function setRequestToDeleteKeyword() {
+	  _xhr2.default.request = {
+	    metod: 'DELETE',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.currentEnterpriseId + '/tag/' + _storage2.default.currentKeywordId,
+	    data: 'view_last=0&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessKeywordDelete,
+	    callbackError: onErrorKeywordDelete
+	  };
+	};
+	
+	listKeywordsCardDeleteBtn.addEventListener('click', function () {
+	
+	  _tools2.default.actionRequestModal = {
+	    title: 'Удаление',
+	    message: '\u0412\u044B \u0442\u043E\u0447\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u043A\u043B\u044E\u0447\u0435\u0432\u043E\u0435 \u0441\u043B\u043E\u0432\u043E <b>' + _storage2.default.currentKeywordName + '</b>?',
+	    submitCallback: setRequestToDeleteKeyword
+	  };
+	});
 	
 	var onListKeywordsReturnBtnClick = function onListKeywordsReturnBtnClick() {
 	  listKeywordsCard.classList.add('d-none');
@@ -3180,6 +3290,16 @@
 	
 	listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
 	
+	var onSuccessKeywordColorUpdate = function onSuccessKeywordColorUpdate(answer) {
+	  console.log(answer);
+	
+	  getKeywords();
+	};
+	
+	var onErrorKeywordColorUpdate = function onErrorKeywordColorUpdate(error) {
+	  console.log(error);
+	};
+	
 	var onListKeywordsCardEditRGBFormSubmit = function onListKeywordsCardEditRGBFormSubmit(evt) {
 	  evt.preventDefault();
 	  var newRGB = listKeywordsCardEditRGBForm.querySelector('input:checked').value;
@@ -3187,6 +3307,14 @@
 	  console.log(document.querySelector('#list-keywords-card-edit > div > button'));
 	  document.querySelector('#list-keywords-card-edit > div > button').style.backgroundColor = '#' + _storage2.default.currentKeywordRgb;
 	  $('#keywords-card-edit-rgb').modal('hide');
+	
+	  _xhr2.default.request = {
+	    metod: 'PUT',
+	    url: 'lopos_directory/' + _storage2.default.data.directory + '/operator/1/business/' + _storage2.default.currentEnterpriseId + '/tag/' + _storage2.default.currentKeywordId,
+	    data: 'color=' + _storage2.default.currentKeywordRgb + '&token=' + _storage2.default.data.token,
+	    callbackSuccess: onSuccessKeywordColorUpdate,
+	    callbackError: onErrorKeywordColorUpdate
+	  };
 	};
 	
 	listKeywordsCardEditRGBForm.addEventListener('submit', onListKeywordsCardEditRGBFormSubmit);
@@ -3237,18 +3365,24 @@
 
 /***/ }),
 /* 31 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _storage = __webpack_require__(1);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var listKeywordsHeader = document.querySelector('#list-keywords-header');
 	var listKeywordsBody = document.querySelector('#list-keywords-body');
 	var listKeywordsCard = document.querySelector('#list-keywords-card');
 	var listKeywordsCardEdit = document.querySelector('#list-keywords-card-edit');
-	
 	exports.default = {
 	  cleanContainer: function cleanContainer() {
 	    listKeywordsBody.innerHTML = '';
@@ -3269,6 +3403,10 @@
 	        listKeywordsBody.classList.add('d-none');
 	        listKeywordsCard.classList.remove('d-none');
 	        listKeywordsCardEdit.innerHTML = '<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #' + item.hex_color + '">#' + item.name + '</button></div>';
+	        console.log(item.id);
+	        _storage2.default.currentKeywordId = item.id;
+	        _storage2.default.currentKeywordName = item.name;
+	        console.log(_storage2.default.currentKeywordId);
 	      });
 	    });
 	  },

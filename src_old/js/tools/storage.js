@@ -126,12 +126,5 @@ export default {
     return sessionStorage.getItem('currentKeywordId');
   },
 
-  set currentKeywordName(name) {
-    sessionStorage.setItem('currentKeywordName', name);
-  },
-
-  get currentKeywordName() {
-    return sessionStorage.getItem('currentKeywordName');
-  },
 
 };

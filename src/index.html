@@ -750,7 +750,48 @@
     </div>
   </div>
 
-  <button id="test">test</button>
+  <!-- МОДАЛЬНЫЕ ОКНА ДЛЯ ВЫВОДА УВЕДОМЛЕНИЙ И ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЙ -->
+
+  <!-- Окно подтверждения действия при удалении -->
+  <div class="modal" id="modal-action-request" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-action-request-title" class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-action-request-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-action-request-submit" type="button" class="btn btn-danger" data-dismiss="modal">Подтверждаю</button>
+          <button id="modal-action-request-cancel" type="button" class="btn btn-success" data-dismiss="modal">Ой, нет!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Окно уведомления о событии -->
+  <div class="modal" id="modal-information" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-information-title" class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-information-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-information-submit" type="button" class="btn btn-primary" data-dismiss="modal">Понятно</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

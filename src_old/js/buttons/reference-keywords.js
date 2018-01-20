@@ -13,45 +13,6 @@ const listKeywordsReturnBtn = document.querySelector('#list-keywords-card-return
 const listKeywordsHeader = document.querySelector('#list-keywords-header');
 const listKeywordsBody = document.querySelector('#list-keywords-body');
 const listKeywordsCardEditRGBForm = document.querySelector('#keywords-card-edit-rgb-form');
-const listKeywordsCardDeleteBtn = document.querySelector('#list-keywords-card-delete-btn');
-
-
-const onSuccessKeywordDelete = (answer) => {
-  console.log(answer);
-
-  getKeywords();
-
-  toolsMarkup.informationtModal = {
-    title: 'Уведомление',
-    message: `Ключевое слово <b>${auth.currentKeywordName}</b> успешно удалено`
-  };
-
-};
-
-const onErrorKeywordDelete = (error) => {
-  console.log(error);
-};
-
-
-const setRequestToDeleteKeyword = () => {
-  xhr.request = {
-    metod: 'DELETE',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.currentEnterpriseId}/tag/${auth.currentKeywordId}`,
-    data: `view_last=0&token=${auth.data.token}`,
-    callbackSuccess: onSuccessKeywordDelete,
-    callbackError: onErrorKeywordDelete
-  };
-};
-
-listKeywordsCardDeleteBtn.addEventListener('click', function () {
-
-  toolsMarkup.actionRequestModal = {
-    title: 'Удаление',
-    message: `Вы точно хотите удалить ключевое слово <b>${auth.currentKeywordName}</b>?`,
-    submitCallback: setRequestToDeleteKeyword
-  };
-
-});
 
 const onListKeywordsReturnBtnClick = () => {
   listKeywordsCard.classList.add('d-none');
@@ -62,18 +23,6 @@ const onListKeywordsReturnBtnClick = () => {
 
 listKeywordsReturnBtn.addEventListener('click', onListKeywordsReturnBtnClick);
 
-const onSuccessKeywordColorUpdate = (answer) => {
-  console.log(answer);
-
-  getKeywords();
-
-};
-
-const onErrorKeywordColorUpdate = (error) => {
-  console.log(error);
-};
-
-
 const onListKeywordsCardEditRGBFormSubmit = (evt) => {
   evt.preventDefault();
   let newRGB = listKeywordsCardEditRGBForm.querySelector('input:checked').value;
@@ -81,15 +30,6 @@ const onListKeywordsCardEditRGBFormSubmit = (evt) => {
   console.log(document.querySelector('#list-keywords-card-edit > div > button'));
   document.querySelector('#list-keywords-card-edit > div > button').style.backgroundColor = '#' + auth.currentKeywordRgb;
   $('#keywords-card-edit-rgb').modal('hide');
-
-  xhr.request = {
-    metod: 'PUT',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.currentEnterpriseId}/tag/${auth.currentKeywordId}`,
-    data: `color=${auth.currentKeywordRgb}&token=${auth.data.token}`,
-    callbackSuccess: onSuccessKeywordColorUpdate,
-    callbackError: onErrorKeywordColorUpdate
-  };
-
 };
 
 listKeywordsCardEditRGBForm.addEventListener('submit', onListKeywordsCardEditRGBFormSubmit);

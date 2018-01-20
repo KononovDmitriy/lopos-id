@@ -17,47 +17,7 @@ const listEnterprisesCardDate = document.querySelector('#list-enterprises-card-d
 // const listEnterprisesCardNegativeBalance = document.querySelector('#list-enterprises-card-negative-balance');
 
 const listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-card-check-btn');
-const listEnterprisesCardDeleteBtn = document.querySelector('#list-enterprises-card-delete-btn');
 const listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
-
-
-const onSuccessEnterprisesDelete = (answer) => {
-  console.log(answer);
-
-  onListEnterprisesCardReturnBtn();
-
-  toolsMarkup.informationtModal = {
-    title: 'Уведомление',
-    message: `Предприятие <b>${auth.currentEnterpriseName}</b> успешно удалено`
-  };
-
-};
-
-
-const onErrorEnterprisesDelete = (error) => {
-  console.log(error);
-};
-
-
-const setRequestToDeleteEnterprise = () => {
-  xhr.request = {
-    metod: 'DELETE',
-    url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.currentEnterpriseId}`,
-    data: `view_last=0&token=${auth.data.token}`,
-    callbackSuccess: onSuccessEnterprisesDelete,
-    callbackError: onErrorEnterprisesDelete
-  };
-};
-
-listEnterprisesCardDeleteBtn.addEventListener('click', function () {
-
-  toolsMarkup.actionRequestModal = {
-    title: 'Удаление',
-    message: `Вы точно хотите удалить предприятие <b>${auth.currentEnterpriseName}</b>?`,
-    submitCallback: setRequestToDeleteEnterprise
-  };
-
-});
 
 const loaderSpinnerId = 'loader-enterprises';
 const loaderSpinnerMessage = 'Загрузка';
@@ -145,10 +105,10 @@ const onListEnterprisesBodyClick = (evt) => {
 };
 
 const onListEnterprisesCardReturnBtn = () => {
-  listEnterprisesHeader.classList.add('d-flex');
-  listEnterprisesHeader.classList.remove('d-none');
   listEnterprisesBody.classList.remove('d-none');
   listEnterprisesCard.classList.add('d-none');
+  listEnterprisesHeader.classList.add('d-flex');
+  listEnterprisesHeader.classList.remove('d-none');
   listEnterprisesCardName.innerText = '';
   listEnterprisesCardDate.innerText = '';
   listEnterprisesCardBalance.innerText = '';
