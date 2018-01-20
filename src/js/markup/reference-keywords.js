@@ -2,7 +2,10 @@ const listKeywordsHeader = document.querySelector('#list-keywords-header');
 const listKeywordsBody = document.querySelector('#list-keywords-body');
 const listKeywordsCard = document.querySelector('#list-keywords-card');
 const listKeywordsCardEdit = document.querySelector('#list-keywords-card-edit');
+<<<<<<< HEAD
 import auth from '../tools/storage.js';
+=======
+>>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
 
 export default {
 
@@ -26,9 +29,12 @@ export default {
         listKeywordsBody.classList.add('d-none');
         listKeywordsCard.classList.remove('d-none');
         listKeywordsCardEdit.innerHTML = `<div class="text-center"><button type="button" class="btn btn-lg text-white" style="background-color: #${item.hex_color}">#${item.name}</button></div>`;
+<<<<<<< HEAD
         console.log(item.id);
         auth.currentKeywordId = item.id;
         console.log(auth.currentKeywordId);
+=======
+>>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
       });
 
     });

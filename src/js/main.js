@@ -52,12 +52,18 @@ const hashObserver = () => {
 const start = () => {
   if (auth.isSetFlag) {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
     document.querySelector('#test').addEventListener('click', () => {
       console.dir(window.appFormCurrValue);
     });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 82361c688c5524e219854a580f94f1827f791b1d
     showAppHideLogin();
     profileButton.start();
     logButton.start();
