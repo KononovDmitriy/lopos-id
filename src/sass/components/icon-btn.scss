@@ -1,8 +1,13 @@
 .icon-btn {
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  margin-left: 5px;
   cursor: pointer;
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
 }
 
 .icon-btn__check--green {
@@ -34,8 +39,13 @@
   background-image: url(../img/arrow-right.png);
   background-size: cover;
 }
+.icon-btn__rgb {
+  background-image: url(../img/rgb-circle-1-50.png);
+  background-size: cover;
+}
 
 .icon-btn__return {
   background-image: url(../img/icons8-left-100.png);
   background-size: cover;
+  margin-right: 5px;
 }

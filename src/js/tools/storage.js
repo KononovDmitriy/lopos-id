@@ -85,12 +85,45 @@ export default {
     return sessionStorage.getItem('currentStockName');
   },
 
-  set currentContractor(type) {
-    sessionStorage.setItem('currentContractor', type);
+  set currentContractorId(id) {
+    sessionStorage.setItem('currentContractorId', id);
   },
 
-  get currentContractor() {
-    return sessionStorage.getItem('currentContractor');
+  get currentContractorId() {
+    return sessionStorage.getItem('currentContractorId');
+  },
+
+  set currentContractorType(type) {
+    sessionStorage.setItem('currentContractorType', type);
+  },
+
+  get currentContractorType() {
+    return sessionStorage.getItem('currentContractorType');
+  },
+
+  set currentContractorOperation(type) {
+    sessionStorage.setItem('currentContractorOperation', type);
+  },
+
+  get currentContractorOperation() {
+    return sessionStorage.getItem('currentContractorOperation');
+  },
+
+
+  set currentKeywordRgb(rgb) {
+    sessionStorage.setItem('currentKeywordRgb', rgb);
+  },
+
+  get currentKeywordRgb() {
+    return sessionStorage.getItem('currentKeywordRgb');
+  },
+
+  set currentKeywordId(id) {
+    sessionStorage.setItem('currentKeywordId', id);
+  },
+
+  get currentKeywordId() {
+    return sessionStorage.getItem('currentKeywordId');
   },
 
 

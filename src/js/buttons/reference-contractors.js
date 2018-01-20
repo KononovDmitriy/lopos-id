@@ -18,13 +18,17 @@ const listContractorsHeader = document.querySelector('#list-contractors-header')
 const listContractorsBody = document.querySelector('#list-contractors-body');
 const listContractorsCard = document.querySelector('#list-contractors-card');
 const listContractorsCardReturnBtn = document.querySelector('#list-contractors-card-return-btn');
-const listContractorsCardEditBtn = document.querySelector('#list-contractors-card-edit-btn');
+// const listContractorsCardEditBtn = document.querySelector('#list-contractors-card-edit-btn');
 
 const listContractorsFormEditLabel = document.querySelector('#contractors-add-label');
 const listContractorsFormEditName = document.querySelector('#contractors-name');
 const listContractorsFormEditDescribe = document.querySelector('#contractors-describe');
 const listContractorsFormEditContact = document.querySelector('#contractors-contact');
 const listContractorsFormEditEmail = document.querySelector('#contractors-email');
+const listContractorsFormSubmit = document.querySelector('#contractors-add-submit');
+const listContractorsFormBill = document.querySelector('#contractors-add-bill');
+
+let contractorsData = [];
 
 const ContractorType = {
   SUPPLIER: 1,
@@ -34,6 +38,8 @@ const ContractorType = {
 const showBodyHideCard = () => {
   listContractorsBody.classList.remove('d-none');
   listContractorsCard.classList.add('d-none');
+  listContractorsHeader.classList.add('d-flex');
+  listContractorsHeader.classList.remove('d-none');
 };
 
 const hideBodyShowCard = () => {
@@ -45,19 +51,28 @@ listContractorsAddBtn.addEventListener('click', function () {
   listContractorsAddForm.reset();
 });
 
+/*
+listContractorsCardEditBtn.addEventListener('click', function () {
+  listContractorsFormSubmit.innerHTML = 'Изменить';
+});
+*/
+
 listContractorsCardReturnBtn.addEventListener('click', function () {
   showBodyHideCard();
-  listContractorsHeader.classList.add('d-flex');
-  listContractorsHeader.classList.remove('d-none');
-  getContractors(auth.currentContractor);
+  getContractors(auth.currentContractorType);
 });
 
 
 const onSuccessContractorsLoad = (loadedContractors) => {
   document.querySelector(`#${loaderSpinnerId}`).remove();
   if (loadedContractors.status === 200) {
+    console.log(loadedContractors);
+    contractorsData = loadedContractors.data.slice(0);
     contractorsCardMarkup.cleanContainer();
     contractorsMarkup.drawDataInContainer(loadedContractors.data);
+    listContractorsFormSubmit.innerHTML = 'Создать';
+    auth.currentContractorOperation = 'add';
+
   } else {
     contractorsMarkup.drawMarkupInContainer(`<p>${loadedContractors.message}</p>`);
 
@@ -73,15 +88,11 @@ const onSuccessBuyerCardLoad = (loadedBuyerCard) => {
   document.querySelector(`#${loaderSpinnerId}`).remove();
   if (loadedBuyerCard.status === 200) {
     console.log(loadedBuyerCard);
+    contractorsCardMarkup.cleanContainer();
     contractorsCardMarkup.drawDataInContainer(loadedBuyerCard.data);
-
-    listContractorsCardEditBtn.addEventListener('click', function () {
-      listContractorsFormEditName.value = loadedBuyerCard.data.name;
-      listContractorsFormEditDescribe.value = loadedBuyerCard.data.description;
-      listContractorsFormEditContact.value = loadedBuyerCard.data.contact;
-      listContractorsFormEditEmail.value = loadedBuyerCard.data.email;
-    });
-
+    listContractorsFormSubmit.innerHTML = 'Изменить';
+    auth.currentContractorId = loadedBuyerCard.id;
+    auth.currentContractorOperation = 'edit';
   } else {
     contractorsCardMarkup.drawMarkupInContainer(`<p>${loadedBuyerCard.message}</p>`);
 
@@ -92,31 +103,53 @@ const onErrorBuyerCardLoad = (error) => {
   console.log(error);
 };
 
-
 const onListContractorsBodyClick = (evt) => {
-  if (evt.target.tagName === 'BUTTON') {
+  let currentStringElement = evt.target;
+
+  while (!currentStringElement.dataset.buyerId) {
+    currentStringElement = currentStringElement.parentNode;
+  }
+
+  let {name, description, contact, email} = contractorsData[currentStringElement.dataset.index];
+
+  $('#contractors-add').modal('show');
+
+  console.log(contractorsData);
+
+  listContractorsFormEditName.value = name ? name : '';
+  listContractorsFormEditDescribe.value = description ? description : '';
+  listContractorsFormEditContact.value = contact ? contact : '';
+  listContractorsFormEditEmail.value = email ? email : '';
+
+  listContractorsFormBill.classList.remove('d-none');
+
+  listContractorsFormBill.addEventListener('click', function () {
     hideBodyShowCard();
     listContractorsHeader.classList.remove('d-flex');
     listContractorsHeader.classList.add('d-none');
+
     contractorsCardMarkup.drawMarkupInContainer(loaderSpinnerMarkup);
 
     xhr.request = {
       metod: 'POST',
-      url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.data.currentBusiness}/kontr_agent/${evt.target.dataset.buyerId}`,
-      data: `token=${auth.data.token}&count_doc=4&shift_doc=2`,
+      url: `lopos_directory/${auth.data.directory}/operator/1/business/${auth.data.currentBusiness}/kontr_agent/${currentStringElement.dataset.buyerId}`,
+      data: `token=${auth.data.token}&count_doc=4&shift_doc=0`,
       callbackSuccess: onSuccessBuyerCardLoad,
       callbackError: onErrorBuyerCardLoad
     };
-  }
+  });
+
 };
 
 listContractorsBody.addEventListener('click', onListContractorsBodyClick);
 
 const getContractors = (type) => {
   showBodyHideCard();
-  listContractorsHeaderType.innerHTML = (type === ContractorType.SUPPLIER) ? 'ПОСТАВЩИКИ' : 'ПОКУПАТЕЛИ';
+
+
+  listContractorsHeaderType.innerHTML = (type === ContractorType.SUPPLIER) ? contractorsMarkup.getSuppliersHeader() : contractorsMarkup.getBuyersHeader();
   listContractorsFormEditLabel.innerHTML = (type === ContractorType.SUPPLIER) ? 'Поставщики' : 'Покупатели';
-  auth.currentContractor = type;
+  auth.currentContractorType = type;
 
   contractorsMarkup.cleanContainer();
   contractorsMarkup.drawMarkupInContainer(loaderSpinnerMarkup);
@@ -129,6 +162,11 @@ const getContractors = (type) => {
     callbackError: onErrorContractorsLoad
   };
 };
+
+$('#contractors-add').on('hidden.bs.modal', function (e) {
+  listContractorsFormBill.classList.add('d-none');
+
+});
 
 export default {
 

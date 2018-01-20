@@ -11,14 +11,12 @@ const listEnterprisesCardReturnBtn = document.querySelector('#list-enterprises-c
 
 const listEnterprisesCardName = document.querySelector('#list-enterprises-card-name');
 const listEnterprisesCardBalance = document.querySelector('#list-enterprises-card-balance');
+const listEnterprisesCardIsChecked = document.querySelector('#list-enterprises-card-is-checked');
 const listEnterprisesCardDate = document.querySelector('#list-enterprises-card-date');
 // const listEnterprisesCardNegativeTailings = document.querySelector('#list-enterprises-card-negative-tailings');
 // const listEnterprisesCardNegativeBalance = document.querySelector('#list-enterprises-card-negative-balance');
 
 const listEnterprisesCardCheckBtn = document.querySelector('#list-enterprises-card-check-btn');
-// const listEnterprisesCardEditBtn = document.querySelector('#list-enterprises-card-edit-btn');
-// const listEnterprisesCardDeleteBtn = document.querySelector('#list-enterprises-card-delete-btn');
-
 const listEnterprisesCardEditName = document.querySelector('#enterprises-card-edit-name');
 
 const loaderSpinnerId = 'loader-enterprises';
@@ -26,6 +24,7 @@ const loaderSpinnerMessage = 'Загрузка';
 const loaderSpinnerMarkup = toolsMarkup.getLoadSpinner(loaderSpinnerId, loaderSpinnerMessage);
 
 const onSuccessEnterprisesLoad = (loadedEnterprises) => {
+  console.log(loadedEnterprises);
   document.querySelector(`#${loaderSpinnerId}`).remove();
   if (loadedEnterprises.status === 200) {
     enterprisesMarkup.drawDataInContainer(loadedEnterprises.data);
@@ -57,19 +56,26 @@ const onSuccessEnterpriseCardLoad = (loadedEnterpriseCard) => {
   console.log(loadedEnterpriseCard);
 
   if (auth.data.currentBusiness === loadedEnterpriseCard.data.id) {
-    listEnterprisesCardCheckBtn.setAttribute('disabled', 'disabled');
+    listEnterprisesCardCheckBtn.classList.add('d-none');
+    listEnterprisesCardIsChecked.classList.remove('d-none');
   } else {
-    listEnterprisesCardCheckBtn.removeAttribute('disabled');
+    listEnterprisesCardCheckBtn.classList.remove('d-none');
+    listEnterprisesCardIsChecked.classList.add('d-none');
   }
 
   listEnterprisesCardCheckBtn.addEventListener('click', function () {
     auth.currentBusiness = loadedEnterpriseCard.data.id;
+    listEnterprisesCardCheckBtn.classList.add('d-none');
+    listEnterprisesCardIsChecked.classList.remove('d-none');
+  });
+
+  $('#enterprises-card-edit').on('show.bs.modal', function (e) {
+    listEnterprisesCardEditName.value = loadedEnterpriseCard.data.name;
   });
 
   listEnterprisesCardName.innerText = loadedEnterpriseCard.data.name;
   listEnterprisesCardDate.innerText = new Date(+(loadedEnterpriseCard.data.time_activity + '000')).toLocaleString();
   listEnterprisesCardBalance.innerText = loadedEnterpriseCard.data.balance;
-  listEnterprisesCardEditName.value = loadedEnterpriseCard.data.name;
   auth.currentEnterpriseId = loadedEnterpriseCard.data.id;
   auth.currentEnterpriseName = loadedEnterpriseCard.data.name;
 };
@@ -79,20 +85,23 @@ const onErrorEnterpriseCardLoad = (error) => {
 };
 
 const onListEnterprisesBodyClick = (evt) => {
-  if (evt.target.tagName === 'BUTTON' || evt.target.tagName === 'IMG') {
-    listEnterprisesHeader.classList.remove('d-flex');
-    listEnterprisesHeader.classList.add('d-none');
-    listEnterprisesBody.classList.add('d-none');
-    listEnterprisesCard.classList.remove('d-none');
-
-    xhr.request = {
-      metod: 'POST',
-      url: `lopos_directory/${auth.data.directory}/operator/1/business/${evt.target.dataset.enterpriseId}/info`,
-      data: `view_last=0&token=${auth.data.token}`,
-      callbackSuccess: onSuccessEnterpriseCardLoad,
-      callbackError: onErrorEnterpriseCardLoad
-    };
+  let currentStringElement = evt.target;
+  while (!currentStringElement.dataset.enterpriseId) {
+    currentStringElement = currentStringElement.parentNode;
   }
+
+  listEnterprisesHeader.classList.remove('d-flex');
+  listEnterprisesHeader.classList.add('d-none');
+  listEnterprisesBody.classList.add('d-none');
+  listEnterprisesCard.classList.remove('d-none');
+
+  xhr.request = {
+    metod: 'POST',
+    url: `lopos_directory/${auth.data.directory}/operator/1/business/${currentStringElement.dataset.enterpriseId}/info`,
+    data: `view_last=0&token=${auth.data.token}`,
+    callbackSuccess: onSuccessEnterpriseCardLoad,
+    callbackError: onErrorEnterpriseCardLoad
+  };
 };
 
 const onListEnterprisesCardReturnBtn = () => {

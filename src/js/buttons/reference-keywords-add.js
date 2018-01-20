@@ -1,25 +1,25 @@
 import xhr from './../tools/xhr.js';
 import dataStorage from './../tools/storage.js';
-import pointButton from './reference-points.js';
+import keywordsButton from './reference-keywords.js';
 
-const appUrl = window.appSettings.formEditPoint.UrlApi;
-const validNamePattern = window.appSettings.formEditPoint.validPatterns.name;
-const validNameMessage = window.appSettings.formEditPoint.validMessage.name;
-const messages = window.appSettings.formEditPoint.messages;
+const appUrl = window.appSettings.formAddKeywords.UrlApi;
+const validNamePattern = window.appSettings.formAddKeywords.validPatterns.name;
+const validNameMessage = window.appSettings.formAddKeywords.validMessage.name;
+const messages = window.appSettings.formAddKeywords.messages;
 
 
 const body = document.querySelector('body');
-const enterprisesAdd = body.querySelector('#points-edit');
-const form = enterprisesAdd.querySelector('#points-edit-form');
+const enterprisesAdd = body.querySelector('#keywords-add');
+const form = enterprisesAdd.querySelector('#keywords-add-form');
 
-const name = form.querySelector('#points-edit-name');
-const nameValid = form.querySelector('#points-edit-valid');
+const name = form.querySelector('#keywords-add-name');
+const nameValid = form.querySelector('#keywords-add-valid');
 
-const spinner = form.querySelector('#points-edit-spinner');
+const spinner = form.querySelector('#keywords-add-spinner');
 
-const buttonSubmit = form.querySelector('#points-edit-submit');
-const buttonCancel = form.querySelector('#points-edit-cancel');
-const buttonClose = enterprisesAdd.querySelector('#points-edit-close');
+const buttonSubmit = form.querySelector('#keywords-add-submit');
+const buttonCancel = form.querySelector('#keywords-add-cancel');
+const buttonClose = enterprisesAdd.querySelector('#keywords-add-close');
 
 const stor = dataStorage.data;
 
@@ -29,16 +29,15 @@ const formReset = () => {
 };
 
 const callbackXhrSuccess = (response) => {
-  console.dir(response);
 
   hideSpinner();
   switch (response.status) {
   case 200:
     formReset();
-    $('#points-edit').modal('hide');
+    $('#keywords-add').modal('hide');
 
     // Сюда метод перезагрузки списка
-    pointButton.redraw();
+    keywordsButton.redraw();
     break;
   case 400:
 
@@ -83,17 +82,14 @@ const submitForm = () => {
   let urlApp = appUrl.replace('{{dir}}', stor.directory);
   urlApp = urlApp.replace('{{oper}}', stor.operatorId);
   urlApp = urlApp.replace('{{busId}}', stor.currentBusiness);
-  urlApp = urlApp.replace('{{stId}}', dataStorage.currentStockId);
 
   let response = {
     url: urlApp,
-    metod: 'PUT',
+    metod: 'POST',
     data: postData,
     callbackSuccess: callbackXhrSuccess,
     callbackError: callbackXhrError
   };
-
-  console.dir(response);
 
   xhr.request = response;
 };

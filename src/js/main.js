@@ -9,9 +9,11 @@ import pointsButton from './buttons/reference-points.js';
 import pointsButtonFormAdd from './buttons/reference-points-add.js';
 import pointsButtonFormEdit from './buttons/reference-points-edit.js';
 import contractorsButton from './buttons/reference-contractors.js';
+import contractorsButtonFormAdd from './buttons/reference-contractors-add.js';
 import keywordsButton from './buttons/reference-keywords.js';
+import keywordsButtonAdd from './buttons/reference-keywords-add.js';
 
-console.log('ver: 2D5');
+console.log('ver: 2D4');
 console.log('ver: 2A3');
 
 const exit = document.querySelector('#profile-exit');
@@ -49,6 +51,11 @@ const hashObserver = () => {
 // ========== ОБНОВЛЕНИЕ/ОТКРЫТИЕ СТРАНИЦЫ ==========
 const start = () => {
   if (auth.isSetFlag) {
+
+    document.querySelector('#test').addEventListener('click', () => {
+      console.dir(window.appFormCurrValue);
+    });
+
     showAppHideLogin();
     profileButton.start();
     logButton.start();
@@ -62,6 +69,8 @@ const start = () => {
     enterprisesButtonFormEdit.start();
     pointsButtonFormAdd.start();
     pointsButtonFormEdit.start();
+    contractorsButtonFormAdd.start();
+    keywordsButtonAdd.start();
   } else {
     showLoginHideApp();
     mainWindow.init();
